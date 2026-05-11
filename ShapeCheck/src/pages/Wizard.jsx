@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "./Wizard.module.css";
+import { useNavigate } from "react-router-dom";
 import BarraProgresso from "../features/wizard/components/BarraProgresso";
 import BotoesVoltarAvancar from "../features/wizard/components/BotoesVoltarAvancar";
 import Passo1Form from "../features/wizard/passos/Passo1Form";
@@ -10,6 +10,7 @@ import Passo5Objetivo from "../features/wizard/passos/Passo5Objetivo";
 import Passo6Foto from "../features/wizard/passos/Passo6Foto";
 import Passo7Final from "../features/wizard/passos/Passo7Final";
 import { CircularProgress } from "@mui/material";
+import styles from "./Wizard.module.css";
 
 const Wizard = () => {
   const passos = [
@@ -20,8 +21,11 @@ const Wizard = () => {
     "Objetivo",
     "Foto",
   ];
+  const navigate = useNavigate();
   const [passoAtual, setPassoAtual] = useState(1);
   const [isCarregando, setIsCarregando] = useState(false);
+  const [temFoto, setTemFoto] = useState(false);
+  const [errosForm, setErrosForm] = useState({});
 
   const [respostasForm, setRespostasForm] = useState({
     nome: "",
@@ -36,9 +40,45 @@ const Wizard = () => {
     objetivo: "",
   });
 
-  const finalizarWizard = () => setIsCarregando(true);
+  const finalizarWizard = () => {
+    setIsCarregando(true);
+    setTimeout(() => {
+      navigate("/dashboard");
+    }, 3000);
+  };
   const voltar = () => setPassoAtual((prev) => Math.max(prev - 1, 1));
   const avancar = () => {
+    if (passoAtual === 1) {
+      const novosErros = {};
+
+      if (!respostasForm.nome) novosErros.nome = true;
+      if (!respostasForm.idade) novosErros.idade = true;
+      if (!respostasForm.peso) novosErros.peso = true;
+      if (!respostasForm.altura) novosErros.altura = true;
+
+      if (Object.keys(novosErros).length > 0) {
+        setErrosForm(novosErros);
+        return;
+      } else {
+        setErrosForm({});
+      }
+    }
+    if (passoAtual === 2 && !respostasWizard.lugar) {
+      alert("Por favor, selecione onde pretende treinar!");
+      return;
+    }
+    if (passoAtual === 3 && !respostasWizard.nivel) {
+      alert("Por favor, selecione seu nível atual!");
+      return;
+    }
+    if (passoAtual === 4 && !respostasWizard.frequencia) {
+      alert("Por favor, selecione sua frequência de treino!");
+      return;
+    }
+    if (passoAtual === 5 && !respostasWizard.objetivo) {
+      alert("Por favor, selecione seu objetivo!");
+      return;
+    }
     if (passoAtual === 7) {
       finalizarWizard();
     } else {
@@ -56,7 +96,7 @@ const Wizard = () => {
   const renderizarPasso = () => {
     switch (passoAtual) {
       case 1:
-        return <Passo1Form respostasForm={respostasForm} />;
+        return <Passo1Form respostasForm={respostasForm} errosForm={errosForm}/>;
       case 2:
         return (
           <Passo2Lugar
@@ -86,7 +126,7 @@ const Wizard = () => {
           />
         );
       case 6:
-        return <Passo6Foto />;
+        return <Passo6Foto setTemFoto={setTemFoto} />;
       case 7:
         return <Passo7Final />;
     }
@@ -95,7 +135,7 @@ const Wizard = () => {
   if (isCarregando) {
     return (
       <div className={styles.loading}>
-        <CircularProgress size={80} sx={{ color: "#ffcb3c" }}/>
+        <CircularProgress size={80} sx={{ color: "#ffcb3c" }} />
         <h2>Gerando suas fichas...</h2>
       </div>
     );
@@ -111,6 +151,8 @@ const Wizard = () => {
         voltar={voltar}
         avancar={avancar}
         passoAtual={passoAtual}
+        temFoto={temFoto}
+        gerarFichas={finalizarWizard}
       />
     </div>
   );

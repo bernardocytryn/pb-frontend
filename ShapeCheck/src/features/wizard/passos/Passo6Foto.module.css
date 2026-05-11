@@ -46,8 +46,17 @@
   justify-content: center;
 }
 
-.containerPreview{
+.containerPreview {
   display: flex;
   flex-direction: column;
   gap: 3.5rem;
+}
+
+.containerPreview img {
+  width: 100%;
+  max-width: 410;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  border-radius: 10;
+  border: 1px solid #f2f2f2;
 }

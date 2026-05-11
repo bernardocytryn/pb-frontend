@@ -1,8 +1,7 @@
 import styles from "./BotoesVoltarAvancar.module.css";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
-const BotoesVoltarAvancar = ({ voltar, avancar, passoAtual }) => {
-  
+const BotoesVoltarAvancar = ({ voltar, avancar, passoAtual, temFoto, gerarFichas }) => {
   return (
     <div
       className={styles["botoes-voltar-avancar"]}
@@ -13,8 +12,14 @@ const BotoesVoltarAvancar = ({ voltar, avancar, passoAtual }) => {
           <FaArrowLeft /> Voltar
         </button>
       )}
-      <button onClick={avancar} className={styles.avancar}>
-        {passoAtual < 6 ? "Avançar" : passoAtual === 7 ? "Finalizar" : "Pular"}
+      <button onClick={passoAtual < 7 ? avancar : gerarFichas} className={styles.avancar}>
+        {passoAtual < 6
+          ? "Avançar"
+          : passoAtual === 7
+            ? "Finalizar"
+            : temFoto
+              ? "Avançar"
+              : "Pular"}
         <FaArrowRight />
       </button>
     </div>

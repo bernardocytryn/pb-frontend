@@ -2,7 +2,7 @@ import React from "react";
 import LabelInput from "../../../components/ui/LabelInput";
 import styles from "./Passo1Form.module.css";
 
-const Passo1Form = ({ respostasForm }) => {
+const Passo1Form = ({ respostasForm, errosForm }) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -13,10 +13,10 @@ const Passo1Form = ({ respostasForm }) => {
         </p>
       </div>
       <div>
-        <LabelInput label={"Nome"} placeholder={"Digite seu nome"} />
-        <LabelInput label={"Idade"} placeholder={"Digite sua idade"} />
-        <LabelInput label={"Peso (kg)"} placeholder={"Ex: 72,5"} />
-        <LabelInput label={"Altura (cm)"} placeholder={"Ex: 180"} />
+        <LabelInput label={"Nome"} placeholder={"Digite seu nome"}  erro={errosForm?.nome}/>
+        <LabelInput label={"Idade"} placeholder={"Digite sua idade"} erro={errosForm?.idade}/>
+        <LabelInput label={"Peso (kg)"} placeholder={"Ex: 72,5"} erro={errosForm?.peso}/>
+        <LabelInput label={"Altura (cm)"} placeholder={"Ex: 180"} erro={errosForm?.altura}/>
       </div>
     </div>
   );

@@ -4,28 +4,22 @@ import BotaoAmarelo from "../../../components/ui/BotaoAmarelo";
 import casaAcademia from "../../../assets/casa_academia.png";
 import styles from "./Passo6Foto.module.css";
 
-const Passo6Foto = () => {
+const Passo6Foto = ({ setTemFoto }) => {
   const [previewFoto, setPreviewFoto] = useState(null);
+
   const tirarFoto = () => {
     setPreviewFoto("foto");
+    setTemFoto(true);
   };
-  const refazerFoto = () => setPreviewFoto(null);
+  const refazerFoto = () => {
+    setPreviewFoto(null);
+    setTemFoto(false);
+  };
 
   if (previewFoto) {
     return (
       <div className={styles.containerPreview}>
-        <img
-          src={casaAcademia}
-          style={{
-            width: "100%",
-            maxWidth: 410,
-            aspectRatio: "3 / 4",
-            objectFit: "cover",
-            borderRadius: 10,
-            border: "1px solid #f2f2f2"
-          }}
-          alt="foto-'antes'"
-        />
+        <img src={casaAcademia} alt="foto-'antes'" />
         <BotaoAmarelo
           texto={
             <>
