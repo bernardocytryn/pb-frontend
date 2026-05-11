@@ -1,0 +1,18 @@
+.botao-opcao {
+  color: #d9d9d9;
+  border: 1px solid #f2f2f2;
+  text-align: center;
+  padding: 24px;
+  border-radius: 15px;
+  font-size: 2rem;
+  background-color: #323537;
+  transition: all 0.2s ease-in-out;
+  width: 80%;
+  cursor: pointer;
+}
+
+.selecionado {
+  background-color: #ffcb3c;
+  color: #1f2122; 
+  border-color: #ffcb3c;
+}

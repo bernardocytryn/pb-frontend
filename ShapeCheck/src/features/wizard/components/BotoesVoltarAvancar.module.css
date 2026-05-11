@@ -1,0 +1,30 @@
+.botoes-voltar-avancar {
+  display: flex;
+  justify-content: space-between;
+  background-color: #323537;
+  border-radius: 15px;
+  padding: 10px;
+}
+.voltar,
+.avancar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 2rem;
+  padding: 15px;
+  cursor: pointer;
+}
+.voltar {
+  color: #939496;
+  background-color: #323537;
+  border: none;
+}
+.avancar {
+  display: flex;
+  justify-content: center;
+  color: #1f2122;
+  background-color: #ffcb3c;
+  border-radius: 15px;
+  width: 50%;
+  border: none;
+}

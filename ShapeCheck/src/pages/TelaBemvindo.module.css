@@ -1,0 +1,16 @@
+.boasvindas {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #f2f2f2;
+  min-height: 100dvh;
+  text-align: center;
+  padding: 10px;
+  gap: 50px;
+}
+.boasvindas h1 {
+  font-size: 2.8rem;
+}
+.boasvindas h2 {
+  font-size: 2rem;
+}

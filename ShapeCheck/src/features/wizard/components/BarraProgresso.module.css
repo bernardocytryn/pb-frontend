@@ -1,0 +1,14 @@
+.barra-progresso {
+  color: #f2f2f2;
+  background-color: #474a4d;
+  padding: 8px;
+  border-radius: 50px;
+  text-align: center;
+  font-size: 1.25rem;
+  overflow: hidden;
+  position: relative;
+}
+.barra-progresso span {
+  position: relative;
+  z-index: 1;
+}

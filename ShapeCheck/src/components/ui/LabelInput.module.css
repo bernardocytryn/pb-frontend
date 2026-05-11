@@ -1,0 +1,21 @@
+.label-e-input {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-bottom: 1.5rem;
+  gap: 5px;
+}
+.label-e-input input {
+  background-color: #323537;
+  padding: 20px;
+  border: 1px solid #f2f2f2;
+  font-size: 1.25rem;
+  border-radius: 10px;
+}
+.label-e-input label{
+    font-size: 1.25rem;
+}
+.label-e-input label,
+input {
+  color: #f2f2f2;
+}

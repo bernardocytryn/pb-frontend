@@ -1,0 +1,53 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  flex: 1;
+  text-align: center;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 70px;
+}
+
+.title {
+  color: #f2f2f2;
+  margin-top: 15px;
+}
+
+.description {
+  color: #f2f2f2;
+  font-size: 1.25rem;
+}
+
+.photoCard {
+  width: 100%;
+  height: auto;
+  padding: 60px;
+  border: 4px solid #ffcb3c;
+  border-radius: 15px;
+  box-sizing: border-box;
+  margin-top: 30px;
+}
+
+.picButton {
+  margin-top: 2rem;
+  width: 100%;
+}
+
+.cameraIcon {
+  color: #ffcb3c;
+  font-size: 9rem;
+  display: flex;
+  justify-content: center;
+}
+
+.containerPreview{
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+}
