@@ -1,7 +1,14 @@
 import styles from "./BotoesVoltarAvancar.module.css";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
-const BotoesVoltarAvancar = ({ voltar, avancar, passoAtual, temFoto, gerarFichas }) => {
+const BotoesVoltarAvancar = ({
+  voltar,
+  avancar,
+  passoAtual,
+  temFoto,
+  gerarFichas,
+  podeAvancar,
+}) => {
   return (
     <div
       className={styles["botoes-voltar-avancar"]}
@@ -12,7 +19,16 @@ const BotoesVoltarAvancar = ({ voltar, avancar, passoAtual, temFoto, gerarFichas
           <FaArrowLeft /> Voltar
         </button>
       )}
-      <button onClick={passoAtual < 7 ? avancar : gerarFichas} className={styles.avancar}>
+      <button
+        onClick={passoAtual < 7 ? avancar : gerarFichas}
+        disabled={!podeAvancar}
+        className={styles.avancar}
+        style={{
+          backgroundColor: podeAvancar ? "" : "#323537",
+          color: podeAvancar ? "" : "#939496",
+          cursor: podeAvancar ? "pointer" : "not-allowed",
+        }}
+      >
         {passoAtual < 6
           ? "Avançar"
           : passoAtual === 7

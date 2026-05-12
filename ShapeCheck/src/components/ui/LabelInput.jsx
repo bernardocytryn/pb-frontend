@@ -1,18 +1,20 @@
 import styles from "./LabelInput.module.css";
 
-const LabelInput = ({ label, placeholder, erro }) => {
+const LabelInput = ({ label, placeholder, taVazio, valorInput, onChange }) => {
   return (
     <div className={styles["label-e-input"]}>
       <label>{label}</label>
       <input
         style={{
-          border: erro ? "2px solid #ff4d4d" : "2px solid transparent",
+          border: taVazio ? "2px solid #ff4d4d" : "2px solid transparent",
         }}
         type="text"
         placeholder={placeholder}
+        value={valorInput}
+        onChange={onChange}
       />
       <span
-        style={{ visibility: erro ? "visible" : "hidden", minHeight: "15px" }}
+        style={{ visibility: taVazio ? "visible" : "hidden", minHeight: "15px" }}
       >
         Campo obrigatório
       </span>

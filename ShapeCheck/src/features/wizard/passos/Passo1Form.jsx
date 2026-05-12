@@ -2,7 +2,7 @@ import React from "react";
 import LabelInput from "../../../components/ui/LabelInput";
 import styles from "./Passo1Form.module.css";
 
-const Passo1Form = ({ respostasForm, errosForm }) => {
+const Passo1Form = ({ respostasForm, camposVazios, atualizarForm }) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -13,10 +13,34 @@ const Passo1Form = ({ respostasForm, errosForm }) => {
         </p>
       </div>
       <div>
-        <LabelInput label={"Nome"} placeholder={"Digite seu nome"}  erro={errosForm?.nome}/>
-        <LabelInput label={"Idade"} placeholder={"Digite sua idade"} erro={errosForm?.idade}/>
-        <LabelInput label={"Peso (kg)"} placeholder={"Ex: 72,5"} erro={errosForm?.peso}/>
-        <LabelInput label={"Altura (cm)"} placeholder={"Ex: 180"} erro={errosForm?.altura}/>
+        <LabelInput
+          label={"Nome"}
+          placeholder={"Digite seu nome"}
+          taVazio={camposVazios?.nome}
+          valorInput={respostasForm.nome}
+          onChange={(e) => atualizarForm("nome", e.target.value)}
+        />
+        <LabelInput
+          label={"Idade"}
+          placeholder={"Digite sua idade"}
+          taVazio={camposVazios?.idade}
+          valorInput={respostasForm.idade}
+          onChange={(e) => atualizarForm("idade", e.target.value)}
+        />
+        <LabelInput
+          label={"Peso (kg)"}
+          placeholder={"Ex: 72,5"}
+          taVazio={camposVazios?.peso}
+          valorInput={respostasForm.peso}
+          onChange={(e) => atualizarForm("peso", e.target.value)}
+        />
+        <LabelInput
+          label={"Altura (cm)"}
+          placeholder={"Ex: 180"}
+          taVazio={camposVazios?.altura}
+          valorInput={respostasForm.altura}
+          onChange={(e) => atualizarForm("altura", e.target.value)}
+        />
       </div>
     </div>
   );

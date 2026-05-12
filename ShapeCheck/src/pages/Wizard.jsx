@@ -25,7 +25,7 @@ const Wizard = () => {
   const [passoAtual, setPassoAtual] = useState(1);
   const [isCarregando, setIsCarregando] = useState(false);
   const [temFoto, setTemFoto] = useState(false);
-  const [errosForm, setErrosForm] = useState({});
+  const [camposVazios, setCamposVazios] = useState({});
 
   const [respostasForm, setRespostasForm] = useState({
     nome: "",
@@ -40,43 +40,40 @@ const Wizard = () => {
     objetivo: "",
   });
 
-  const finalizarWizard = () => {
-    setIsCarregando(true);
-    setTimeout(() => {
-      navigate("/dashboard");
-    }, 3000);
+  const atualizarForm = (campo, valor) => {
+    setRespostasForm((prev) => ({
+      ...prev,
+      [campo]: valor,
+    }));
   };
+
   const voltar = () => setPassoAtual((prev) => Math.max(prev - 1, 1));
   const avancar = () => {
     if (passoAtual === 1) {
-      const novosErros = {};
+      const vazios = {};
 
-      if (!respostasForm.nome) novosErros.nome = true;
-      if (!respostasForm.idade) novosErros.idade = true;
-      if (!respostasForm.peso) novosErros.peso = true;
-      if (!respostasForm.altura) novosErros.altura = true;
+      if (!respostasForm.nome) vazios.nome = true;
+      if (!respostasForm.idade) vazios.idade = true;
+      if (!respostasForm.peso) vazios.peso = true;
+      if (!respostasForm.altura) vazios.altura = true;
 
-      if (Object.keys(novosErros).length > 0) {
-        setErrosForm(novosErros);
+      if (Object.keys(vazios).length > 0) {
+        setCamposVazios(vazios);
         return;
       } else {
-        setErrosForm({});
+        setCamposVazios({});
       }
     }
     if (passoAtual === 2 && !respostasWizard.lugar) {
-      alert("Por favor, selecione onde pretende treinar!");
       return;
     }
     if (passoAtual === 3 && !respostasWizard.nivel) {
-      alert("Por favor, selecione seu nível atual!");
       return;
     }
     if (passoAtual === 4 && !respostasWizard.frequencia) {
-      alert("Por favor, selecione sua frequência de treino!");
       return;
     }
     if (passoAtual === 5 && !respostasWizard.objetivo) {
-      alert("Por favor, selecione seu objetivo!");
       return;
     }
     if (passoAtual === 7) {
@@ -92,11 +89,32 @@ const Wizard = () => {
       [campo]: valor,
     }));
   };
+  const verificarSePodeAvancar = () => {
+    if (passoAtual === 1) {
+      return (
+        respostasForm.nome &&
+        respostasForm.idade &&
+        respostasForm.peso &&
+        respostasForm.altura
+      );
+    }
+    if (passoAtual === 2) return respostasWizard.lugar !== "";
+    if (passoAtual === 3) return respostasWizard.nivel !== "";
+    if (passoAtual === 4) return respostasWizard.frequencia !== "";
+    if (passoAtual === 5) return respostasWizard.objetivo !== "";
 
+    return true;
+  };
   const renderizarPasso = () => {
     switch (passoAtual) {
       case 1:
-        return <Passo1Form respostasForm={respostasForm} errosForm={errosForm}/>;
+        return (
+          <Passo1Form
+            respostasForm={respostasForm}
+            camposVazios={camposVazios}
+            atualizarForm={atualizarForm}
+          />
+        );
       case 2:
         return (
           <Passo2Lugar
@@ -132,6 +150,13 @@ const Wizard = () => {
     }
   };
 
+  const finalizarWizard = () => {
+    setIsCarregando(true);
+    setTimeout(() => {
+      navigate("/dashboard");
+    }, 3000);
+  };
+
   if (isCarregando) {
     return (
       <div className={styles.loading}>
@@ -153,6 +178,7 @@ const Wizard = () => {
         passoAtual={passoAtual}
         temFoto={temFoto}
         gerarFichas={finalizarWizard}
+        podeAvancar={verificarSePodeAvancar()}
       />
     </div>
   );
