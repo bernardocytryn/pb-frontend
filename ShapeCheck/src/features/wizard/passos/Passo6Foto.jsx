@@ -4,19 +4,16 @@ import BotaoAmarelo from "../../../components/ui/BotaoAmarelo";
 import casaAcademia from "../../../assets/casa_academia.png";
 import styles from "./Passo6Foto.module.css";
 
-const Passo6Foto = ({ setTemFoto }) => {
-  const [previewFoto, setPreviewFoto] = useState(null);
+const Passo6Foto = ({ temFoto, setTemFoto }) => {
 
   const tirarFoto = () => {
-    setPreviewFoto("foto");
     setTemFoto(true);
   };
   const refazerFoto = () => {
-    setPreviewFoto(null);
     setTemFoto(false);
   };
 
-  if (previewFoto) {
+  if (temFoto) {
     return (
       <div className={styles.containerPreview}>
         <img src={casaAcademia} alt="foto-'antes'" />

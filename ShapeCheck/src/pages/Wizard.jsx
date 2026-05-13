@@ -144,7 +144,7 @@ const Wizard = () => {
           />
         );
       case 6:
-        return <Passo6Foto setTemFoto={setTemFoto} />;
+        return <Passo6Foto temFoto={temFoto} setTemFoto={setTemFoto} />;
       case 7:
         return <Passo7Final />;
     }
@@ -171,7 +171,9 @@ const Wizard = () => {
       {passoAtual < 7 && (
         <BarraProgresso passoAtual={passoAtual} totalPassos={6} />
       )}
-      {renderizarPasso()}
+      <div key={passoAtual} className={styles["passo-animado"]}>
+        {renderizarPasso()}
+      </div>
       <BotoesVoltarAvancar
         voltar={voltar}
         avancar={avancar}

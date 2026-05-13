@@ -29,7 +29,7 @@ const router = createBrowserRouter([
         element: <TelaDashboard/>
       },
       {
-        path: "grafico",
+        path: "graficos",
         element: <TelaGraficoEvolucao/>
       },
       {

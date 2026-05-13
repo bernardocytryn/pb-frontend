@@ -1,1 +1,18 @@
-/* Navbar styles */
+.navbar {
+  background-color: #323537;
+  padding: 1.5rem;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  font-size: 2.25rem;
+}
+.navbar .icone{
+  cursor: pointer;
+  color: #f2f2f2;
+}
+.navbar div {
+  list-style: none;
+  display: flex;
+  justify-content: space-around;
+}
