@@ -1,22 +1,33 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { FaCamera, FaUndo } from "react-icons/fa";
 import BotaoAmarelo from "../../../components/ui/BotaoAmarelo";
 import casaAcademia from "../../../assets/casa_academia.png";
 import styles from "./Passo6Foto.module.css";
 
 const Passo6Foto = ({ temFoto, setTemFoto }) => {
+  const inputCameraRef = useRef(null);
+  const [fotoAntes, setFotoAntes] = useState(null);
 
-  const tirarFoto = () => {
-    setTemFoto(true);
+  const clicarNaCamera = () => inputCameraRef.current.click();
+  const salvarFoto = (e) => {
+    const arquivo = e.target.files[0];
+
+    if (arquivo) {
+      const urlFoto = URL.createObjectURL(arquivo);
+      setFotoAntes(urlFoto);
+      setTemFoto(true);
+    }
   };
+
   const refazerFoto = () => {
+    setFotoAntes(null);
     setTemFoto(false);
   };
 
-  if (temFoto) {
+  if (temFoto && fotoAntes) {
     return (
       <div className={styles.containerPreview}>
-        <img src={casaAcademia} alt="foto-'antes'" />
+        <img src={fotoAntes} alt="primeira foto" />
         <BotaoAmarelo
           texto={
             <>
@@ -43,6 +54,14 @@ const Passo6Foto = ({ temFoto, setTemFoto }) => {
           </span>
         </div>
         <div className={styles.picButton}>
+          <input
+            type="file"
+            accept="image/*"
+            capture="environment"
+            ref={inputCameraRef}
+            onChange={salvarFoto}
+            style={{ display: "none" }}
+          />
           <BotaoAmarelo
             texto={
               <>

@@ -13,7 +13,8 @@ const Navbar = () => {
           className={styles.icone}
           to="/dashboard"
           style={({ isActive }) => ({
-            color: isActive ? "#ffcb3c" : "#f2f2f2",
+            color: isActive ? "#000000" : "#f2f2f2",
+            backgroundColor: isActive ? "#ffcb3c" : "transparent",
           })}
         >
           <IoMdHome />
@@ -22,7 +23,8 @@ const Navbar = () => {
           className={styles.icone}
           to="/treinos"
           style={({ isActive }) => ({
-            color: isActive ? "#ffcb3c" : "#f2f2f2",
+            color: isActive ? "#000000" : "#f2f2f2",
+            backgroundColor: isActive ? "#ffcb3c" : "transparent",
           })}
         >
           <IoBarbell />
@@ -31,7 +33,8 @@ const Navbar = () => {
           className={styles.icone}
           to="/graficos"
           style={({ isActive }) => ({
-            color: isActive ? "#ffcb3c" : "#f2f2f2",
+            color: isActive ? "#000000" : "#f2f2f2",
+            backgroundColor: isActive ? "#ffcb3c" : "transparent",
           })}
         >
           <IoStatsChartSharp />
@@ -40,7 +43,8 @@ const Navbar = () => {
           className={styles.icone}
           to="/perfil"
           style={({ isActive }) => ({
-            color: isActive ? "#ffcb3c" : "#f2f2f2",
+            color: isActive ? "#000000" : "#f2f2f2",
+            backgroundColor: isActive ? "#ffcb3c" : "transparent",
           })}
         >
           <FaUserLarge />

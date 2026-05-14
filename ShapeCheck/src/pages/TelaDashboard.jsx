@@ -4,7 +4,6 @@ import styles from "./TelaDashboard.module.css";
 const TelaDashboard = () => {
   return (
     <div>
-      <Navbar />
     </div>
   );
 };

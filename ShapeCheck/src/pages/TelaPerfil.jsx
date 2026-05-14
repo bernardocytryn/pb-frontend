@@ -3,9 +3,7 @@ import styles from "./TelaPerfil.module.css";
 
 const TelaPerfil = () => {
   return (
-    <div>
-      <Navbar />
-    </div>
+    <div>    </div>
   );
 };
 

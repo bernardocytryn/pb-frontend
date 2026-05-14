@@ -4,7 +4,7 @@ import Navbar from '../components/layout/Navbar'
 
 const TelaGraficoEvolucao = () => {
   return (
-    <div><Navbar/></div>
+    <div></div>
   )
 }
 
