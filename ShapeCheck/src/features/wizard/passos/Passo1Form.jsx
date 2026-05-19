@@ -12,7 +12,7 @@ const Passo1Form = ({ respostasForm, camposVazios, atualizarForm }) => {
           treino.
         </p>
       </div>
-      <div>
+      <div className={styles.inputs}>
         <LabelInput
           label={"Nome"}
           placeholder={"Digite seu nome"}

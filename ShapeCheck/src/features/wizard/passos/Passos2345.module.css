@@ -10,8 +10,9 @@
 .options {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
+  flex: 1;
   width: 100%;
-  margin-top: 30px;
   gap: 30px;
 }

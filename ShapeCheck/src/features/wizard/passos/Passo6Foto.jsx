@@ -68,7 +68,7 @@ const Passo6Foto = ({ temFoto, setTemFoto }) => {
                 Tirar foto <FaCamera />
               </>
             }
-            onClick={tirarFoto}
+            onClick={clicarNaCamera}
           />
         </div>
       </div>

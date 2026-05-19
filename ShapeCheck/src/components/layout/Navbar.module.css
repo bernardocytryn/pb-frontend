@@ -1,17 +1,22 @@
 .navbar {
   background-color: #323537;
-  padding: 0.75rem;
+  padding: 0.5rem;
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
   font-size: 2.25rem;
 }
-.navbar .icone {
+.icone{
+  display: flex;
+  justify-content: center;
+}
+.item {
   display: flex;
   cursor: pointer;
   padding: 1rem;
   border-radius: 5px;
+  text-decoration: none;
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
@@ -20,4 +25,19 @@
   list-style: none;
   display: flex;
   justify-content: space-around;
+}
+.texto{
+  display: none;
+}
+
+@media (min-width: 768px){
+  .navbar{
+    position: static;
+  }
+  .texto{
+    display: block;
+  }
+  .icone{
+    display: none;
+  }
 }

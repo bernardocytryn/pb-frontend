@@ -11,3 +11,9 @@
   font-size: 24px;
   cursor: pointer;
 }
+
+@media (min-width: 768px){
+  .botao-amarelo{
+    width: 30%;
+  }
+}

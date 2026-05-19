@@ -8,46 +8,58 @@ import styles from "./Navbar.module.css";
 const Navbar = () => {
   return (
     <div className={styles.navbar}>
-      <div className={styles.icones}>
+      <div className={styles.itens}>
         <NavLink
-          className={styles.icone}
+          className={styles.item}
           to="/dashboard"
           style={({ isActive }) => ({
             color: isActive ? "#000000" : "#f2f2f2",
             backgroundColor: isActive ? "#ffcb3c" : "transparent",
           })}
         >
-          <IoMdHome />
+          <span className={styles.icone}>
+            <IoMdHome />
+          </span>
+          <span className={styles.texto}>Home</span>
         </NavLink>
         <NavLink
-          className={styles.icone}
+          className={styles.item}
           to="/treinos"
           style={({ isActive }) => ({
             color: isActive ? "#000000" : "#f2f2f2",
             backgroundColor: isActive ? "#ffcb3c" : "transparent",
           })}
         >
-          <IoBarbell />
+          <span className={styles.icone}>
+            <IoBarbell />
+          </span>
+          <span className={styles.texto}>Treinos</span>
         </NavLink>
         <NavLink
-          className={styles.icone}
+          className={styles.item}
           to="/graficos"
           style={({ isActive }) => ({
             color: isActive ? "#000000" : "#f2f2f2",
             backgroundColor: isActive ? "#ffcb3c" : "transparent",
           })}
         >
-          <IoStatsChartSharp />
+          <span className={styles.icone}>
+            <IoStatsChartSharp />
+          </span>
+          <span className={styles.texto}>Progresso</span>
         </NavLink>
         <NavLink
-          className={styles.icone}
+          className={styles.item}
           to="/perfil"
           style={({ isActive }) => ({
             color: isActive ? "#000000" : "#f2f2f2",
             backgroundColor: isActive ? "#ffcb3c" : "transparent",
           })}
         >
-          <FaUserLarge />
+          <span className={styles.icone}>
+            <FaUserLarge />
+          </span>
+          <span className={styles.texto}>Perfil</span>
         </NavLink>
       </div>
     </div>
