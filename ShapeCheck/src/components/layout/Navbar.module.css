@@ -34,6 +34,9 @@
 .texto {
   display: none;
 }
+.itens img{
+  display: none;
+}
 
 @media (min-width: 768px) {
   .navbar {
@@ -48,5 +51,12 @@
   .ativo {
     background-color: transparent;
     color: #ffcb3c;
+  }
+  .itens img{
+    display: block;
+    width: 2.5rem;
+    /* height: 2.5rem; */
+    object-fit: cover;
+    align-items: center;
   }
 }

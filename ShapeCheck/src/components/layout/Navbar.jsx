@@ -3,6 +3,7 @@ import { IoBarbell } from "react-icons/io5";
 import { IoStatsChartSharp } from "react-icons/io5";
 import { FaUserLarge } from "react-icons/fa6";
 import { NavLink } from "react-router-dom";
+import logo from "../../assets/logoshapecheck.png";
 import styles from "./Navbar.module.css";
 
 const Navbar = () => {
@@ -11,6 +12,7 @@ const Navbar = () => {
   return (
     <div className={styles.navbar}>
       <div className={styles.itens}>
+        <img src={logo} alt="logo" />
         <NavLink className={estiloLink} to="/dashboard">
           <span className={styles.icone}>
             <IoMdHome />
