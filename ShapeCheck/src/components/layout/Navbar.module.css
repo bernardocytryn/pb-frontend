@@ -7,7 +7,7 @@
   width: 100%;
   font-size: 2.25rem;
 }
-.icone{
+.icone {
   display: flex;
   justify-content: center;
 }
@@ -17,27 +17,36 @@
   padding: 1rem;
   border-radius: 5px;
   text-decoration: none;
+  color: white;
   transition:
     background-color 0.3s ease,
     color 0.3s ease;
+}
+.ativo {
+  background-color: #ffcb3c;
+  color: #000000;
 }
 .navbar div {
   list-style: none;
   display: flex;
   justify-content: space-around;
 }
-.texto{
+.texto {
   display: none;
 }
 
-@media (min-width: 768px){
-  .navbar{
+@media (min-width: 768px) {
+  .navbar {
     position: static;
   }
-  .texto{
+  .texto {
     display: block;
   }
-  .icone{
+  .icone {
     display: none;
+  }
+  .ativo {
+    background-color: transparent;
+    color: #ffcb3c;
   }
 }

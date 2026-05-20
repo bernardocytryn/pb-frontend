@@ -6,56 +6,33 @@ import { NavLink } from "react-router-dom";
 import styles from "./Navbar.module.css";
 
 const Navbar = () => {
+  const estiloLink = ({ isActive }) =>
+    isActive ? `${styles.item} ${styles.ativo}` : styles.item;
   return (
     <div className={styles.navbar}>
       <div className={styles.itens}>
-        <NavLink
-          className={styles.item}
-          to="/dashboard"
-          style={({ isActive }) => ({
-            color: isActive ? "#000000" : "#f2f2f2",
-            backgroundColor: isActive ? "#ffcb3c" : "transparent",
-          })}
-        >
+        <NavLink className={estiloLink} to="/dashboard">
           <span className={styles.icone}>
             <IoMdHome />
           </span>
           <span className={styles.texto}>Home</span>
         </NavLink>
-        <NavLink
-          className={styles.item}
-          to="/treinos"
-          style={({ isActive }) => ({
-            color: isActive ? "#000000" : "#f2f2f2",
-            backgroundColor: isActive ? "#ffcb3c" : "transparent",
-          })}
-        >
+
+        <NavLink className={estiloLink} to="/treinos">
           <span className={styles.icone}>
             <IoBarbell />
           </span>
           <span className={styles.texto}>Treinos</span>
         </NavLink>
-        <NavLink
-          className={styles.item}
-          to="/graficos"
-          style={({ isActive }) => ({
-            color: isActive ? "#000000" : "#f2f2f2",
-            backgroundColor: isActive ? "#ffcb3c" : "transparent",
-          })}
-        >
+
+        <NavLink className={estiloLink} to="/graficos">
           <span className={styles.icone}>
             <IoStatsChartSharp />
           </span>
           <span className={styles.texto}>Progresso</span>
         </NavLink>
-        <NavLink
-          className={styles.item}
-          to="/perfil"
-          style={({ isActive }) => ({
-            color: isActive ? "#000000" : "#f2f2f2",
-            backgroundColor: isActive ? "#ffcb3c" : "transparent",
-          })}
-        >
+
+        <NavLink className={estiloLink} to="/perfil">
           <span className={styles.icone}>
             <FaUserLarge />
           </span>
