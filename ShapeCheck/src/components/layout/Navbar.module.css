@@ -1,4 +1,6 @@
 .navbar {
+  display: flex;
+  justify-content: space-between;
   background-color: #323537;
   padding: 0.5rem;
   position: fixed;
@@ -26,15 +28,24 @@
   background-color: #ffcb3c;
   color: #000000;
 }
-.navbar div {
+.itens {
   list-style: none;
   display: flex;
   justify-content: space-around;
+  width: 75%;
+}
+.itensPerfil {
+  display: flex;
+  justify-content: center;
+  width: 25%;
+}
+.perfil {
+  display: none;
 }
 .texto {
   display: none;
 }
-.itens img{
+.itens img {
   display: none;
 }
 
@@ -52,11 +63,33 @@
     background-color: transparent;
     color: #ffcb3c;
   }
-  .itens img{
+  .itens img {
     display: block;
     width: 2.5rem;
-    /* height: 2.5rem; */
     object-fit: cover;
     align-items: center;
+  }
+  .itens {
+    display: flex;
+    justify-content: start;
+    gap: 5rem;
+    padding-left: 2rem;
+    width: auto;
+  }
+  .itensPerfil {
+    width: auto;
+  }
+  .perfil {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .textoOla {
+    font-size: 1.3rem;
+  }
+  .iconePerfil {
+    display: flex;
+    align-items: center;
+    font-size: 2rem;
   }
 }
