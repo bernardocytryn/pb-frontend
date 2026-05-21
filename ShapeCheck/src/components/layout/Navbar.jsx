@@ -1,3 +1,4 @@
+import React from "react";
 import { IoMdHome } from "react-icons/io";
 import { IoBarbell } from "react-icons/io5";
 import { IoStatsChartSharp } from "react-icons/io5";
