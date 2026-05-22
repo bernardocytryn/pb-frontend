@@ -14,7 +14,7 @@ const Navbar = ({ nomeUsuario }) => {
     <div className={styles.navbar}>
       <div className={styles.itens}>
         <img src={logo} alt="logo" />
-        <NavLink className={estiloLink} to="/dashboard">
+        <NavLink className={estiloLink} to="/home">
           <span className={styles.icone}>
             <IoMdHome />
           </span>
@@ -28,11 +28,11 @@ const Navbar = ({ nomeUsuario }) => {
           <span className={styles.texto}>Treinos</span>
         </NavLink>
 
-        <NavLink className={estiloLink} to="/graficos">
+        <NavLink className={estiloLink} to="/dashboard">
           <span className={styles.icone}>
             <IoStatsChartSharp />
           </span>
-          <span className={styles.texto}>Progresso</span>
+          <span className={styles.texto}>Dashboard</span>
         </NavLink>
       </div>
       <div className={styles.itensPerfil}>

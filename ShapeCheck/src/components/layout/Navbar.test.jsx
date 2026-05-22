@@ -1,7 +1,6 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-import "@testing-library/jest-dom";
 import Navbar from "./Navbar";
 
 describe("Navbar", () => {
@@ -13,7 +12,7 @@ describe("Navbar", () => {
     );
     const linkHome = screen.getByText("Home");
     const linkTreinos = screen.getByText("Treinos");
-    const linkProgresso = screen.getByText("Progresso");
+    const linkProgresso = screen.getByText("Dashboard");
 
     expect(linkHome).toBeInTheDocument();
     expect(linkTreinos).toBeInTheDocument();

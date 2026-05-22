@@ -5,9 +5,9 @@ import App from "./App.jsx";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import TelaBemvindo from "./pages/TelaBemvindo.jsx";
 import Wizard from "./pages/Wizard.jsx";
-import TelaDashboard from "./pages/TelaDashboard.jsx";
+import TelaDashboard from "./pages/TelaHome.jsx";
 import TelaPerfil from "./pages/TelaPerfil.jsx";
-import TelaGraficoEvolucao from "./pages/TelaGraficoEvolucao.jsx";
+import TelaGraficoEvolucao from "./pages/TelaDashboard.jsx";
 import TelaTreinos from "./pages/TelaTreinos.jsx";
 import TelaTreino from "./pages/TelaTreino.jsx";
 
@@ -25,11 +25,11 @@ const router = createBrowserRouter([
         element: <Wizard/>
       },
       {
-        path: "dashboard",
+        path: "home",
         element: <TelaDashboard/>
       },
       {
-        path: "graficos",
+        path: "dashboard",
         element: <TelaGraficoEvolucao/>
       },
       {

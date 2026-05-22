@@ -1,11 +1,10 @@
-import Navbar from "../components/layout/Navbar";
-import styles from "./TelaDashboard.module.css";
+import React from 'react'
+import styles from "./TelaDashboard.module.css"
 
 const TelaDashboard = () => {
   return (
-    <div>
-    </div>
-  );
-};
+    <div></div>
+  )
+}
 
-export default TelaDashboard;
+export default TelaDashboard
