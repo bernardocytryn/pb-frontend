@@ -16,3 +16,8 @@
   color: #1f2122; 
   border-color: #ffcb3c;
 }
+@media (min-width:768px){
+  .botao-opcao{
+    width: 70%;
+  }
+}

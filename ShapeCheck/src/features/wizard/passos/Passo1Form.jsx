@@ -20,27 +20,29 @@ const Passo1Form = ({ respostasForm, camposVazios, atualizarForm }) => {
           valorInput={respostasForm.nome}
           onChange={(e) => atualizarForm("nome", e.target.value)}
         />
-        <LabelInput
-          label={"Idade"}
-          placeholder={"Digite sua idade"}
-          taVazio={camposVazios?.idade}
-          valorInput={respostasForm.idade}
-          onChange={(e) => atualizarForm("idade", e.target.value)}
-        />
-        <LabelInput
-          label={"Peso (kg)"}
-          placeholder={"Ex: 72,5"}
-          taVazio={camposVazios?.peso}
-          valorInput={respostasForm.peso}
-          onChange={(e) => atualizarForm("peso", e.target.value)}
-        />
-        <LabelInput
-          label={"Altura (cm)"}
-          placeholder={"Ex: 180"}
-          taVazio={camposVazios?.altura}
-          valorInput={respostasForm.altura}
-          onChange={(e) => atualizarForm("altura", e.target.value)}
-        />
+        <div className={styles.inputsPequenos}>
+          <LabelInput
+            label={"Idade"}
+            placeholder={"Digite sua idade"}
+            taVazio={camposVazios?.idade}
+            valorInput={respostasForm.idade}
+            onChange={(e) => atualizarForm("idade", e.target.value)}
+          />
+          <LabelInput
+            label={"Peso (kg)"}
+            placeholder={"Ex: 72,5"}
+            taVazio={camposVazios?.peso}
+            valorInput={respostasForm.peso}
+            onChange={(e) => atualizarForm("peso", e.target.value)}
+          />
+          <LabelInput
+            label={"Altura (cm)"}
+            placeholder={"Ex: 180"}
+            taVazio={camposVazios?.altura}
+            valorInput={respostasForm.altura}
+            onChange={(e) => atualizarForm("altura", e.target.value)}
+          />
+        </div>
       </div>
     </div>
   );

@@ -42,9 +42,14 @@
 }
 
 @media (min-width: 768px){
-  .wizard{
+  .wizard {
     align-items: center;
-    margin: auto;
-    width: 30vw;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px; 
+    height: 80vh; 
+    border-radius: 20px;
   }
 }
