@@ -1,0 +1,73 @@
+.card {
+  background: var(--card);
+  border-radius: 20px;
+  border: 1px solid var(--borda);
+  padding: 24px;
+  margin-bottom: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: ''; position: absolute;
+  top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, transparent, var(--amarelo), transparent);
+}
+
+.settings { position: absolute; top: 16px; right: 16px; }
+.inner { display: flex; align-items: center; gap: 18px; }
+
+.avatarWrapper { position: relative; flex-shrink: 0; }
+
+.avatar {
+  width: 80px; height: 80px; border-radius: 50%;
+  background: var(--card2);
+  border: 2px solid var(--amarelo);
+  box-shadow: 0 0 0 4px rgba(255,203,60,0.12);
+  display: grid; place-items: center;
+}
+
+.avatarTxt { font-size: 1.7rem; font-weight: 700; color: var(--amarelo); letter-spacing: 0.02em; }
+
+.onlineBadge {
+  position: absolute; bottom: 2px; right: 2px;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #2ECC71;
+  border: 2.5px solid var(--card);
+  box-shadow: 0 0 6px rgba(46,204,113,0.6);
+}
+
+.info { flex: 1; min-width: 0; }
+
+.nomeRow { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
+.nome { font-size: 1.4rem; font-weight: 700; line-height: 1.1; letter-spacing: -0.01em; }
+
+.idade {
+  font-size: 0.72rem; font-weight: 500; color: var(--amarelo);
+  background: var(--amarelo-dim); border: 1px solid rgba(255,203,60,0.3);
+  border-radius: 6px; padding: 2px 8px; white-space: nowrap;
+}
+
+.handle { font-size: 0.82rem; color: var(--texto-suave); font-weight: 400; margin-bottom: 16px; }
+.acoes { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  border-radius: 12px; font-size: 0.82rem; font-weight: 600;
+  padding: 10px 18px; border: none; cursor: pointer;
+  transition: all var(--t); font-family: 'Inter', sans-serif;
+}
+.btn svg { width: 14px; height: 14px; }
+
+.btnAmarelo { background: var(--amarelo); color: #141416; }
+.btnAmarelo:hover { background: var(--amarelo-hover); transform: translateY(-1px); box-shadow: 0 4px 16px rgba(255,203,60,0.3); }
+
+.btnGhost { background: var(--card2); color: var(--texto-suave); border: 1px solid var(--borda); }
+.btnGhost:hover { background: #333335; color: var(--texto); }
+
+@media(max-width: 480px) {
+  .card { padding: 20px; }
+  .avatar { width: 68px; height: 68px; }
+  .avatarTxt { font-size: 1.4rem; }
+  .nome { font-size: 1.2rem; }
+}

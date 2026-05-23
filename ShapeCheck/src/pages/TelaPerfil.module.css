@@ -1,1 +1,35 @@
-/* TelaPerfil styles */
+.container {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--texto);
+  min-height: 100vh;
+}
+
+.main {
+  max-width: 500px; 
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+}
+
+.rotulo {
+  font-size: 0.68rem; 
+  font-weight: 600;
+  letter-spacing: 0.12em; 
+  text-transform: uppercase;
+  color: var(--texto-suave);
+  margin-bottom: 10px;
+  display: flex; 
+  align-items: center; 
+  gap: 10px;
+}
+
+.rotulo::after { 
+  content: ''; 
+  flex: 1; 
+  height: 1px; 
+  background: var(--borda); 
+}
+
+@media(max-width: 480px) {
+  .main { padding: 20px 14px 60px; }
+}

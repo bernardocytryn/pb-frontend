@@ -1,0 +1,49 @@
+.lista {
+  background: var(--card); border: 1px solid var(--borda);
+  border-radius: 20px; overflow: hidden; margin-bottom: 12px;
+}
+
+.item {
+  display: flex; align-items: center; gap: 14px;
+  padding: 15px 18px; border-bottom: 1px solid var(--borda);
+  cursor: pointer; transition: background var(--t);
+  color: var(--texto); position: relative; overflow: hidden;
+}
+
+.item:last-child { border-bottom: none; }
+
+.item::before {
+  content: ''; position: absolute;
+  left: 0; top: 0; bottom: 0; width: 3px;
+  background: var(--amarelo);
+  transform: scaleY(0); transform-origin: bottom; transition: transform var(--t);
+}
+
+.item:hover { background: var(--card2); }
+.item:hover::before { transform: scaleY(1); }
+.item:hover .seta { color: var(--amarelo); transform: translateX(3px); }
+.item:hover .icone { background: var(--amarelo-dim); border-color: rgba(255,203,60,0.25); }
+.item:hover .icone svg { stroke: var(--amarelo); }
+
+.icone {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--card2); border: 1px solid var(--borda);
+  display: grid; place-items: center; flex-shrink: 0;
+  transition: background var(--t), border-color var(--t);
+}
+
+.icone svg { width: 16px; height: 16px; stroke: var(--texto-suave); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: stroke var(--t); }
+
+.textoContainer { flex: 1; }
+.titulo { font-size: 0.9rem; font-weight: 500; margin-bottom: 1px; }
+.subtitulo { font-size: 0.74rem; color: var(--texto-suave); }
+
+.seta { color: rgba(255,255,255,0.2); transition: color var(--t), transform var(--t); }
+.seta svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Variação de Perigo */
+.perigo::before { background: var(--vermelho); }
+.perigo .titulo { color: var(--vermelho); }
+.perigo .icone svg { stroke: var(--vermelho); }
+.perigo:hover .icone { background: rgba(255,77,91,0.1); border-color: rgba(255,77,91,0.25); }
+.perigo:hover .seta { color: var(--vermelho); }

@@ -1,0 +1,48 @@
+.calendario {
+  background: var(--card); border: 1px solid var(--borda);
+  border-radius: 20px; padding: 20px; margin-bottom: 12px;
+}
+
+.cabecalho { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.mes { font-size: 1rem; font-weight: 700; letter-spacing: -0.01em; }
+.mes span { color: var(--amarelo); margin-left: 5px; }
+
+.nav { display: flex; gap: 6px; }
+.btnNav {
+  width: 30px; height: 30px; border-radius: 8px;
+  border: 1px solid var(--borda); background: var(--card2);
+  color: var(--texto-suave); display: grid; place-items: center;
+  cursor: pointer; transition: all var(--t);
+}
+
+.btnNav:hover { background: #333335; color: var(--amarelo); border-color: rgba(255,203,60,0.3); }
+.btnNav svg { width: 14px; height: 14px; stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+
+.semana { display: grid; grid-template-columns: repeat(7,1fr); margin-bottom: 6px; }
+.diaNome { text-align: center; font-size: 0.62rem; font-weight: 500; color: var(--texto-suave); text-transform: uppercase; letter-spacing: 0.08em; padding: 3px 0; }
+
+.grade { display: grid; grid-template-columns: repeat(7,1fr); gap: 3px; }
+
+.celula {
+  aspect-ratio: 1; display: grid; place-items: center;
+  font-size: 0.78rem; font-weight: 500; border-radius: 8px;
+  color: var(--texto-suave); transition: all var(--t);
+  cursor: default; user-select: none;
+}
+
+/* Modificadores de Celula */
+.outro { opacity: 0.2; pointer-events: none; }
+.descanso { color: rgba(255,255,255,0.2); }
+.treinado { background: var(--amarelo-dim); color: var(--amarelo); border: 1px solid rgba(255,203,60,0.2); }
+.treinado:hover { background: rgba(255,203,60,0.22); transform: scale(1.1); }
+.hoje { background: var(--amarelo); color: #141416; font-weight: 700; box-shadow: 0 3px 12px rgba(255,203,60,0.4); }
+.hoje:hover { transform: scale(1.06); }
+
+/* Legenda */
+.legenda { display: flex; gap: 14px; margin-top: 14px; flex-wrap: wrap; }
+.legItem { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; color: var(--texto-suave); }
+.legPonto { width: 10px; height: 10px; border-radius: 3px; }
+
+.pontoTreinado { background: var(--amarelo); }
+.pontoHoje { background: var(--amarelo); box-shadow: 0 0 5px rgba(255,203,60,0.6); }
+.pontoDescanso { background: var(--card2); border: 1px solid var(--borda); }

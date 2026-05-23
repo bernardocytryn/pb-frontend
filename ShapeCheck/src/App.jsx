@@ -10,10 +10,10 @@ function App() {
   return (
     <>
       <main>
-        <Outlet />
-        {location.pathname !== "/" && location.pathname !== "/wizard" && (
+        {location.pathname !== "/" && location.pathname !== "/wizard"  && (
           <Navbar />
         )}
+        <Outlet />
       </main>
     </>
   );

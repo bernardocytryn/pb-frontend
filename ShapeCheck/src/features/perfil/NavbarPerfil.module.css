@@ -1,0 +1,46 @@
+.nav {
+  display: flex; 
+  align-items: center; 
+  justify-content: flex-end;
+  padding: 16px 20px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--borda);
+  gap: 10px;
+}
+
+.iconButton {
+  width: 42px; 
+  height: 42px; 
+  border-radius: 12px;
+  border: 1px solid var(--borda);
+  background: var(--card);
+  display: grid; 
+  place-items: center;
+  cursor: pointer;
+  transition: background var(--t), border-color var(--t);
+  color: var(--texto-suave);
+}
+
+.iconButton:hover { 
+  background: var(--card2); 
+  border-color: rgba(255,255,255,0.15); 
+}
+
+.iconButton svg { width: 18px; height: 18px; }
+
+.notifOn { 
+  background: var(--amarelo); 
+  border-color: var(--amarelo); 
+  color: #141416; 
+}
+
+.notifOn:hover { 
+  background: var(--amarelo-hover); 
+  border-color: var(--amarelo-hover); 
+}
+
+.notifOff { 
+  background: var(--card); 
+  border-color: var(--borda); 
+  color: var(--texto-suave); 
+}
