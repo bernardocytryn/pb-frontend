@@ -1,1 +1,128 @@
-/* TelaTreinos styles */
+.container {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg, #1e1e1e);
+  color: var(--texto, #f2f2f2);
+  min-height: 100vh;
+}
+
+.main {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.header {
+  margin-bottom: 24px;
+}
+
+.botaoVoltar {
+  background-color: transparent;
+  color: var(--texto-suave, #a0a0a0);
+  font-size: 1rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: none;
+  border: none;
+  cursor: pointer;
+}
+
+.rotulo {
+  font-size: 0.68rem; 
+  font-weight: 600;
+  letter-spacing: 0.12em; 
+  text-transform: uppercase;
+  color: var(--texto-suave, #a0a0a0);
+  margin-bottom: 24px;
+  display: flex; 
+  align-items: center; 
+  gap: 10px;
+}
+
+.rotulo::after { 
+  content: ''; 
+  flex: 1; 
+  height: 1px; 
+  background: var(--borda, #3a3a3c); 
+}
+
+.botaoCriar {
+  background-color: var(--destaque, #ffcb3c);
+  color: #1e1e1e;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-transform: none;
+  margin-bottom: 32px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  box-sizing: border-box;
+  display: block;
+}
+
+.lista {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  flex: 1;
+}
+
+.cardSerie {
+  background-color: var(--card-bg, #2c2c2e);
+  border: 1px solid var(--borda, #3a3a3c);
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.nomeSerie {
+  color: var(--texto, #f2f2f2);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.infoSerie {
+  color: var(--texto-suave, #a0a0a0);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.estadoVazio {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 20px;
+  background-color: var(--card-bg, #2c2c2e);
+  border: 1px dashed var(--borda, #3a3a3c);
+  border-radius: 12px;
+  margin-top: 16px;
+}
+
+.vazioTextoPrincipal {
+  margin: 0 0 8px 0;
+  color: var(--texto-suave, #d1d1d1);
+  font-size: 1rem;
+}
+
+.vazioTextoSecundario {
+  color: var(--texto-suave, #a0a0a0);
+  font-size: 0.85rem;
+}
+
+@media(max-width: 480px) {
+  .main {
+    padding: 20px 14px 60px;
+  }
+}

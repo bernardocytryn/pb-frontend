@@ -1,11 +1,53 @@
-import Navbar from "../components/layout/Navbar";
+import { useNavigate } from "react-router-dom";
+import { FiArrowLeft } from "react-icons/fi";
 import styles from "./TelaTreinos.module.css";
 
-const TelaTreinos = () => {
+export default function TelaTreinos({ series = [] }) {
+  const navigate = useNavigate();
+
   return (
-    <div>
+    <div className={styles.container}>
+      <div className={styles.main}>
+        
+        <div className={styles.header}>
+          <button onClick={() => navigate(-1)} className={styles.botaoVoltar}>
+            <FiArrowLeft size={18} /> Voltar
+          </button>
+        </div>
+
+        <div className={styles.rotulo}>Minhas Séries</div>
+
+        <button 
+          onClick={() => navigate("/series/criar")}
+          className={styles.botaoCriar}
+        >
+          Criar Nova Série
+        </button>
+
+        <div className={styles.lista}>
+          {series.length > 0 ? (
+            series.map((serie) => (
+              <div 
+                key={serie.id} 
+                onClick={() => navigate(`/series/${serie.id}`)}
+                className={styles.cardSerie}
+              >
+                <h2 className={styles.nomeSerie}>{serie.nome}</h2>
+                <p className={styles.infoSerie}>{serie.exercicios} exercícios</p>
+              </div>
+            ))
+          ) : (
+            <div className={styles.estadoVazio}>
+              <p className={styles.vazioTextoPrincipal}>
+                Você ainda não possui nenhuma série de treino criada.
+              </p>
+              <span className={styles.vazioTextoSecundario}>
+                Clique no botão acima para começar.
+              </span>
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
-};
-
-export default TelaTreinos;
+}

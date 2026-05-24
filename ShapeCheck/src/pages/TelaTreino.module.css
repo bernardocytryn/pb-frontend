@@ -1,0 +1,70 @@
+.container {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--texto);
+  min-height: 100vh;
+}
+
+.main {
+  max-width: 500px; 
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+  display: flex;
+  flex-direction: column;
+}
+
+.rotulo {
+  font-size: 0.68rem; 
+  font-weight: 600;
+  letter-spacing: 0.12em; 
+  text-transform: uppercase;
+  color: var(--texto-suave);
+  margin-bottom: 20px;
+  display: flex; 
+  align-items: center; 
+  gap: 10px;
+}
+
+.rotulo::after { 
+  content: ''; 
+  flex: 1; 
+  height: 1px; 
+  background: var(--borda); 
+}
+
+.cardsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card {
+  background-color: var(--card);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cardTitulo {
+  color: var(--destaque);
+  font-size: 1.15rem;
+  margin: 0;
+  font-weight: 600;
+}
+
+.cardDescricao {
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+  margin: 0;
+  line-height: 1.4;
+}
+
+@media(max-width: 480px) {
+  .main { 
+    padding: 20px 14px 60px; 
+  }
+}

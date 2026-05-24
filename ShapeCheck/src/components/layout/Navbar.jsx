@@ -21,7 +21,7 @@ const Navbar = ({ nomeUsuario }) => {
           <span className={styles.texto}>Home</span>
         </NavLink>
 
-        <NavLink className={estiloLink} to="/treinos">
+        <NavLink className={estiloLink} to="/treino">
           <span className={styles.icone}>
             <IoBarbell />
           </span>

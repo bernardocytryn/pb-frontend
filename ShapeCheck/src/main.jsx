@@ -10,11 +10,18 @@ import TelaPerfil from "./pages/TelaPerfil.jsx";
 import TelaGraficoEvolucao from "./pages/TelaDashboard.jsx";
 import TelaTreinos from "./pages/TelaTreinos.jsx";
 import TelaTreino from "./pages/TelaTreino.jsx";
+import TelaListaTreinos from "./pages/TelaListaTreinos.jsx";
+import TelaExercicio from "./pages/TelaExercicio.jsx";
+import { ExerciciosProvider } from "./contexts/ExerciciosContext.jsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App/>,
+    element: (
+      <ExerciciosProvider>
+        <App />
+      </ExerciciosProvider>
+    ),
     children: [
       {
         path: "/",
@@ -39,6 +46,14 @@ const router = createBrowserRouter([
       {
         path: "treino",
         element: <TelaTreino/>
+      },
+      {
+        path: "series/:id",
+        element: <TelaListaTreinos/>
+      },
+      {
+        path: "consultar",
+        element: <TelaExercicio/>
       },
       {
         path: "perfil",
