@@ -1,7 +1,12 @@
-import styles from "./useAuth.module.css";
+import { useContext } from 'react';
+import { AuthContext } from '../contexts/AuthContext';
 
-const useAuth = () => {
-  return <div>useAuth</div>;
+export const useAuth = () => {
+  const contexto = useContext(AuthContext);
+  
+  if (!contexto) {
+    throw new Error("useAuth deve ser usado dentro de um AuthProvider");
+  }
+  
+  return contexto;
 };
-
-export default useAuth;

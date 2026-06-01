@@ -1,7 +1,41 @@
-import styles from "./AuthContext.module.css";
+import React, { createContext, useState } from 'react';
 
-const AuthContext = () => {
-  return <div>AuthContext</div>;
+export const AuthContext = createContext();
+
+export const AuthProvider = ({ children }) => {
+  const [completouWizard, setCompletouWizard] = useState(() => {
+    const status = localStorage.getItem('shapecheck_wizard_completo');
+    return status === 'true'; 
+  });
+
+  const [usuario, setUsuario] = useState(() => {
+    const dados = localStorage.getItem('shapecheck_user');
+    return dados ? JSON.parse(dados) : null;
+  });
+
+  const finalizarCadastroWizard = (dadosDoFormulario) => {
+    setUsuario(dadosDoFormulario);
+    setCompletouWizard(true);
+    
+    localStorage.setItem('shapecheck_user', JSON.stringify(dadosDoFormulario));
+    localStorage.setItem('shapecheck_wizard_completo', 'true');
+  };
+
+  const sairDaConta = () => {
+    setUsuario(null);
+    setCompletouWizard(false);
+    localStorage.removeItem('shapecheck_user');
+    localStorage.removeItem('shapecheck_wizard_completo');
+  };
+
+  return (
+    <AuthContext.Provider value={{ 
+      usuario, 
+      completouWizard, 
+      finalizarCadastroWizard, 
+      sairDaConta 
+    }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
-
-export default AuthContext;

@@ -2,7 +2,11 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
 import TelaBemvindo from "./pages/TelaBemvindo.jsx";
 import Wizard from "./pages/Wizard.jsx";
 import TelaDashboard from "./pages/TelaHome.jsx";
@@ -13,6 +17,24 @@ import TelaTreino from "./pages/TelaTreino.jsx";
 import TelaListaTreinos from "./pages/TelaListaTreinos.jsx";
 import TelaExercicio from "./pages/TelaExercicio.jsx";
 import { ExerciciosProvider } from "./contexts/ExerciciosContext.jsx";
+import { AuthProvider } from "./contexts/AuthContext.jsx";
+import { useAuth } from "./hooks/useAuth.jsx";
+
+const RotaPublica = ({ children }) => {
+  const { completouWizard } = useAuth();
+  if (completouWizard) {
+    return <Navigate to="/home" replace />;
+  }
+  return children;
+};
+
+const RotaProtegida = ({ children }) => {
+  const { completouWizard } = useAuth();
+  if (!completouWizard) {
+    return <Navigate to="/" replace />;
+  }
+  return children;
+};
 
 const router = createBrowserRouter([
   {
@@ -25,46 +47,85 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <TelaBemvindo/>
+        element: (
+          <RotaPublica>
+            <TelaBemvindo />
+          </RotaPublica>
+        ),
       },
       {
         path: "wizard",
-        element: <Wizard/>
+        element: (
+          <RotaPublica>
+            <Wizard />
+          </RotaPublica>
+        ),
       },
+
       {
         path: "home",
-        element: <TelaDashboard/>
+        element: (
+          <RotaProtegida>
+            <TelaDashboard />
+          </RotaProtegida>
+        ),
       },
       {
         path: "dashboard",
-        element: <TelaGraficoEvolucao/>
+        element: (
+          <RotaProtegida>
+            <TelaGraficoEvolucao />
+          </RotaProtegida>
+        ),
       },
       {
         path: "treinos",
-        element: <TelaTreinos/>
+        element: (
+          <RotaProtegida>
+            <TelaTreinos />
+          </RotaProtegida>
+        ),
       },
       {
         path: "treino",
-        element: <TelaTreino/>
+        element: (
+          <RotaProtegida>
+            <TelaTreino />
+          </RotaProtegida>
+        ),
       },
       {
         path: "series/:id",
-        element: <TelaListaTreinos/>
+        element: (
+          <RotaProtegida>
+            <TelaListaTreinos />
+          </RotaProtegida>
+        ),
       },
       {
         path: "consultar",
-        element: <TelaExercicio/>
+        element: (
+          <RotaProtegida>
+            <TelaExercicio />
+          </RotaProtegida>
+        ),
       },
       {
         path: "perfil",
-        element: <TelaPerfil/>
-      }
-    ]
-  }
-])
+        element: (
+          <RotaProtegida>
+            <TelaPerfil />
+          </RotaProtegida>
+        ),
+      },
+    ],
+  },
+]);
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <RouterProvider router={router}/>
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </StrictMode>,
 );

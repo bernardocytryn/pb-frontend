@@ -12,6 +12,8 @@ import Passo7Final from "../features/wizard/passos/Passo7Final";
 import { CircularProgress } from "@mui/material";
 import styles from "./Wizard.module.css";
 
+import { useAuth } from "../hooks/useAuth";
+
 const Wizard = () => {
   const passos = [
     "Dados Básicos",
@@ -22,6 +24,9 @@ const Wizard = () => {
     "Foto",
   ];
   const navigate = useNavigate();
+
+  const { finalizarCadastroWizard } = useAuth();
+
   const [passoAtual, setPassoAtual] = useState(1);
   const [isCarregando, setIsCarregando] = useState(false);
   const [temFoto, setTemFoto] = useState(false);
@@ -48,6 +53,7 @@ const Wizard = () => {
   };
 
   const voltar = () => setPassoAtual((prev) => Math.max(prev - 1, 1));
+
   const avancar = () => {
     if (passoAtual === 1) {
       const vazios = {};
@@ -89,6 +95,7 @@ const Wizard = () => {
       [campo]: valor,
     }));
   };
+
   const verificarSePodeAvancar = () => {
     if (passoAtual === 1) {
       return (
@@ -105,6 +112,7 @@ const Wizard = () => {
 
     return true;
   };
+
   const renderizarPasso = () => {
     switch (passoAtual) {
       case 1:
@@ -152,7 +160,15 @@ const Wizard = () => {
 
   const finalizarWizard = () => {
     setIsCarregando(true);
+
     setTimeout(() => {
+      const dadosDoUsuario = {
+        ...respostasForm,
+        ...respostasWizard,
+        fotoAdicionada: temFoto,
+      };
+      finalizarCadastroWizard(dadosDoUsuario);
+
       navigate("/dashboard");
     }, 3000);
   };
