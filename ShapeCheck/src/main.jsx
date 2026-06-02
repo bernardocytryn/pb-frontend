@@ -16,7 +16,9 @@ import TelaTreinos from "./pages/TelaTreinos.jsx";
 import TelaTreino from "./pages/TelaTreino.jsx";
 import TelaListaTreinos from "./pages/TelaListaTreinos.jsx";
 import TelaExercicio from "./pages/TelaExercicio.jsx";
+import CriarSerie from "./pages/CriarSerie.jsx";
 import { ExerciciosProvider } from "./contexts/ExerciciosContext.jsx";
+import { CriacaoSerieProvider } from "./contexts/SeriesContext.jsx";
 import { AuthProvider } from "./contexts/AuthContext.jsx";
 import { useAuth } from "./hooks/useAuth.jsx";
 
@@ -41,7 +43,9 @@ const router = createBrowserRouter([
     path: "/",
     element: (
       <ExerciciosProvider>
-        <App />
+        <CriacaoSerieProvider>
+          <App />
+        </CriacaoSerieProvider>
       </ExerciciosProvider>
     ),
     children: [
@@ -107,6 +111,14 @@ const router = createBrowserRouter([
         element: (
           <RotaProtegida>
             <TelaExercicio />
+          </RotaProtegida>
+        ),
+      },
+      {
+        path: "criar-serie",
+        element: (
+          <RotaProtegida>
+            <CriarSerie />
           </RotaProtegida>
         ),
       },

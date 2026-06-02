@@ -1,16 +1,23 @@
 import { useNavigate } from "react-router-dom";
 import { FiArrowLeft } from "react-icons/fi";
+import { useState, useEffect } from "react";
 import styles from "./TelaTreinos.module.css";
 
-export default function TelaTreinos({ series = [] }) {
+export default function TelaTreinos() {
   const navigate = useNavigate();
+  const [series, setSeries] = useState([]);
+
+  useEffect(() => {
+    const seriesSalvas = JSON.parse(localStorage.getItem('minhasSeries') || '[]');
+    setSeries(seriesSalvas);
+  }, []);
 
   return (
     <div className={styles.container}>
       <div className={styles.main}>
         
         <div className={styles.header}>
-          <button onClick={() => navigate(-1)} className={styles.botaoVoltar}>
+          <button onClick={() => navigate('/treino')} className={styles.botaoVoltar}>
             <FiArrowLeft size={18} /> Voltar
           </button>
         </div>
@@ -18,7 +25,7 @@ export default function TelaTreinos({ series = [] }) {
         <div className={styles.rotulo}>Minhas Séries</div>
 
         <button 
-          onClick={() => navigate("/series/criar")}
+          onClick={() => navigate("/criar-serie")}
           className={styles.botaoCriar}
         >
           Criar Nova Série
@@ -33,7 +40,7 @@ export default function TelaTreinos({ series = [] }) {
                 className={styles.cardSerie}
               >
                 <h2 className={styles.nomeSerie}>{serie.nome}</h2>
-                <p className={styles.infoSerie}>{serie.exercicios} exercícios</p>
+                <p className={styles.infoSerie}>{serie.exercicios?.length || 0} exercícios</p>
               </div>
             ))
           ) : (

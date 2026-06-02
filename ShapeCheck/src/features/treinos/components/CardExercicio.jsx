@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
 import styles from "./CardExercicio.module.css";
 import { FiX } from "react-icons/fi";
+import { useCriarSerie } from "../..//../contexts/SeriesContext.jsx";
 
-export function CardExercicioModal({ exercicio, handleClose }) {
+export function CardExercicioModal({ exercicio, handleClose, modoCriacao }) {
   const [detalhes, setDetalhes] = useState(null);
   const [carregando, setCarregando] = useState(false);
+  
+  const { adicionarExercicio, exerciciosSelecionados } = useCriarSerie();
 
   useEffect(() => {
     if (!exercicio) {
@@ -43,6 +46,13 @@ export function CardExercicioModal({ exercicio, handleClose }) {
   const ex = detalhes || exercicio;
   const video = detalhes?.videoUrl;
   const imagem = detalhes?.imageUrls?.["480p"] || detalhes?.imageUrls?.["360p"] || exercicio.imageUrl;
+
+  const jaAdicionado = exerciciosSelecionados.find((item) => item.exerciseId === exercicio.exerciseId);
+
+  const handleAdicionar = () => {
+    adicionarExercicio(exercicio);
+    handleClose();
+  };
 
   return (
     <div
@@ -124,6 +134,27 @@ export function CardExercicioModal({ exercicio, handleClose }) {
                   </>
                 )}
               </div>
+              
+              {modoCriacao && (
+                <button
+                  onClick={handleAdicionar}
+                  disabled={jaAdicionado}
+                  style={{
+                    width: "100%",
+                    padding: "16px",
+                    marginTop: "16px",
+                    backgroundColor: jaAdicionado ? "#3a3a3c" : "#ffcb3c",
+                    color: jaAdicionado ? "#a0a0a0" : "#000",
+                    border: "none",
+                    borderRadius: "8px",
+                    fontWeight: "bold",
+                    cursor: jaAdicionado ? "not-allowed" : "pointer",
+                    fontSize: "1rem"
+                  }}
+                >
+                  {jaAdicionado ? "Exercício já adicionado" : "Adicionar à Série"}
+                </button>
+              )}
             </>
           )}
         </div>

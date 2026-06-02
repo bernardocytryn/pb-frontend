@@ -1,0 +1,159 @@
+.containerCriacao {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg, #1e1e1e);
+  min-height: 100vh;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 24px 20px 120px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.cabecalhoSerie {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.inputNomeSerie {
+  width: 100%;
+  background-color: transparent;
+  color: var(--texto, #f2f2f2);
+  border: none;
+  border-bottom: 2px solid var(--borda, #3a3a3c);
+  padding: 12px 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+.inputNomeSerie:focus {
+  border-bottom-color: var(--destaque, #ffcb3c);
+  outline: none;
+}
+
+.inputNomeSerie::placeholder {
+  color: var(--texto-suave, #a0a0a0);
+}
+
+.contadorExercicios {
+  font-size: 0.85rem;
+  color: var(--destaque, #ffcb3c);
+  font-weight: 500;
+}
+
+.conteudoPrincipal {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.botaoAdicionar {
+  width: 100%;
+  background-color: transparent;
+  color: var(--destaque, #ffcb3c);
+  border: 2px dashed var(--borda, #3a3a3c);
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.botaoAdicionar:hover {
+  border-color: var(--destaque, #ffcb3c);
+  background-color: rgba(255, 203, 60, 0.05);
+}
+
+.listaExercicios {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.itemExercicio {
+  background-color: var(--card-bg, #2c2c2e);
+  border: 1px solid var(--borda, #3a3a3c);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nomeExercicio {
+  color: var(--texto, #f2f2f2);
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.botaoRemover {
+  background-color: transparent;
+  color: #ff453a;
+  border: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.rodapeAcoes {
+  margin-top: 40px;
+  display: flex;
+  gap: 16px;
+}
+
+.botaoCancelar,
+.botaoSalvar {
+  flex: 1;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  border: none;
+}
+
+.botaoCancelar {
+  background-color: var(--card-bg, #2c2c2e);
+  color: var(--texto, #f2f2f2);
+}
+
+.botaoSalvar {
+  background-color: var(--destaque, #ffcb3c);
+  color: #000;
+}
+
+.botaoSalvar:disabled {
+  background-color: var(--borda, #3a3a3c);
+  color: var(--texto-suave, #a0a0a0);
+  cursor: not-allowed;
+}
+
+.botaoVoltar {
+  background-color: transparent;
+  color: #a0a0a0;
+  font-size: 1rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: none;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 8px;
+}

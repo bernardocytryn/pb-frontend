@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FiArrowLeft, FiChevronDown } from "react-icons/fi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useExercicios } from "../contexts/ExerciciosContext";
 import { CardExercicioModal } from "../features/treinos/components/CardExercicio";
 import styles from "./TelaExercicio.module.css";
@@ -11,7 +11,10 @@ export default function TelaExercicio({ onCardClick }) {
   const [classeBusca, setClasseBusca] = useState("TODOS");
   const [menuAberto, setMenuAberto] = useState(false);
   const [exercicioSelecionado, setExercicioSelecionado] = useState(null);
+  
   const navigate = useNavigate();
+  const location = useLocation();
+  const modoCriacao = location.state?.modoCriacao || false;
 
   const opcoes = {
     TODOS: "Todas as categorias",
@@ -55,10 +58,28 @@ export default function TelaExercicio({ onCardClick }) {
   return (
     <div className={styles.container}>
       <div className={styles.main}>
-        <div className={styles.header}>
-          <button onClick={() => navigate(-1)} className={styles.botaoVoltar}>
+        <div className={styles.header} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <button onClick={() => navigate('/treino')} className={styles.botaoVoltar}>
             <FiArrowLeft size={18} /> Voltar
           </button>
+          
+          {modoCriacao && (
+            <button 
+              onClick={() => navigate('/criar-serie')}
+              style={{ 
+                backgroundColor: '#ffcb3c', 
+                color: '#000', 
+                padding: '8px 16px', 
+                borderRadius: '8px', 
+                fontWeight: 'bold',
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: '0.85rem'
+              }}
+            >
+              Voltar para a Série
+            </button>
+          )}
         </div>
         
         <div className={styles.rotulo}>Consultar</div>
@@ -144,6 +165,7 @@ export default function TelaExercicio({ onCardClick }) {
       <CardExercicioModal 
         exercicio={exercicioSelecionado} 
         handleClose={() => setExercicioSelecionado(null)} 
+        modoCriacao={modoCriacao}
       />
     </div>
   );
