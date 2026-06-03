@@ -1,1 +1,43 @@
-/* OlaMensagem styles */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--texto-suave);
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 500;
+  margin-top: 10px;
+}
+
+.profileButton {
+  width: 48px;
+  height: 48px;
+  border: none;
+  border-radius: 14px;
+  background: var(--card);
+  color: var(--texto);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: var(--t);
+  border: 1px solid var(--borda);
+}
+
+.profileButton svg {
+  width: 24px;
+  height: 24px;
+}
+
+.profileButton:hover {
+  background: var(--card2);
+}

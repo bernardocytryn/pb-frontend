@@ -1,7 +1,12 @@
-import styles from "./OlaMensagem.module.css";
+import styles from './OlaMensagem.module.css';
 
-const OlaMensagem = () => {
-  return <div>OlaMensagem</div>;
-};
-
-export default OlaMensagem;
+export default function OlaMensagem() {
+  return (
+    <header className={styles.header}>
+      <div>
+        <span className={styles.label}>Dashboard (home)</span>
+        <h1 className={styles.title}>Olá, Bernardo</h1>
+      </div>
+    </header>
+  );
+}

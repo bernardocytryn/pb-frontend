@@ -1,10 +1,17 @@
-import styles from "./TelaHome.module.css";
+import styles from './TelaHome.module.css';
+import OlaMensagem from '../features/home/OlaMensagem';
+import TreinoDoDia from '../features/home/TreinoDoDia';
+import GraficoEvolucao from '../features/home/GraficoEvolucao';
 
-const TelaHome = () => {
+export default function Home() {
   return (
-    <div>
+    <div className={styles.container}>
+      <main className={styles.main}>
+        <OlaMensagem />
+        <TreinoDoDia />
+        <GraficoEvolucao />
+
+      </main>
     </div>
   );
-};
-
-export default TelaHome;
+}
