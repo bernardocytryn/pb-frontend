@@ -21,6 +21,7 @@ import { ExerciciosProvider } from "./contexts/ExerciciosContext.jsx";
 import { CriacaoSerieProvider } from "./contexts/SeriesContext.jsx";
 import { AuthProvider } from "./contexts/AuthContext.jsx";
 import { useAuth } from "./hooks/useAuth.jsx";
+import TelaHome from "./pages/TelaHome.jsx";
 
 const RotaPublica = ({ children }) => {
   const { completouWizard } = useAuth();
@@ -70,7 +71,7 @@ const router = createBrowserRouter([
         path: "home",
         element: (
           <RotaProtegida>
-            <TelaDashboard />
+            <TelaHome />
           </RotaProtegida>
         ),
       },
