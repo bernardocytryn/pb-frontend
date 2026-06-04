@@ -37,6 +37,7 @@ const Wizard = () => {
     idade: "",
     peso: "",
     altura: "",
+    sexo: "",
   });
   const [respostasWizard, setRespostasWizard] = useState({
     lugar: "",
@@ -62,6 +63,7 @@ const Wizard = () => {
       if (!respostasForm.idade) vazios.idade = true;
       if (!respostasForm.peso) vazios.peso = true;
       if (!respostasForm.altura) vazios.altura = true;
+      if (!respostasForm.sexo) vazios.sexo = true;
 
       if (Object.keys(vazios).length > 0) {
         setCamposVazios(vazios);
@@ -98,13 +100,21 @@ const Wizard = () => {
 
   const verificarSePodeAvancar = () => {
     if (passoAtual === 1) {
+      const nomeValido = respostasForm.nome.trim().length >= 3;
+      const idadeValida = Number(respostasForm.idade) >= 1;
+      const pesoValido = parseFloat(respostasForm.peso.replace(",", ".")) >= 10;
+      const alturaValida =
+        parseFloat(respostasForm.altura.replace(",", ".")) >= 40;
+
       return (
-        respostasForm.nome &&
-        respostasForm.idade &&
-        respostasForm.peso &&
-        respostasForm.altura
+        respostasForm.sexo &&
+        nomeValido &&
+        idadeValida &&
+        pesoValido &&
+        alturaValida
       );
     }
+
     if (passoAtual === 2) return respostasWizard.lugar !== "";
     if (passoAtual === 3) return respostasWizard.nivel !== "";
     if (passoAtual === 4) return respostasWizard.frequencia !== "";
@@ -158,19 +168,73 @@ const Wizard = () => {
     }
   };
 
-  const finalizarWizard = () => {
+  const finalizarWizard = async () => {
     setIsCarregando(true);
 
-    setTimeout(() => {
-      const dadosDoUsuario = {
-        ...respostasForm,
-        ...respostasWizard,
-        fotoAdicionada: temFoto,
-      };
-      finalizarCadastroWizard(dadosDoUsuario);
+    const dadosDoUsuario = {
+      ...respostasForm,
+      ...respostasWizard,
+      fotoAdicionada: temFoto,
+    };
+
+    try {
+      const promptParaIA = `Crie uma ficha de treino para ${dadosDoUsuario.nome}, sexo biológico ${dadosDoUsuario.sexo}, idade ${dadosDoUsuario.idade}, peso ${dadosDoUsuario.peso}kg, altura ${dadosDoUsuario.altura}cm. Objetivo: ${dadosDoUsuario.objetivo}. Local: ${dadosDoUsuario.lugar}. Frequência: ${dadosDoUsuario.frequencia}. Nível: ${dadosDoUsuario.nivel}. 
+        Retorne APENAS um array JSON contendo objetos de treino. Cada treino deve ter:
+        - "id" (string)
+        - "nome" (string, ex: 'Treino A - Peito e Tríceps')
+        - "exercicios": um array de objetos, onde cada exercício tem "id" (string), "nome" (string, ex: 'Supino Reto'), "series" (string, ex: '3') e "repeticoes" (string, ex: '10 a 12').
+      `;
+
+      const respostaIA = await fetch(
+        `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            contents: [
+              {
+                parts: [
+                  {
+                    text:
+                      "Você é um personal trainer especialista em hipertrofia e saúde. Retorne apenas um JSON válido contendo um array de treinos.\n\n" +
+                      promptParaIA,
+                  },
+                ],
+              },
+            ],
+          }),
+        },
+      );
+
+      if (!respostaIA.ok) throw new Error("Falha ao gerar treino");
+
+      const dadosDaAPI = await respostaIA.json();
+
+      let textoDaIA = dadosDaAPI.candidates[0].content.parts[0].text;
+
+      textoDaIA = textoDaIA
+        .replace(/```json/g, "")
+        .replace(/```/g, "")
+        .trim();
+
+      const seriesGeradas = JSON.parse(textoDaIA);
+
+      finalizarCadastroWizard(dadosDoUsuario, seriesGeradas);
 
       navigate("/dashboard");
-    }, 3000);
+    } catch (erro) {
+      console.error("Erro ao falar com a IA:", erro);
+
+      const serieDeEmergencia = [
+        { id: "1", nome: "Treino de Adaptação", exercicios: [] },
+      ];
+      finalizarCadastroWizard(dadosDoUsuario, serieDeEmergencia);
+      navigate("/dashboard");
+    } finally {
+      setIsCarregando(false);
+    }
   };
 
   if (isCarregando) {

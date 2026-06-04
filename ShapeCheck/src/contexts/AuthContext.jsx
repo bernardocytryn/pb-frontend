@@ -13,12 +13,16 @@ export const AuthProvider = ({ children }) => {
     return dados ? JSON.parse(dados) : null;
   });
 
-  const finalizarCadastroWizard = (dadosDoFormulario) => {
+  const finalizarCadastroWizard = (dadosDoFormulario, seriesGeradas) => {
     setUsuario(dadosDoFormulario);
     setCompletouWizard(true);
     
     localStorage.setItem('shapecheck_user', JSON.stringify(dadosDoFormulario));
     localStorage.setItem('shapecheck_wizard_completo', 'true');
+    
+    if (seriesGeradas) {
+      localStorage.setItem('minhasSeries', JSON.stringify(seriesGeradas));
+    }
   };
 
   const sairDaConta = () => {
@@ -26,6 +30,7 @@ export const AuthProvider = ({ children }) => {
     setCompletouWizard(false);
     localStorage.removeItem('shapecheck_user');
     localStorage.removeItem('shapecheck_wizard_completo');
+    localStorage.removeItem('minhasSeries'); 
   };
 
   return (
