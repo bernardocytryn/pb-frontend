@@ -11,21 +11,13 @@ import Passo6Foto from "../features/wizard/passos/Passo6Foto";
 import Passo7Final from "../features/wizard/passos/Passo7Final";
 import { CircularProgress } from "@mui/material";
 import styles from "./Wizard.module.css";
-
 import { useAuth } from "../hooks/useAuth";
+import { useExercicios } from "../contexts/ExerciciosContext";
 
 const Wizard = () => {
-  const passos = [
-    "Dados Básicos",
-    "Local",
-    "Nível",
-    "Frequência",
-    "Objetivo",
-    "Foto",
-  ];
   const navigate = useNavigate();
-
   const { finalizarCadastroWizard } = useAuth();
+  const { exercicios } = useExercicios();
 
   const [passoAtual, setPassoAtual] = useState(1);
   const [isCarregando, setIsCarregando] = useState(false);
@@ -39,6 +31,7 @@ const Wizard = () => {
     altura: "",
     sexo: "",
   });
+  
   const [respostasWizard, setRespostasWizard] = useState({
     lugar: "",
     nivel: "",
@@ -47,10 +40,7 @@ const Wizard = () => {
   });
 
   const atualizarForm = (campo, valor) => {
-    setRespostasForm((prev) => ({
-      ...prev,
-      [campo]: valor,
-    }));
+    setRespostasForm((prev) => ({ ...prev, [campo]: valor }));
   };
 
   const voltar = () => setPassoAtual((prev) => Math.max(prev - 1, 1));
@@ -58,32 +48,23 @@ const Wizard = () => {
   const avancar = () => {
     if (passoAtual === 1) {
       const vazios = {};
-
       if (!respostasForm.nome) vazios.nome = true;
       if (!respostasForm.idade) vazios.idade = true;
       if (!respostasForm.peso) vazios.peso = true;
       if (!respostasForm.altura) vazios.altura = true;
       if (!respostasForm.sexo) vazios.sexo = true;
-
       if (Object.keys(vazios).length > 0) {
         setCamposVazios(vazios);
         return;
-      } else {
-        setCamposVazios({});
       }
+      setCamposVazios({});
     }
-    if (passoAtual === 2 && !respostasWizard.lugar) {
-      return;
-    }
-    if (passoAtual === 3 && !respostasWizard.nivel) {
-      return;
-    }
-    if (passoAtual === 4 && !respostasWizard.frequencia) {
-      return;
-    }
-    if (passoAtual === 5 && !respostasWizard.objetivo) {
-      return;
-    }
+    
+    if (passoAtual === 2 && !respostasWizard.lugar) return;
+    if (passoAtual === 3 && !respostasWizard.nivel) return;
+    if (passoAtual === 4 && !respostasWizard.frequencia) return;
+    if (passoAtual === 5 && !respostasWizard.objetivo) return;
+    
     if (passoAtual === 7) {
       finalizarWizard();
     } else {
@@ -92,10 +73,7 @@ const Wizard = () => {
   };
 
   const selecionarOpcao = (campo, valor) => {
-    setRespostasWizard((prev) => ({
-      ...prev,
-      [campo]: valor,
-    }));
+    setRespostasWizard((prev) => ({ ...prev, [campo]: valor }));
   };
 
   const verificarSePodeAvancar = () => {
@@ -103,165 +81,116 @@ const Wizard = () => {
       const nomeValido = respostasForm.nome.trim().length >= 3;
       const idadeValida = Number(respostasForm.idade) >= 1;
       const pesoValido = parseFloat(respostasForm.peso.replace(",", ".")) >= 10;
-      const alturaValida =
-        parseFloat(respostasForm.altura.replace(",", ".")) >= 40;
-
-      return (
-        respostasForm.sexo &&
-        nomeValido &&
-        idadeValida &&
-        pesoValido &&
-        alturaValida
-      );
+      const alturaValida = parseFloat(respostasForm.altura.replace(",", ".")) >= 40;
+      return respostasForm.sexo && nomeValido && idadeValida && pesoValido && alturaValida;
     }
-
     if (passoAtual === 2) return respostasWizard.lugar !== "";
     if (passoAtual === 3) return respostasWizard.nivel !== "";
     if (passoAtual === 4) return respostasWizard.frequencia !== "";
     if (passoAtual === 5) return respostasWizard.objetivo !== "";
-
     return true;
   };
 
   const renderizarPasso = () => {
     switch (passoAtual) {
-      case 1:
-        return (
-          <Passo1Form
-            respostasForm={respostasForm}
-            camposVazios={camposVazios}
-            atualizarForm={atualizarForm}
-          />
-        );
-      case 2:
-        return (
-          <Passo2Lugar
-            respostasWizard={respostasWizard}
-            selecionarOpcao={selecionarOpcao}
-          />
-        );
-      case 3:
-        return (
-          <Passo3Nivel
-            respostasWizard={respostasWizard}
-            selecionarOpcao={selecionarOpcao}
-          />
-        );
-      case 4:
-        return (
-          <Passo4Frequencia
-            respostasWizard={respostasWizard}
-            selecionarOpcao={selecionarOpcao}
-          />
-        );
-      case 5:
-        return (
-          <Passo5Objetivo
-            respostasWizard={respostasWizard}
-            selecionarOpcao={selecionarOpcao}
-          />
-        );
-      case 6:
-        return <Passo6Foto temFoto={temFoto} setTemFoto={setTemFoto} />;
-      case 7:
-        return <Passo7Final />;
+      case 1: return <Passo1Form respostasForm={respostasForm} camposVazios={camposVazios} atualizarForm={atualizarForm} />;
+      case 2: return <Passo2Lugar respostasWizard={respostasWizard} selecionarOpcao={selecionarOpcao} />;
+      case 3: return <Passo3Nivel respostasWizard={respostasWizard} selecionarOpcao={selecionarOpcao} />;
+      case 4: return <Passo4Frequencia respostasWizard={respostasWizard} selecionarOpcao={selecionarOpcao} />;
+      case 5: return <Passo5Objetivo respostasWizard={respostasWizard} selecionarOpcao={selecionarOpcao} />;
+      case 6: return <Passo6Foto temFoto={temFoto} setTemFoto={setTemFoto} />;
+      case 7: return <Passo7Final />;
     }
   };
 
   const finalizarWizard = async () => {
     setIsCarregando(true);
-
-    const dadosDoUsuario = {
-      ...respostasForm,
-      ...respostasWizard,
-      fotoAdicionada: temFoto,
-    };
+    const dadosDoUsuario = { ...respostasForm, ...respostasWizard, fotoAdicionada: temFoto };
+    const listaDisponivel = exercicios.map(ex => ({ id: ex.id, name: ex.name }));
 
     try {
-      const promptParaIA = `Crie uma ficha de treino para ${dadosDoUsuario.nome}, sexo biológico ${dadosDoUsuario.sexo}, idade ${dadosDoUsuario.idade}, peso ${dadosDoUsuario.peso}kg, altura ${dadosDoUsuario.altura}cm. Objetivo: ${dadosDoUsuario.objetivo}. Local: ${dadosDoUsuario.lugar}. Frequência: ${dadosDoUsuario.frequencia}. Nível: ${dadosDoUsuario.nivel}. 
-        Retorne APENAS um array JSON contendo objetos de treino. Cada treino deve ter:
-        - "id" (string)
-        - "nome" (string, ex: 'Treino A - Peito e Tríceps')
-        - "exercicios": um array de objetos, onde cada exercício tem "id" (string), "nome" (string, ex: 'Supino Reto'), "series" (string, ex: '3') e "repeticoes" (string, ex: '10 a 12').
-      `;
+      const promptParaIA = `Atue como personal trainer. Crie uma ficha de treino para ${dadosDoUsuario.nome}.
+      Objetivo: ${dadosDoUsuario.objetivo}
+      Frequência: ${dadosDoUsuario.frequencia}
+      Nível: ${dadosDoUsuario.nivel}
+      
+      REGRA OBRIGATÓRIA: Escolha os exercícios APENAS desta exata lista disponível, usando os nomes exatos: ${JSON.stringify(listaDisponivel)}.
+      
+      Retorne EXATAMENTE este formato JSON:
+      [
+        {
+          "nome": "Treino A",
+          "exercicios": [
+            { "nome": "nome do exercicio" }
+          ]
+        }
+      ]`;
 
       const respostaIA = await fetch(
         `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            contents: [
-              {
-                parts: [
-                  {
-                    text:
-                      "Você é um personal trainer especialista em hipertrofia e saúde. Retorne apenas um JSON válido contendo um array de treinos.\n\n" +
-                      promptParaIA,
-                  },
-                ],
-              },
-            ],
-          }),
-        },
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ contents: [{ parts: [{ text: promptParaIA }] }] }),
+        }
       );
 
-      if (!respostaIA.ok) throw new Error("Falha ao gerar treino");
+      if (!respostaIA.ok) throw new Error();
 
       const dadosDaAPI = await respostaIA.json();
+      const textoResposta = dadosDaAPI.candidates[0].content.parts[0].text;
+      const jsonMatch = textoResposta.match(/\[[\s\S]*\]/);
+      
+      if (!jsonMatch) throw new Error();
+      
+      const jsonGerado = JSON.parse(jsonMatch[0]);
 
-      let textoDaIA = dadosDaAPI.candidates[0].content.parts[0].text;
+      const seriesGeradas = jsonGerado.map((serie) => {
+        const exerciciosDaSerie = serie.exercicios.map((ex) => {
+          const correspondente = exercicios.find(item => item.name.toLowerCase() === ex.nome.toLowerCase());
+          
+          if (correspondente) {
+            return {
+              exerciseId: correspondente.id,
+              name: correspondente.name,
+              bodyPart: correspondente.bodyPart,
+              equipment: correspondente.equipment,
+              imageUrl: correspondente.imageUrl
+            };
+          }
+          return {
+            exerciseId: Math.random().toString(36).substring(7),
+            name: ex.nome,
+            bodyPart: "",
+            equipment: "",
+            imageUrl: null
+          };
+        });
 
-      textoDaIA = textoDaIA
-        .replace(/```json/g, "")
-        .replace(/```/g, "")
-        .trim();
-
-      const seriesGeradas = JSON.parse(textoDaIA);
+        return {
+          id: Date.now().toString() + Math.random().toString(36).substring(2, 9),
+          nome: serie.nome,
+          exercicios: exerciciosDaSerie
+        };
+      });
 
       finalizarCadastroWizard(dadosDoUsuario, seriesGeradas);
-
       navigate("/dashboard");
     } catch (erro) {
-      console.error("Erro ao falar com a IA:", erro);
-
-      const serieDeEmergencia = [
-        { id: "1", nome: "Treino de Adaptação", exercicios: [] },
-      ];
-      finalizarCadastroWizard(dadosDoUsuario, serieDeEmergencia);
+      finalizarCadastroWizard(dadosDoUsuario, []);
       navigate("/dashboard");
     } finally {
       setIsCarregando(false);
     }
   };
 
-  if (isCarregando) {
-    return (
-      <div className={styles.loading}>
-        <CircularProgress size={80} sx={{ color: "#ffcb3c" }} />
-        <h2>Gerando suas fichas...</h2>
-      </div>
-    );
-  }
+  if (isCarregando) return <div className={styles.loading}><CircularProgress size={80} sx={{ color: "#ffcb3c" }} /></div>;
 
   return (
     <div className={styles.wizard}>
-      {passoAtual < 7 && (
-        <BarraProgresso passoAtual={passoAtual} totalPassos={6} />
-      )}
-      <div key={passoAtual} className={styles["passo-animado"]}>
-        {renderizarPasso()}
-      </div>
-      <BotoesVoltarAvancar
-        voltar={voltar}
-        avancar={avancar}
-        passoAtual={passoAtual}
-        temFoto={temFoto}
-        gerarFichas={finalizarWizard}
-        podeAvancar={verificarSePodeAvancar()}
-      />
+      {passoAtual < 7 && <BarraProgresso passoAtual={passoAtual} totalPassos={6} />}
+      <div key={passoAtual} className={styles["passo-animado"]}>{renderizarPasso()}</div>
+      <BotoesVoltarAvancar voltar={voltar} avancar={avancar} passoAtual={passoAtual} gerarFichas={finalizarWizard} podeAvancar={verificarSePodeAvancar()} />
     </div>
   );
 };

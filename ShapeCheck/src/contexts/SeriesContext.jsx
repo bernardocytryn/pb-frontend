@@ -9,16 +9,16 @@ export function CriacaoSerieProvider({ children }) {
 
   const adicionarExercicio = (exercicio) => {
     const jaExiste = exerciciosSelecionados.find(
-      (item) => item.exerciseId === exercicio.exerciseId
+      (item) => (item.exerciseId || item.id) === (exercicio.exerciseId || exercicio.id)
     );
     if (!jaExiste) {
       setExerciciosSelecionados([...exerciciosSelecionados, exercicio]);
     }
   };
 
-  const removerExercicio = (exerciseId) => {
+  const removerExercicio = (idParaRemover) => {
     const novaLista = exerciciosSelecionados.filter(
-      (item) => item.exerciseId !== exerciseId
+      (item) => (item.exerciseId || item.id) !== idParaRemover
     );
     setExerciciosSelecionados(novaLista);
   };

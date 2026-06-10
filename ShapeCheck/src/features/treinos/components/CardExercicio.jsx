@@ -1,13 +1,39 @@
 import { useState, useEffect } from "react";
 import styles from "./CardExercicio.module.css";
 import { FiX } from "react-icons/fi";
-import { useCriarSerie } from "../..//../contexts/SeriesContext.jsx";
+import { useCriarSerie } from "../../../contexts/SeriesContext.jsx";
+import { useExercicios } from "../../../contexts/ExerciciosContext.jsx";
 
-export function CardExercicioModal({ exercicio, handleClose, modoCriacao }) {
+export function CardExercicioModal({ exercicio, handleClose, modoCriacao, modoSerie }) {
   const [detalhes, setDetalhes] = useState(null);
   const [carregando, setCarregando] = useState(false);
+  const [carga, setCarga] = useState("");
   
   const { adicionarExercicio, exerciciosSelecionados } = useCriarSerie();
+  const { fetchDetalhes } = useExercicios();
+
+  useEffect(() => {
+    if (exercicio) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
+      
+      const cargasSalvas = JSON.parse(localStorage.getItem("shapecheck_cargas") || "{}");
+      const idParaBuscar = exercicio.exerciseId || exercicio.id || exercicio.name;
+      if (cargasSalvas[idParaBuscar]) {
+        setCarga(cargasSalvas[idParaBuscar]);
+      } else {
+        setCarga("");
+      }
+    } else {
+      document.body.style.overflow = "auto";
+      document.documentElement.style.overflow = "auto";
+    }
+
+    return () => {
+      document.body.style.overflow = "auto";
+      document.documentElement.style.overflow = "auto";
+    };
+  }, [exercicio]);
 
   useEffect(() => {
     if (!exercicio) {
@@ -15,39 +41,42 @@ export function CardExercicioModal({ exercicio, handleClose, modoCriacao }) {
       return;
     }
 
-    async function buscarDetalhes() {
+    async function obterDadosRealTime() {
       setCarregando(true);
-      try {
-        const url = `https://edb-with-videos-and-images-by-ascendapi.p.rapidapi.com/api/v1/exercises/${exercicio.exerciseId}`;
-        const options = {
-          method: 'GET',
-          headers: {
-            'x-rapidapi-key': import.meta.env.VITE_RAPIDAPI_KEY,
-            'x-rapidapi-host': 'edb-with-videos-and-images-by-ascendapi.p.rapidapi.com'
-          }
-        };
-
-        const res = await fetch(url, options);
-        if (!res.ok) throw new Error();
-        const json = await res.json();
-        setDetalhes(json.data);
-      } catch (err) {
-        console.error(err);
-      } finally {
-        setCarregando(false);
+      const idDeBusca = exercicio.exerciseId || exercicio.id;
+      if (idDeBusca) {
+        const dados = await fetchDetalhes(idDeBusca);
+        if (dados) {
+          setDetalhes(dados);
+        }
       }
+      setCarregando(false);
     }
 
-    buscarDetalhes();
-  }, [exercicio]);
+    obterDadosRealTime();
+  }, [exercicio, fetchDetalhes]);
+
+  const handleCargaChange = (e) => {
+    const novoValor = e.target.value;
+    setCarga(novoValor);
+    
+    if (exercicio) {
+      const idParaSalvar = exercicio.exerciseId || exercicio.id || exercicio.name;
+      const cargasSalvas = JSON.parse(localStorage.getItem("shapecheck_cargas") || "{}");
+      cargasSalvas[idParaSalvar] = novoValor;
+      localStorage.setItem("shapecheck_cargas", JSON.stringify(cargasSalvas));
+    }
+  };
 
   if (!exercicio) return null;
 
   const ex = detalhes || exercicio;
   const video = detalhes?.videoUrl;
-  const imagem = detalhes?.imageUrls?.["480p"] || detalhes?.imageUrls?.["360p"] || exercicio.imageUrl;
+  const imagem = detalhes?.imageUrls?.["480p"] || detalhes?.imageUrls?.["360p"] || detalhes?.imageUrl || detalhes?.gifUrl || exercicio.imageUrl;
 
-  const jaAdicionado = exerciciosSelecionados.find((item) => item.exerciseId === exercicio.exerciseId);
+  const jaAdicionado = exerciciosSelecionados.find(
+    (item) => (item.exerciseId || item.id || item.name) === (exercicio.exerciseId || exercicio.id || exercicio.name)
+  );
 
   const handleAdicionar = () => {
     adicionarExercicio(exercicio);
@@ -74,61 +103,47 @@ export function CardExercicioModal({ exercicio, handleClose, modoCriacao }) {
 
         <div className={styles.conteudoRolavel}>
           {carregando ? (
-            <p style={{ textAlign: "center", padding: "40px 20px", color: "#a0a0a0" }}>
-              Carregando execução...
-            </p>
+            <p className={styles.textoCarregando}>Carregando execução...</p>
           ) : (
             <>
               {video && video !== "string" ? (
-                <video
-                  src={video}
-                  className={styles.gif}
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                />
+                <video src={video} className={styles.gif} autoPlay loop muted playsInline />
+              ) : imagem ? (
+                <img src={imagem} alt={ex.name} className={styles.gif} />
               ) : (
-                <img
-                  src={imagem}
-                  alt={ex.name}
-                  className={styles.gif}
-                />
+                <div className={`${styles.gif} ${styles.gifPlaceholder}`}>
+                  <span className={styles.textoPlaceholder}>Imagem indisponível</span>
+                </div>
+              )}
+
+              {modoSerie && (
+                <div className={styles.cargaContainer}>
+                  <label htmlFor="inputCarga">Carga (kg):</label>
+                  <input
+                    id="inputCarga"
+                    type="number"
+                    value={carga}
+                    onChange={handleCargaChange}
+                    placeholder="Ex: 20"
+                    className={styles.inputCarga}
+                  />
+                </div>
               )}
 
               <div className={styles.tagsContainer}>
-                {ex.targetMuscles?.[0] && (
-                  <span className={styles.tagAmarela}>
-                    {ex.targetMuscles[0]}
-                  </span>
-                )}
-                {ex.equipments?.[0] && (
-                  <span className={styles.tagCinza}>
-                    {ex.equipments[0]}
-                  </span>
-                )}
-                {ex.bodyParts?.[0] && (
-                  <span className={styles.tagCinza}>
-                    {ex.bodyParts[0]}
-                  </span>
-                )}
+                {ex.targetMuscles?.[0] && <span className={styles.tagAmarela}>{ex.targetMuscles[0]}</span>}
+                {ex.equipments?.[0] && <span className={styles.tagCinza}>{ex.equipments[0]}</span>}
+                {ex.bodyParts?.[0] && <span className={styles.tagCinza}>{ex.bodyParts[0]}</span>}
               </div>
 
               <div className={styles.instrucoes}>
-                {ex.overview && (
-                  <p style={{ color: "#a0a0a0", fontSize: "0.9rem", lineHeight: "1.4", marginBottom: "16px" }}>
-                    {ex.overview}
-                  </p>
-                )}
-
+                {ex.overview && <p className={styles.overview}>{ex.overview}</p>}
                 {ex.instructions && ex.instructions.length > 0 && (
                   <>
                     <h3 className={styles.subtituloModal}>Como executar</h3>
                     <ol className={styles.lista}>
                       {ex.instructions.map((passo, index) => (
-                        <li key={index} className={styles.passo}>
-                          {passo}
-                        </li>
+                        <li key={index} className={styles.passo}>{passo}</li>
                       ))}
                     </ol>
                   </>
@@ -139,18 +154,7 @@ export function CardExercicioModal({ exercicio, handleClose, modoCriacao }) {
                 <button
                   onClick={handleAdicionar}
                   disabled={jaAdicionado}
-                  style={{
-                    width: "100%",
-                    padding: "16px",
-                    marginTop: "16px",
-                    backgroundColor: jaAdicionado ? "#3a3a3c" : "#ffcb3c",
-                    color: jaAdicionado ? "#a0a0a0" : "#000",
-                    border: "none",
-                    borderRadius: "8px",
-                    fontWeight: "bold",
-                    cursor: jaAdicionado ? "not-allowed" : "pointer",
-                    fontSize: "1rem"
-                  }}
+                  className={`${styles.botaoAdicionarBase} ${jaAdicionado ? styles.botaoAdicionarInativo : styles.botaoAdicionarAtivo}`}
                 >
                   {jaAdicionado ? "Exercício já adicionado" : "Adicionar à Série"}
                 </button>

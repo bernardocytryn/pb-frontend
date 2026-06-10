@@ -20,8 +20,10 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('shapecheck_user', JSON.stringify(dadosDoFormulario));
     localStorage.setItem('shapecheck_wizard_completo', 'true');
     
-    if (seriesGeradas) {
-      localStorage.setItem('minhasSeries', JSON.stringify(seriesGeradas));
+    if (seriesGeradas && seriesGeradas.length > 0) {
+      const seriesAntigas = JSON.parse(localStorage.getItem('minhasSeries') || '[]');
+      const novasSeries = [...seriesAntigas, ...seriesGeradas];
+      localStorage.setItem('minhasSeries', JSON.stringify(novasSeries));
     }
   };
 

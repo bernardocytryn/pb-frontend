@@ -135,10 +135,10 @@ export default function TelaExercicio({ onCardClick }) {
               <p>Erro ao carregar: {error}</p>
             </div>
           ) : exerciciosFiltrados.length > 0 ? (
-            exerciciosFiltrados.map((ex) => (
+            exerciciosFiltrados.map((ex, index) => (
               <div 
                 className={styles.cardGrid}
-                key={ex.exerciseId}
+                key={ex.id || ex.exerciseId || index}
                 onClick={() => {
                   setExercicioSelecionado(ex);
                   if (onCardClick) onCardClick(ex);
