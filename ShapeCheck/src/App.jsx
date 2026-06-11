@@ -37,11 +37,15 @@ function App() {
   return (
     <main
       {...handlers}
-      style={{ minHeight: "100vh", width: "100%", overflowX: "hidden" }}
+      style={{
+        minHeight: "100vh",
+        width: "100%",
+        overflowX: "hidden",
+        paddingBottom: mostrarNavbar ? "80px" : "0px",
+      }}
     >
-      {mostrarNavbar && <Navbar />}
-
       <Outlet />
+      {mostrarNavbar && <Navbar />}
     </main>
   );
 }
