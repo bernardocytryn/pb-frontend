@@ -16,7 +16,7 @@ const Passo1Form = ({ respostasForm, camposVazios, atualizarForm }) => {
       <div className={styles.inputs}>
         <LabelInput
           label={"Nome"}
-          placeholder={"Digite seu nome:"}
+          placeholder={"Digite seu nome"}
           taVazio={camposVazios?.nome}
           valorInput={respostasForm.nome}
           onChange={(e) => {
@@ -29,7 +29,7 @@ const Passo1Form = ({ respostasForm, camposVazios, atualizarForm }) => {
         <div className={styles.inputsPequenos}>
           <LabelInput
             label={"Idade"}
-            placeholder={"Digite sua idade:"}
+            placeholder={"Digite sua idade"}
             taVazio={camposVazios?.idade}
             valorInput={respostasForm.idade}
             onChange={(e) => {

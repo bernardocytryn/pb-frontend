@@ -1,6 +1,13 @@
 import styles from "./LabelInput.module.css";
 
-const LabelInput = ({ label, placeholder, taVazio, valorInput, onChange }) => {
+const LabelInput = ({
+  label,
+  placeholder,
+  taVazio,
+  valorInput,
+  onChange,
+  type,
+}) => {
   return (
     <div className={styles["label-e-input"]}>
       <label>{label}</label>
@@ -8,15 +15,18 @@ const LabelInput = ({ label, placeholder, taVazio, valorInput, onChange }) => {
         style={{
           border: taVazio ? "2px solid #ff4d4d" : "2px solid transparent",
         }}
-        type="text"
+        type={type || "text"}
         placeholder={placeholder}
         value={valorInput}
         onChange={onChange}
       />
       <span
-        style={{ visibility: taVazio ? "visible" : "hidden", minHeight: "15px" }}
+        style={{
+          visibility: taVazio ? "visible" : "hidden",
+          minHeight: "15px",
+        }}
       >
-        Campo obrigatório
+        {typeof taVazio === "string" ? taVazio : "Campo obrigatório"}
       </span>
     </div>
   );

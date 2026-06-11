@@ -27,8 +27,12 @@ function App() {
     trackMouse: false,
   });
 
-  const mostrarNavbar =
-    location.pathname !== "/" && location.pathname !== "/wizard";
+  const caminhoAtual =
+    location.pathname.toLowerCase().replace(/\/$/, "") || "/";
+
+  const rotasSemNavbar = ["/", "/auth", "/wizard"];
+
+  const mostrarNavbar = !rotasSemNavbar.includes(caminhoAtual);
 
   return (
     <main

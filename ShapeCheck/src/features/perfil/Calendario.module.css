@@ -30,7 +30,6 @@
   cursor: default; user-select: none;
 }
 
-/* Modificadores de Celula */
 .outro { opacity: 0.2; pointer-events: none; }
 .descanso { color: rgba(255,255,255,0.2); }
 .treinado { background: var(--amarelo-dim); color: var(--amarelo); border: 1px solid rgba(255,203,60,0.2); }
@@ -38,7 +37,6 @@
 .hoje { background: var(--amarelo); color: #141416; font-weight: 700; box-shadow: 0 3px 12px rgba(255,203,60,0.4); }
 .hoje:hover { transform: scale(1.06); }
 
-/* Legenda */
 .legenda { display: flex; gap: 14px; margin-top: 14px; flex-wrap: wrap; }
 .legItem { display: flex; align-items: center; gap: 6px; font-size: 0.72rem; color: var(--texto-suave); }
 .legPonto { width: 10px; height: 10px; border-radius: 3px; }

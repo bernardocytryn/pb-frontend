@@ -41,7 +41,6 @@
 .seta { color: rgba(255,255,255,0.2); transition: color var(--t), transform var(--t); }
 .seta svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
-/* Variação de Perigo */
 .perigo::before { background: var(--vermelho); }
 .perigo .titulo { color: var(--vermelho); }
 .perigo .icone svg { stroke: var(--vermelho); }

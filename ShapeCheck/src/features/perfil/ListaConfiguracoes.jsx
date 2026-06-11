@@ -1,5 +1,6 @@
 import React from "react";
 import { configsData } from "../../data/dadosPerfil";
+import { useAuth } from "../../hooks/useAuth";
 import {
   IcoCadeado,
   IcoUsuario,
@@ -22,6 +23,14 @@ function getIcon(iconKey) {
 }
 
 export default function ListaConfiguracoes() {
+  const { sairDaConta } = useAuth();
+
+  const lidarComClique = (config) => {
+    if (config.icon === "sair") {
+      sairDaConta();
+    }
+  };
+
   return (
     <div className={styles.lista}>
       {configsData.map((config, i) => (
@@ -30,6 +39,7 @@ export default function ListaConfiguracoes() {
           className={`${styles.item} ${config.perigo ? styles.perigo : ""}`}
           role="button"
           tabIndex={0}
+          onClick={() => lidarComClique(config)}
         >
           <div className={styles.icone}>{getIcon(config.icon)}</div>
           <div className={styles.textoContainer}>
