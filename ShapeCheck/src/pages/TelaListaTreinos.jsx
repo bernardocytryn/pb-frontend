@@ -11,102 +11,61 @@ export default function DetalheSerie() {
   const [serie, setSerie] = useState(null);
   const [exercicioAberto, setExercicioAberto] = useState(null);
   const [concluidos, setConcluidos] = useState([]);
-  
   const { iniciarEdicao } = useCriarSerie();
 
   useEffect(() => {
     const seriesSalvas = JSON.parse(localStorage.getItem('minhasSeries') || '[]');
-    const serieEncontrada = seriesSalvas.find((s) => s.id === id);
-    setSerie(serieEncontrada);
+    setSerie(seriesSalvas.find((s) => s.id === id));
   }, [id]);
 
-  if (!serie) {
-    return (
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <div className={styles.tituloContainer}>
-            <button onClick={() => navigate(-1)} className={styles.botaoVoltar}>
-              <FiArrowLeft size={18} /> Voltar
-            </button>
-          </div>
-        </div>
-        <div className={styles.estadoVazio}>
-          <p>Série não encontrada.</p>
-        </div>
-      </div>
-    );
-  }
+  if (!serie) return <div className={styles.container}><div className={styles.estadoVazio}>Série não encontrada.</div></div>;
 
-  const handleEditar = () => {
-    iniciarEdicao(serie);
-    navigate('/criar-serie');
+  const handleEditar = () => { 
+    iniciarEdicao(serie); 
+    navigate('/criar-serie'); 
   };
-
+  
   const handleExcluir = () => {
-    const confirmacao = window.confirm("Tem certeza que deseja excluir esta série?");
-    if (confirmacao) {
-      const seriesSalvas = JSON.parse(localStorage.getItem('minhasSeries') || '[]');
-      const novasSeries = seriesSalvas.filter((s) => s.id !== id);
-      localStorage.setItem('minhasSeries', JSON.stringify(novasSeries));
+    if (window.confirm("Excluir série?")) {
+      const series = JSON.parse(localStorage.getItem('minhasSeries') || '[]');
+      localStorage.setItem('minhasSeries', JSON.stringify(series.filter((s) => s.id !== id)));
       navigate('/treinos');
     }
   };
 
-  const toggleConcluido = (e, exerciseId) => {
-    e.stopPropagation();
-    if (concluidos.includes(exerciseId)) {
-      setConcluidos(concluidos.filter((id) => id !== exerciseId));
-    } else {
-      setConcluidos([...concluidos, exerciseId]);
-    }
+  const toggleConcluido = (e, eid) => { 
+    e.stopPropagation(); 
+    setConcluidos(prev => prev.includes(eid) ? prev.filter(i => i !== eid) : [...prev, eid]); 
   };
 
-  const finalizarTreino = () => {
+  const concluirSerie = () => {
     setConcluidos([]);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
-
+  
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.tituloContainer}>
-          <button onClick={() => navigate(-1)} className={styles.botaoVoltar}>
-            <FiArrowLeft size={18} /> Voltar
-          </button>
+          <button onClick={() => navigate('/treinos')} className={styles.botaoVoltar}><FiArrowLeft size={18} /> Voltar</button>
           <h1 className={styles.titulo}>{serie.nome}</h1>
         </div>
-
         <div className={styles.botoesAcao}>
-          <button onClick={handleExcluir} className={styles.botaoExcluir}>
-            <FiTrash2 size={18} />
-          </button>
-          <button onClick={handleEditar} className={styles.botaoCriar}>
-            <FiEdit size={18} />
-          </button>
+          <button onClick={handleExcluir} className={styles.botaoExcluir}><FiTrash2 size={18} /></button>
+          <button onClick={handleEditar} className={styles.botaoCriar}><FiEdit size={18} /></button>
         </div>
       </div>
 
       <div className={styles.gridLista}>
         {serie.exercicios && serie.exercicios.map((ex) => {
-          const estaConcluido = concluidos.includes(ex.exerciseId || ex.id);
-          
+          const eid = ex.exerciseId || ex.id;
+          const done = concluidos.includes(eid);
           return (
-            <div 
-              key={ex.exerciseId || ex.id} 
-              className={`${styles.cardGrid} ${estaConcluido ? styles.cardConcluido : ''}`}
-              onClick={() => setExercicioAberto(ex)}
-            >
-              <img 
-                src={ex.imageUrl} 
-                alt={ex.name} 
-                className={styles.imagemGrid}
-              />
+            <div key={eid} className={`${styles.cardGrid} ${done ? styles.cardConcluido : ''}`} onClick={() => setExercicioAberto(ex)}>
+              <img src={ex.imageUrl} alt={ex.name} className={styles.imagemGrid} />
               <div className={styles.infoGrid}>
                 <h2 className={styles.nomeGrid}>{ex.name}</h2>
-                <button 
-                  className={`${styles.botaoCheck} ${estaConcluido ? styles.botaoCheckAtivo : ''}`}
-                  onClick={(e) => toggleConcluido(e, ex.exerciseId || ex.id)}
-                >
+                <button className={`${styles.botaoCheck} ${done ? styles.botaoCheckAtivo : ''}`} onClick={(e) => toggleConcluido(e, eid)}>
                   <FiCheck size={14} />
                 </button>
               </div>
@@ -116,15 +75,12 @@ export default function DetalheSerie() {
       </div>
 
       {concluidos.length > 0 && (
-        <button onClick={finalizarTreino} className={styles.botaoFinalizar}>
-          Concluir Treino
-        </button>
+        <div className={styles.containerFinalizar}>
+          <button onClick={concluirSerie} className={styles.botaoFinalizar}>Concluir Série</button>
+        </div>
       )}
-
-      <CardExercicioModal 
-        exercicio={exercicioAberto} 
-        handleClose={() => setExercicioAberto(null)} 
-      />
+      
+      <CardExercicioModal exercicio={exercicioAberto} handleClose={() => setExercicioAberto(null)} />
     </div>
   );
 }

@@ -9,8 +9,6 @@ import styles from "./TelaPerfil.module.css";
 export default function TelaPerfil() {
   return (
     <div className={styles.container}>
-      {/* <NavbarPerfil /> */}
-
       <main className={styles.main}>
         <div className={styles.rotulo}>Perfil</div>
         <CardPerfil />

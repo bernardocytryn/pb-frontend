@@ -1,1 +1,29 @@
-/* TelaDashboard styles */
+.container {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--texto);
+  font-family: 'Inter', sans-serif;
+  padding-bottom: 50px;
+}
+
+.main {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 24px 20px 32px;
+}
+
+@media (min-width: 768px) {
+  .main {
+    padding-top: 32px;
+  }
+
+  .workoutCard {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .playButton {
+    align-self: center;
+  }
+}

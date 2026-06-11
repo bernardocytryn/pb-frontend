@@ -5,7 +5,7 @@
 }
 
 .main {
-  max-width: 500px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 24px 20px 120px;
   display: flex;
@@ -147,9 +147,10 @@
 
 .gridLista {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 12px;
   width: 100%;
+  align-content: start;
 }
 
 .cardGrid {
@@ -193,11 +194,23 @@
 }
 
 .estadoVazio {
-  grid-column: span 2;
+  grid-column: 1 / -1;
   text-align: center;
   padding: 40px 20px;
   color: var(--texto-suave, #a0a0a0);
   font-size: 0.95rem;
+}
+
+@media (min-width: 768px) {
+  .areaBusca {
+    flex-direction: row;
+    gap: 16px;
+  }
+
+  .dropdownContainer {
+    width: 240px;
+    min-width: 240px;
+  }
 }
 
 @media(max-width: 480px) {
