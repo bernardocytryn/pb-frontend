@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     const novoUsuario = {
-      id: crypto.randomUUID(),
+      id: Date.now().toString() + Math.random().toString(36).substring(2, 9),
       email: email.toLowerCase(),
       senha: senha,
       perfil: null,
