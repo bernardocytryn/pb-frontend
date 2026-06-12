@@ -17,8 +17,11 @@ import TelaTreinos from "./pages/TelaTreinos.jsx";
 import TelaTreino from "./pages/TelaTreino.jsx";
 import TelaListaTreinos from "./pages/TelaListaTreinos.jsx";
 import TelaExercicio from "./pages/TelaExercicio.jsx";
+import CriarSerie from "./pages/CriarSerie.jsx";
 import { ExerciciosProvider } from "./contexts/ExerciciosContext.jsx";
+import { CriacaoSerieProvider } from "./contexts/SeriesContext.jsx";
 import { AuthProvider } from "./contexts/AuthContext.jsx";
+import { StatusTreinoProvider } from "./contexts/StatusTreinoContext.jsx";
 import { useAuth } from "./hooks/useAuth.jsx";
 
 const RotaVisitante = ({ children }) => {
@@ -52,7 +55,11 @@ const router = createBrowserRouter([
     path: "/",
     element: (
       <ExerciciosProvider>
-        <App />
+        <CriacaoSerieProvider>
+          <StatusTreinoProvider>
+            <App />
+          </StatusTreinoProvider>
+        </CriacaoSerieProvider>
       </ExerciciosProvider>
     ),
     children: [
@@ -72,7 +79,6 @@ const router = createBrowserRouter([
           </RotaVisitante>
         ),
       },
-
       {
         path: "wizard",
         element: (
@@ -81,7 +87,6 @@ const router = createBrowserRouter([
           </RotaWizard>
         ),
       },
-
       {
         path: "home",
         element: (
@@ -131,6 +136,14 @@ const router = createBrowserRouter([
         ),
       },
       {
+        path: "criar-serie",
+        element: (
+          <RotaPrivadaApp>
+            <CriarSerie />
+          </RotaPrivadaApp>
+        ),
+      },
+      {
         path: "perfil",
         element: (
           <RotaPrivadaApp>
@@ -147,5 +160,5 @@ createRoot(document.getElementById("root")).render(
     <AuthProvider>
       <RouterProvider router={router} />
     </AuthProvider>
-  </StrictMode>,
+  </StrictMode>
 );

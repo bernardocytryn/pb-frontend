@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import { FiArrowLeft, FiEdit, FiTrash2, FiCheck } from "react-icons/fi";
 import { CardExercicioModal } from "../features/treinos/components/CardExercicio";
 import { useCriarSerie } from "../contexts/SeriesContext.jsx";
+import { useStatusTreino } from "../contexts/StatusTreinoContext.jsx";
+import { useAuth } from "../hooks/useAuth.jsx";
 import styles from "./TelaListaTreinos.module.css";
 
 export default function DetalheSerie() {
@@ -11,14 +13,19 @@ export default function DetalheSerie() {
   const [serie, setSerie] = useState(null);
   const [exercicioAberto, setExercicioAberto] = useState(null);
   const [concluidos, setConcluidos] = useState([]);
+  
   const { iniciarEdicao } = useCriarSerie();
+  const { statusSeries, alternarStatus } = useStatusTreino();
+  const { usuario, finalizarCadastroWizard } = useAuth();
 
   useEffect(() => {
-    const seriesSalvas = JSON.parse(localStorage.getItem('minhasSeries') || '[]');
-    setSerie(seriesSalvas.find((s) => s.id === id));
-  }, [id]);
+    const series = usuario?.treinos || [];
+    setSerie(series.find((s) => s.id === id));
+  }, [id, usuario]);
 
   if (!serie) return <div className={styles.container}><div className={styles.estadoVazio}>Série não encontrada.</div></div>;
+
+  const isSerieConcluida = statusSeries[serie.id];
 
   const handleEditar = () => { 
     iniciarEdicao(serie); 
@@ -27,8 +34,9 @@ export default function DetalheSerie() {
   
   const handleExcluir = () => {
     if (window.confirm("Excluir série?")) {
-      const series = JSON.parse(localStorage.getItem('minhasSeries') || '[]');
-      localStorage.setItem('minhasSeries', JSON.stringify(series.filter((s) => s.id !== id)));
+      const series = usuario?.treinos || [];
+      const seriesAtualizadas = series.filter((s) => s.id !== id);
+      finalizarCadastroWizard(usuario?.perfil, seriesAtualizadas);
       navigate('/treinos');
     }
   };
@@ -39,16 +47,26 @@ export default function DetalheSerie() {
   };
 
   const concluirSerie = () => {
-    setConcluidos([]);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    alternarStatus(serie.id);
+    if (!isSerieConcluida) {
+      setConcluidos([]);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
   
   return (
     <div className={styles.container}>
       <div className={styles.header}>
         <div className={styles.tituloContainer}>
-          <button onClick={() => navigate('/treinos')} className={styles.botaoVoltar}><FiArrowLeft size={18} /> Voltar</button>
+          <button onClick={() => navigate('/treinos')} className={styles.botaoVoltar}>
+            <FiArrowLeft size={18} /> Voltar
+          </button>
           <h1 className={styles.titulo}>{serie.nome}</h1>
+          {isSerieConcluida && (
+            <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#4caf50', fontWeight: 'bold', marginLeft: '8px' }}>
+              <FiCheck size={14} /> Concluída
+            </span>
+          )}
         </div>
         <div className={styles.botoesAcao}>
           <button onClick={handleExcluir} className={styles.botaoExcluir}><FiTrash2 size={18} /></button>
@@ -74,9 +92,15 @@ export default function DetalheSerie() {
         })}
       </div>
 
-      {concluidos.length > 0 && (
+      {(concluidos.length > 0 || isSerieConcluida) && (
         <div className={styles.containerFinalizar}>
-          <button onClick={concluirSerie} className={styles.botaoFinalizar}>Concluir Série</button>
+          <button 
+            onClick={concluirSerie} 
+            className={`${styles.botaoFinalizar} ${isSerieConcluida ? styles.botaoDesmarcar : ''}`}
+            style={isSerieConcluida ? { backgroundColor: '#e0e0e0', color: '#333' } : {}}
+          >
+            {isSerieConcluida ? "Reiniciar Série" : "Concluir Série"}
+          </button>
         </div>
       )}
       

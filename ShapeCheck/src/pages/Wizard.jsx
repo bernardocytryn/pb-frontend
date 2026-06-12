@@ -108,6 +108,10 @@ const Wizard = () => {
     const dadosDoUsuario = { ...respostasForm, ...respostasWizard, fotoAdicionada: temFoto };
     const listaDisponivel = exercicios.map(ex => ({ id: ex.id, name: ex.name }));
 
+    console.log("--- DEBUG WIZARD ---");
+    console.log("1. Quantidade de exercícios no contexto:", exercicios.length);
+    console.log("2. Lista que está a ir para a IA:", listaDisponivel);
+
     try {
       const promptParaIA = `Atue como personal trainer. Crie uma ficha de treino para ${dadosDoUsuario.nome}.
       Objetivo: ${dadosDoUsuario.objetivo}
@@ -127,23 +131,35 @@ const Wizard = () => {
       ]`;
 
       const respostaIA = await fetch(
-        `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`,
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent",
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { 
+            "Content-Type": "application/json",
+            "x-goog-api-key": import.meta.env.VITE_GEMINI_API_KEY
+          },
           body: JSON.stringify({ contents: [{ parts: [{ text: promptParaIA }] }] }),
         }
       );
 
-      if (!respostaIA.ok) throw new Error();
+      if (!respostaIA.ok) {
+        const erroAPI = await respostaIA.text();
+        console.error("ERRO DA API:", respostaIA.status, erroAPI);
+        throw new Error(`Falha na API: ${respostaIA.status}`);
+      }
 
       const dadosDaAPI = await respostaIA.json();
       const textoResposta = dadosDaAPI.candidates[0].content.parts[0].text;
       const jsonMatch = textoResposta.match(/\[[\s\S]*\]/);
       
-      if (!jsonMatch) throw new Error();
+      if (!jsonMatch) {
+        console.error("RESPOSTA SEM JSON:", textoResposta);
+        throw new Error("Falha na extração.");
+      }
       
       const jsonGerado = JSON.parse(jsonMatch[0]);
+      
+      console.log("3. O que a IA gerou e o código leu:", jsonGerado);
 
       const seriesGeradas = jsonGerado.map((serie) => {
         const exerciciosDaSerie = serie.exercicios.map((ex) => {
@@ -177,6 +193,9 @@ const Wizard = () => {
       finalizarCadastroWizard(dadosDoUsuario, seriesGeradas);
       navigate("/dashboard");
     } catch (erro) {
+      console.error("ERRO CAPTURADO:", erro);
+      alert("Erro ao gerar o treino. Verifique o console.");
+      
       finalizarCadastroWizard(dadosDoUsuario, []);
       navigate("/dashboard");
     } finally {
