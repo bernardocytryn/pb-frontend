@@ -6,9 +6,9 @@
 }
 
 .main {
-  max-width: 500px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 24px 20px 60px;
+  padding: 40px 20px 60px;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -29,6 +29,11 @@
   text-transform: none;
   border: none;
   cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.botaoVoltar:hover {
+  color: var(--destaque, #ffcb3c);
 }
 
 .rotulo {
@@ -64,13 +69,17 @@
   width: 100%;
   box-sizing: border-box;
   display: block;
+  transition: filter 0.2s ease;
+}
+
+.botaoCriar:hover {
+  filter: brightness(1.1);
 }
 
 .lista {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 16px;
-  flex: 1;
 }
 
 .cardSerie {
@@ -80,21 +89,62 @@
   padding: 20px;
   cursor: pointer;
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.cardSerie:hover {
+  transform: translateY(-2px);
+  border-color: var(--destaque, #ffcb3c);
+}
+
+.cardConcluido {
+  border-color: #4caf50;
+  background-color: rgba(76, 175, 80, 0.05);
+}
+
+.cardConcluido:hover {
+  border-color: #4caf50;
 }
 
 .nomeSerie {
   color: var(--texto, #f2f2f2);
   font-size: 1.2rem;
   font-weight: 600;
-  margin: 0;
+  margin: 0 0 8px 0;
 }
 
 .infoSerie {
   color: var(--texto-suave, #a0a0a0);
   margin: 0;
   font-size: 0.95rem;
+}
+
+.botaoCheck {
+  background-color: transparent;
+  border: 2px solid var(--borda, #3a3a3c);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.botaoCheck:hover {
+  border-color: #4caf50;
+}
+
+.botaoCheckAtivo {
+  background-color: #4caf50;
+  border-color: #4caf50;
+  color: #fff;
 }
 
 .estadoVazio {
@@ -108,6 +158,7 @@
   border: 1px dashed var(--borda, #3a3a3c);
   border-radius: 12px;
   margin-top: 16px;
+  grid-column: 1 / -1;
 }
 
 .vazioTextoPrincipal {
@@ -119,6 +170,13 @@
 .vazioTextoSecundario {
   color: var(--texto-suave, #a0a0a0);
   font-size: 0.85rem;
+}
+
+@media (min-width: 768px) {
+  .lista {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
 }
 
 @media(max-width: 480px) {

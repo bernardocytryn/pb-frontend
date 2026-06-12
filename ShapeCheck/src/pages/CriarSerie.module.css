@@ -2,9 +2,9 @@
   font-family: 'Inter', sans-serif;
   background-color: var(--bg, #1e1e1e);
   min-height: 100vh;
-  max-width: 500px;
+  max-width: 800px;
   margin: 0 auto;
-  padding: 24px 20px 120px;
+  padding: 40px 20px 120px;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -78,8 +78,8 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 12px;
 }
 
@@ -108,6 +108,11 @@
   font-weight: 600;
   cursor: pointer;
   padding: 8px;
+  transition: opacity 0.2s ease;
+}
+
+.botaoRemover:hover {
+  opacity: 0.7;
 }
 
 .rodapeAcoes {
@@ -126,6 +131,7 @@
   cursor: pointer;
   text-align: center;
   border: none;
+  transition: background-color 0.2s ease, filter 0.2s ease;
 }
 
 .botaoCancelar {
@@ -133,9 +139,17 @@
   color: var(--texto, #f2f2f2);
 }
 
+.botaoCancelar:hover {
+  background-color: var(--borda, #3a3a3c);
+}
+
 .botaoSalvar {
   background-color: var(--destaque, #ffcb3c);
   color: #000;
+}
+
+.botaoSalvar:not(:disabled):hover {
+  filter: brightness(1.1);
 }
 
 .botaoSalvar:disabled {
@@ -156,4 +170,22 @@
   border: none;
   cursor: pointer;
   margin-bottom: 8px;
+  transition: color 0.2s ease;
+}
+
+.botaoVoltar:hover {
+  color: var(--destaque, #ffcb3c);
+}
+
+@media (min-width: 768px) {
+  .listaExercicios {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+}
+
+@media(max-width: 480px) {
+  .containerCriacao {
+    padding: 24px 14px 120px;
+  }
 }

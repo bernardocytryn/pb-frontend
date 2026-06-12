@@ -32,51 +32,40 @@ export function ExerciciosProvider({ children }) {
         };
 
         let todosExercicios = [];
-        let proximoCursor = null;
-        let temMaisPaginas = true;
-
+        let proximaPagina = null;
         const delay = (ms) => new Promise(res => setTimeout(res, ms));
 
-        while (temMaisPaginas && todosExercicios.length < 200) {
-          let url = 'https://edb-with-videos-and-images-by-ascendapi.p.rapidapi.com/api/v1/exercises?limit=25';
-          if (proximoCursor) {
-            url += `&after=${proximoCursor}`;
-          }
-
+        do {
+          const url = `https://edb-with-videos-and-images-by-ascendapi.p.rapidapi.com/api/v1/exercises?limit=25${proximaPagina ? `&after=${proximaPagina}` : ''}`;
           const res = await fetch(url, options);
+          
           if (!res.ok) break;
 
           const json = await res.json();
           const dados = json.data || [];
-          const meta = json.meta || {};
-
+          
           if (dados.length === 0) break;
 
-          const dadosCompletos = dados.map(ex => ({
+          const dadosMapeados = dados.map(ex => ({
             id: ex.id || ex.exerciseId,
             name: ex.name,
             bodyPart: ex.bodyPart || "",
             equipment: ex.equipment || "",
-            imageUrl: ex.imageUrl || ex.gifUrl || (ex.imageUrls ? ex.imageUrls["360p"] : null) || null
+            imageUrl: ex.imageUrl || ex.gifUrl || (ex.imageUrls?.["360p"]) || null
           }));
 
-          todosExercicios = [...todosExercicios, ...dadosCompletos];
+          todosExercicios = [...todosExercicios, ...dadosMapeados];
+          proximaPagina = json.meta?.hasNextPage ? json.meta.nextCursor : null;
 
-          temMaisPaginas = meta.hasNextPage;
-          proximoCursor = meta.nextCursor;
-
-          if (temMaisPaginas) {
+          if (proximaPagina && todosExercicios.length < 200) {
             await delay(800);
           }
-        }
+        } while (proximaPagina && todosExercicios.length < 200);
 
         const unicos = Array.from(new Map(todosExercicios.map(item => [item.id, item])).values());
 
         if (unicos.length > 0) {
-          localStorage.setItem(cacheChave, JSON.stringify({
-            timestamp: Date.now(),
-            data: unicos
-          }));
+          localStorage.setItem(cacheChave, JSON.stringify({ timestamp: Date.now(), data: unicos }));
           setExercicios(unicos);
         } else {
           throw new Error("Falha ao carregar a lista da API");
@@ -94,15 +83,13 @@ export function ExerciciosProvider({ children }) {
 
   const fetchDetalhes = async (idParaBusca) => {
     try {
-      const url = `https://edb-with-videos-and-images-by-ascendapi.p.rapidapi.com/api/v1/exercises/${idParaBusca}`;
-      const options = {
+      const res = await fetch(`https://edb-with-videos-and-images-by-ascendapi.p.rapidapi.com/api/v1/exercises/${idParaBusca}`, {
         method: 'GET',
         headers: {
           'x-rapidapi-key': import.meta.env.VITE_RAPIDAPI_KEY,
           'x-rapidapi-host': 'edb-with-videos-and-images-by-ascendapi.p.rapidapi.com'
         }
-      };
-      const res = await fetch(url, options);
+      });
       if (!res.ok) return null;
       const json = await res.json();
       return json.data;
