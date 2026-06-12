@@ -1,6 +1,6 @@
 import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
-import styles from "./Passo7Final.module.css";
+import styles from "./PassoFinal.module.css";
 
 const Passo7Final = () => {
   return (

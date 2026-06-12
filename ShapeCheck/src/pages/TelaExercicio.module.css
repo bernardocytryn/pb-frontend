@@ -1,7 +1,6 @@
 .container {
   font-family: 'Inter', sans-serif;
   background-color: var(--bg, #1e1e1e);
-  min-height: 100vh;
 }
 
 .main {

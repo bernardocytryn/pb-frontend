@@ -7,8 +7,7 @@ import Passo2Lugar from "../features/wizard/passos/Passo2Lugar";
 import Passo3Nivel from "../features/wizard/passos/Passo3Nivel";
 import Passo4Frequencia from "../features/wizard/passos/Passo4Frequencia";
 import Passo5Objetivo from "../features/wizard/passos/Passo5Objetivo";
-import Passo6Foto from "../features/wizard/passos/Passo6Foto";
-import Passo7Final from "../features/wizard/passos/Passo7Final";
+import PassoFinal from "../features/wizard/passos/PassoFinal";
 import { CircularProgress } from "@mui/material";
 import styles from "./Wizard.module.css";
 import { useAuth } from "../hooks/useAuth";
@@ -65,7 +64,7 @@ const Wizard = () => {
     if (passoAtual === 4 && !respostasWizard.frequencia) return;
     if (passoAtual === 5 && !respostasWizard.objetivo) return;
 
-    if (passoAtual === 7) {
+    if (passoAtual === 6) {
       finalizarWizard();
     } else {
       setPassoAtual((prev) => prev + 1);
@@ -137,9 +136,7 @@ const Wizard = () => {
           />
         );
       case 6:
-        return <Passo6Foto temFoto={temFoto} setTemFoto={setTemFoto} />;
-      case 7:
-        return <Passo7Final />;
+        return <PassoFinal />;
     }
   };
 
@@ -157,7 +154,7 @@ const Wizard = () => {
     let seriesGeradas = [];
 
     try {
-      const promptParaIA = `Atue como personal trainer. Crie uma ficha de treino para ${dadosDoUsuario.nome}.
+      const promptParaIA = `Crie uma ficha de treino para ${dadosDoUsuario.nome}.
       Objetivo: ${dadosDoUsuario.objetivo}
       Frequência: ${dadosDoUsuario.frequencia}
       Nível: ${dadosDoUsuario.nivel}
@@ -175,23 +172,37 @@ const Wizard = () => {
       ]`;
 
       const respostaIA = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${import.meta.env.VITE_GEMINI_API_KEY}`,
+        "https://api.mistral.ai/v1/chat/completions",
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${import.meta.env.VITE_MISTRAL_API_KEY}`,
+          },
           body: JSON.stringify({
-            contents: [{ parts: [{ text: promptParaIA }] }],
+            model: "mistral-small-latest",
+            messages: [
+              {
+                role: "system",
+                content: "Atue como um personal trainer experiente.",
+              },
+              {
+                role: "user",
+                content: promptParaIA,
+              },
+            ],
+            temperature: 0.7,
           }),
         },
       );
 
-      if (!respostaIA.ok) throw new Error("Erro na API");
+      if (!respostaIA.ok) throw new Error("Erro na API da Mistral");
 
       const dadosDaAPI = await respostaIA.json();
-      const textoResposta = dadosDaAPI.candidates[0].content.parts[0].text;
+      const textoResposta = dadosDaAPI.choices[0].message.content;
       const jsonMatch = textoResposta.match(/\[[\s\S]*\]/);
 
-      if (!jsonMatch) throw new Error("JSON não encontrado");
+      if (!jsonMatch) throw new Error("JSON não encontrado na resposta");
 
       const jsonGerado = JSON.parse(jsonMatch[0]);
 
@@ -247,8 +258,8 @@ const Wizard = () => {
 
   return (
     <div className={styles.wizard}>
-      {passoAtual < 7 && (
-        <BarraProgresso passoAtual={passoAtual} totalPassos={6} />
+      {passoAtual < 6 && (
+        <BarraProgresso passoAtual={passoAtual} totalPassos={5} />
       )}
       <div key={passoAtual} className={styles["passo-animado"]}>
         {renderizarPasso()}

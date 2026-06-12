@@ -1,0 +1,16 @@
+.main {
+  min-height: 100vh;
+}
+
+.main-with-navbar {
+  min-height: calc(100vh - 80px);
+  padding-bottom: 80px;
+}
+
+@media (min-width: 768px) {
+  .main-with-navbar {
+    min-height: calc(100vh - 80px);
+    padding-bottom: 0;
+    padding-top: 80px;
+  }
+}

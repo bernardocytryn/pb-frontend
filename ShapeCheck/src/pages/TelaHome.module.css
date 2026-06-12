@@ -1,9 +1,5 @@
 .container {
-  min-height: 100vh;
-  background: var(--bg);
-  color: var(--texto);
-  font-family: 'Inter', sans-serif;
-  padding-bottom: 50px;
+  width: 100%;
 }
 
 .main {
@@ -14,7 +10,8 @@
 
 @media (min-width: 768px) {
   .main {
-    padding-top: 32px;
+    padding-top: 20px; 
+    padding-bottom: 10px;
   }
 
   .workoutCard {

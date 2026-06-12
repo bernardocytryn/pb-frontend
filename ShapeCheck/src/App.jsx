@@ -37,11 +37,10 @@ function App() {
   return (
     <main
       {...handlers}
+      className={mostrarNavbar ? "main-with-navbar" : "main"}
       style={{
-        minHeight: "100vh",
         width: "100%",
         overflowX: "hidden",
-        paddingBottom: mostrarNavbar ? "80px" : "0px",
       }}
     >
       <Outlet />
