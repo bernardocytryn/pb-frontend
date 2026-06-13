@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback } from "react";
+import showError from "../utils/showError";
 
 const useCamera = () => {
   const videoRef = useRef(null);
@@ -16,7 +17,7 @@ const useCamera = () => {
       }
       setCameraAtiva(true);
     } catch (erro) {
-      alert("Permissão de câmera negada ou dispositivo não suportado.");
+      showError("Permissão de câmera negada ou dispositivo não suportado.");
     }
   };
 

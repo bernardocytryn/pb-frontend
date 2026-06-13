@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import NavbarPerfil from "../features/perfil/NavbarPerfil";
 import CardPerfil from "../features/perfil/CardPerfil";
 import CardStatus from "../features/perfil/CardStatus";
-// Calendario removed from this view per profile-focused changes
 import ListaConfiguracoes from "../features/perfil/ListaConfiguracoes";
 import styles from "./TelaPerfil.module.css";
 

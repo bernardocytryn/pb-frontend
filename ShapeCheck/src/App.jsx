@@ -1,6 +1,7 @@
 import { useLocation, useNavigate, Outlet } from "react-router-dom";
 import { useSwipeable } from "react-swipeable";
 import Navbar from "./components/layout/Navbar";
+import ErrorBanner from "./components/ErrorBanner";
 import "./App.css";
 
 function App() {
@@ -43,6 +44,7 @@ function App() {
         overflowX: "hidden",
       }}
     >
+      <ErrorBanner />
       <Outlet />
       {mostrarNavbar && <Navbar />}
     </main>
