@@ -1,0 +1,14 @@
+.accordion { background: var(--card); border: 1px solid var(--borda); border-radius: 12px; overflow: hidden; }
+.header { display:flex; justify-content:space-between; align-items:center; width:100%; background:transparent; border:none; padding:12px 16px; cursor:pointer; color:var(--texto); }
+.content { padding: 12px 16px; background: var(--card2); border-top: 1px solid var(--borda); }
+
+.containerSmall { display:flex; flex-direction: column; gap: 8px; }
+.row { display:flex; justify-content:space-between; align-items:center; padding:12px; background: transparent; border-radius:8px; cursor:pointer; }
+.sectionTitle { font-weight:600; color:var(--texto); font-size:0.92rem; }
+.sectionSub { font-size:0.75rem; color:var(--texto-suave); margin-bottom:6px; }
+.rowIcon { display:grid; place-items:center; color:var(--amarelo); }
+.sectionContent { padding: 6px 0 12px 0; }
+.sectionContent input { padding: 6px 8px; font-size: 0.9rem; }
+.smallBtn button { padding: 6px 10px !important; font-size: 0.86rem !important; }
+.section { border-bottom: 1px solid var(--borda); padding: 6px 0; }
+.section:last-child { border-bottom: none; }
