@@ -1,25 +1,27 @@
 .navbar {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   background-color: #323537;
-  padding: 0.5rem;
+  padding: 0.55rem 0.75rem;
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
   width: 100%;
   z-index: 1000;
-  font-size: 2.25rem;
+  font-size: 2rem;
 }
 .icone {
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 .item {
   display: flex;
   cursor: pointer;
-  padding: 1rem;
-  border-radius: 5px;
+  padding: 0.85rem;
+  border-radius: 10px;
   text-decoration: none;
   color: white;
   transition:
@@ -58,10 +60,12 @@
     left: 0;
     right: 0;
     bottom: auto;
+    padding: 0.75rem 1.5rem;
+    font-size: 1.75rem;
   }
   .texto {
     display: block;
-    font-size: 1.75rem;
+    font-size: 1.6rem;
   }
   .icone {
     display: none;
@@ -72,14 +76,14 @@
   }
   .itens img {
     display: block;
-    width: 2.5rem;
+    width: 2.2rem;
     object-fit: cover;
     align-items: center;
   }
   .itens {
     display: flex;
     justify-content: start;
-    gap: 5rem;
+    gap: 2rem;
     padding-left: 2rem;
     width: auto;
   }
@@ -98,5 +102,18 @@
     display: flex;
     align-items: center;
     font-size: 2rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .navbar {
+    font-size: 1.85rem;
+    padding: 0.55rem 0.7rem;
+  }
+  .item {
+    padding: 0.7rem;
+  }
+  .itens {
+    gap: 0.35rem;
   }
 }
