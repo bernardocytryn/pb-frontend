@@ -132,14 +132,6 @@ export default function CardPerfil() {
 
   return (
     <div className={styles.card}>
-      <button
-        className={`${styles.btnGhost} ${styles.settings}`}
-        style={{ padding: "10px" }}
-        aria-label="Opções"
-      >
-        <IcoEngrenagem />
-      </button>
-
       <div className={styles.inner}>
         <div className={styles.avatarWrapper}>
           <div

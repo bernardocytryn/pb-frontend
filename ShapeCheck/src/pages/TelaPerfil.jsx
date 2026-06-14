@@ -10,14 +10,20 @@ export default function TelaPerfil() {
   return (
     <div className={styles.container}>
       <main className={styles.main}>
-        <div className={styles.rotulo}>Perfil</div>
-        <CardPerfil />
+        <section className={styles.section}>
+          <div className={styles.rotulo}>Perfil</div>
+          <CardPerfil />
+        </section>
 
-        <div className={styles.rotulo}>Status Fitness</div>
-        <CardStatus />
+        <section className={styles.section}>
+          <div className={styles.rotulo}>Status Fitness</div>
+          <CardStatus />
+        </section>
 
-        <div className={styles.rotulo}>Conta</div>
-        <ListaConfiguracoes />
+        <section className={`${styles.section} ${styles.fullWidth}`}>
+          <div className={styles.rotulo}>Conta</div>
+          <ListaConfiguracoes />
+        </section>
       </main>
     </div>
   );

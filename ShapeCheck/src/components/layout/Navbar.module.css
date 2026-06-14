@@ -61,6 +61,7 @@
   }
   .texto {
     display: block;
+    font-size: 1.75rem;
   }
   .icone {
     display: none;
@@ -91,7 +92,7 @@
     gap: 1rem;
   }
   .textoOla {
-    font-size: 1.3rem;
+    font-size: 1rem;
   }
   .iconePerfil {
     display: flex;
