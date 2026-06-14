@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useStatusTreino } from '../../contexts/StatusTreinoContext'; // Verifique se o caminho bate com a sua pasta
+import { useStatusTreino } from '../../contexts/StatusTreinoContext';
 import styles from './TreinoDoDia.module.css';
 
 export default function TreinoDoDia({ treinoDados }) {
@@ -27,15 +27,11 @@ export default function TreinoDoDia({ treinoDados }) {
     textoResumo += '...';
   }
 
-  // --- AS NOVAS FUNÇÕES ---
-
   const handleIniciarTreino = () => {
-    // Redireciona para a mesma rota que você usa na sua lista de "Minhas Séries"
     navigate(`/series/${treinoDados.id}`);
   };
 
   const handleConcluirTreino = () => {
-    // Usa a mesma função do botão de check da sua lista
     alternarStatus(treinoDados.id);
   };
 
@@ -56,7 +52,6 @@ export default function TreinoDoDia({ treinoDados }) {
       </div>
 
       <div className={styles.actionButtons}>
-        {/* Adicionado o onClick para Iniciar */}
         <button
           className={styles.playButton}
           title="Iniciar Treino"
@@ -68,7 +63,6 @@ export default function TreinoDoDia({ treinoDados }) {
           </svg>
         </button>
 
-        {/* Adicionado o onClick para Concluir */}
         <button
           className={styles.finishButton}
           title="Concluir Treino"

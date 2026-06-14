@@ -1,20 +1,16 @@
-/* --- FUNDO GERAL DA TELA --- */
+
 .container {
   min-height: 100vh;
   background-color: #121212; 
   color: #ffffff;
-  padding-bottom: 80px; /* Mantém o espaço para o menu inferior */
+  padding-bottom: 80px;
 }
 
-/* --- ÁREA PRINCIPAL --- */
 .main {
   padding: 24px; 
   display: flex;
   flex-direction: column;
-  
-  /* A MÁGICA ACONTECE AQUI */
-  gap: 32px; /* Aumentamos o espaçamento entre os blocos (Saudação, Treino, Calendário) */
-  
+  gap: 32px;
   max-width: 600px; 
   margin: 0 auto; 
 }

@@ -1,4 +1,4 @@
-/* --- CARD PRINCIPAL --- */
+
 .workoutCard {
   background-color: #1a1a1a;
   border: 1px solid #2a2a2a;
@@ -18,7 +18,6 @@
   padding: 20px 0;
 }
 
-/* --- CONTEÚDO DE TEXTO --- */
 .workoutContent {
   display: flex;
   flex-direction: column;
@@ -41,7 +40,6 @@
   letter-spacing: 0.5px;
 }
 
-/* --- RESUMO E CONTAGEM --- */
 .infoContainer {
   display: flex;
   flex-direction: column;
@@ -53,7 +51,6 @@
   color: #aaaaaa;
   line-height: 1.5;
   margin: 0;
-  /* Garante que não quebre o layout se os nomes forem gigantes */
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -68,18 +65,16 @@
   letter-spacing: 0.5px;
 }
 
-/* --- ÁREA DOS BOTÕES --- */
 .actionButtons {
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* Alinhado à esquerda seguindo o fluxo do texto! */
+  justify-content: flex-start;
   gap: 16px;
   margin-top: 4px;
 }
 
-/* Botão Amarelo de Iniciar */
 .playButton {
-  width: 56px; /* Diminuí levemente para ornar melhor com a altura do card */
+  width: 56px;
   height: 56px;
   border-radius: 50%;
   background-color: #f7ce46;
@@ -110,7 +105,6 @@
   margin-left: 4px;
 }
 
-/* Botão Verde de Concluir */
 .finishButton {
   display: flex;
   align-items: center;
