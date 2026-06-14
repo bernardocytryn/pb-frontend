@@ -1,78 +1,138 @@
+/* --- CARD PRINCIPAL --- */
 .workoutCard {
-  background: linear-gradient(
-    145deg,
-    var(--card2),
-    var(--card)
-  );
-
-  border: 1px solid var(--borda);
+  background-color: #1a1a1a;
+  border: 1px solid #2a2a2a;
   border-radius: 24px;
   padding: 24px;
-  margin-bottom: 32px;
-
   display: flex;
   flex-direction: column;
   gap: 24px;
-
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  font-family: sans-serif;
 }
 
+.emptyMessage {
+  color: #888888;
+  text-align: center;
+  font-size: 15px;
+  margin: 0;
+  padding: 20px 0;
+}
+
+/* --- CONTEÚDO DE TEXTO --- */
 .workoutContent {
-  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .cardLabel {
-  color: var(--texto-suave);
-  font-size: 0.95rem;
-  margin-bottom: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #888888;
+  margin: 0;
 }
 
 .workoutTitle {
-  font-size: 1.7rem;
-  color: var(--texto);
-  font-weight: 700;
-  letter-spacing: 0.03em;
+  font-size: 24px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 4px 0 0 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
-.exerciseList {
-  padding-left: 18px;
+/* --- RESUMO E CONTAGEM --- */
+.infoContainer {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  color: #d7d7d7;
+  gap: 8px;
+}
+
+.resumoTexto {
+  font-size: 15px;
+  color: #aaaaaa;
+  line-height: 1.5;
+  margin: 0;
+  /* Garante que não quebre o layout se os nomes forem gigantes */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .exerciseCount {
-  color: var(--texto-suave);
-  font-size: 0.95rem;
+  font-size: 13px;
+  font-weight: 600;
+  color: #666666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
+/* --- ÁREA DOS BOTÕES --- */
+.actionButtons {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Alinhado à esquerda seguindo o fluxo do texto! */
+  gap: 16px;
+  margin-top: 4px;
+}
+
+/* Botão Amarelo de Iniciar */
 .playButton {
-  align-self: center;
-
-  width: 58px;
-  height: 58px;
-
+  width: 56px; /* Diminuí levemente para ornar melhor com a altura do card */
+  height: 56px;
   border-radius: 50%;
+  background-color: #f7ce46;
+  color: #121212;
   border: none;
-
-  background: var(--amarelo);
-  color: #1a1a1a;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   cursor: pointer;
-  transition: var(--t);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  box-shadow: 0 0 20px rgba(247, 206, 70, 0.2); /* Efeito de brilho que você tinha na imagem */
+  flex-shrink: 0;
+}
+
+.playButton:hover {
+  transform: scale(1.05);
+  background-color: #ffe066;
+  box-shadow: 0 0 24px rgba(247, 206, 70, 0.3);
+}
+
+.playButton:active {
+  transform: scale(0.95);
 }
 
 .playButton svg {
   width: 28px;
   height: 28px;
+  margin-left: 4px;
 }
 
-.playButton:hover {
-  transform: scale(1.05);
-  background: var(--amarelo-hover);
+/* Botão Verde de Concluir */
+.finishButton {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 48px;
+  padding: 0 24px;
+  border-radius: 24px;
+  background-color: transparent;
+  border: 1px solid #4caf50;
+  color: #4caf50;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.finishButton:hover {
+  background-color: rgba(76, 175, 80, 0.1);
+}
+
+.finishButton:active {
+  transform: scale(0.95);
 }
