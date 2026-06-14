@@ -1,7 +1,7 @@
 import styles from './TelaHome.module.css';
 import OlaMensagem from '../features/home/OlaMensagem';
 import TreinoDoDia from '../features/home/TreinoDoDia';
-import GraficoEvolucao from '../features/home/GraficoEvolucao';
+import CalendarioSemanal from '../features/home/CalendarioSemanal';
 
 export default function Home() {
   return (
@@ -9,7 +9,7 @@ export default function Home() {
       <main className={styles.main}>
         <OlaMensagem />
         <TreinoDoDia />
-        <GraficoEvolucao />
+        <CalendarioSemanal />
 
       </main>
     </div>
