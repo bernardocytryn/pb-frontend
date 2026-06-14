@@ -1,26 +1,66 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
 
 :root {
-  --amarelo:       #FFCB3C;
+  --amarelo: #ffcb3c;
   --amarelo-hover: #f0be2c;
-  --amarelo-dim:   rgba(255,203,60,0.15);
-  --laranja:       #FF7B54;
-  --vermelho:      #FF4D5B;
-  --bg:            #141416;
-  --card:          #1C1C1E;
-  --card2:         #2C2C2E;
-  --borda:         rgba(255,255,255,0.08);
-  --texto:         #F2F2F2;
-  --texto-suave:   #8E8E93;
-  --t:             0.2s ease;
+  --amarelo-dim: rgba(255, 203, 60, 0.15);
+  --laranja: #ff7b54;
+  --vermelho: #ff4d5b;
+  --bg: #141416;
+  --card: #1c1c1e;
+  --card2: #2c2c2e;
+  --borda: rgba(255, 255, 255, 0.08);
+  --texto: #f2f2f2;
+  --texto-suave: #8e8e93;
+  --t: 0.2s ease;
 }
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
+}
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   background: var(--bg);
   color: var(--texto);
-  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  width: 100%;
+  max-width: 100%;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
 }

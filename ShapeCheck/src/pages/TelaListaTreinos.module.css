@@ -1,6 +1,5 @@
 .container {
   padding: 20px;
-  padding-bottom: 90px;
   background-color: #121212;
   color: #f2f2f2;
   box-sizing: border-box;
@@ -55,7 +54,8 @@
   gap: 12px;
 }
 
-.botaoExcluir, .botaoCriar {
+.botaoExcluir,
+.botaoCriar {
   background-color: #2c2c2e;
   border: none;
   color: #f2f2f2;
@@ -73,7 +73,8 @@
   color: #ff4d4d;
 }
 
-.botaoExcluir:hover, .botaoCriar:hover {
+.botaoExcluir:hover,
+.botaoCriar:hover {
   filter: brightness(1.2);
 }
 
@@ -91,7 +92,9 @@
   flex-direction: row;
   cursor: pointer;
   border: 1px solid #2c2c2e;
-  transition: border-color 0.2s ease, transform 0.2s ease;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
   width: 100%;
   box-sizing: border-box;
 }
@@ -149,7 +152,9 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
   flex-shrink: 0;
 }
 
@@ -188,7 +193,9 @@
   border-radius: 12px;
   font-size: 1.1rem;
   cursor: pointer;
-  transition: transform 0.1s ease, filter 0.2s ease;
+  transition:
+    transform 0.1s ease,
+    filter 0.2s ease;
 }
 
 .botaoFinalizar:active {
@@ -208,7 +215,7 @@
 
   .cardGrid {
     flex-direction: column;
-    height: 100%; 
+    height: 100%;
   }
 
   .imagemGrid {
