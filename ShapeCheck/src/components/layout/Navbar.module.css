@@ -1,119 +1,240 @@
 .navbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #323537;
-  padding: 0.55rem 0.75rem;
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
+
   width: 100%;
+
   z-index: 1000;
-  font-size: 2rem;
+
+  background: rgba(26, 26, 26, 0.92);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+
+  padding: 0.65rem 0.9rem;
 }
-.icone {
+
+.container {
+  width: 100%;
+
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: space-between;
 }
-.item {
-  display: flex;
-  cursor: pointer;
-  padding: 0.85rem;
-  border-radius: 10px;
-  text-decoration: none;
-  color: white;
-  transition:
-    background-color 0.3s ease,
-    color 0.3s ease;
-}
-.ativo {
-  background-color: #ffcb3c;
-  color: #000000;
-}
+
 .itens {
-  list-style: none;
   display: flex;
+  align-items: center;
   justify-content: space-around;
-  width: 75%;
+
+  width: 100%;
 }
+
 .itensPerfil {
   display: flex;
+  align-items: center;
+}
+
+.item {
+  display: flex;
+  align-items: center;
   justify-content: center;
-  width: 25%;
+
+  gap: 0.6rem;
+
+  padding: 0.85rem;
+
+  border-radius: 14px;
+
+  text-decoration: none;
+
+  color: #d4d4d4;
+
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    transform 0.2s ease;
 }
-.perfil {
-  display: none;
+
+.item:hover {
+  background: rgba(255, 255, 255, 0.06);
+
+  color: white;
+
+  transform: translateY(-1px);
 }
+
+.ativo {
+  color: #ffcb3c;
+}
+
+.icone {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 1.8rem;
+}
+
 .texto {
   display: none;
 }
-.itens img {
+
+.perfil {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.iconePerfil {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 40px;
+  height: 40px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.08);
+
+  font-size: 1.1rem;
+}
+
+.textoOla {
+  font-size: 0.95rem;
+  font-weight: 600;
+
+  color: white;
+}
+
+.logo {
   display: none;
+}
+
+@media (max-width: 767px) {
+  .textoOla {
+    display: none;
+  }
+
+  .perfil {
+    background: transparent;
+
+    padding: 0;
+  }
+
+  .iconePerfil {
+    width: auto;
+    height: auto;
+
+    background: transparent;
+
+    font-size: 1.6rem;
+
+    color: #d4d4d4;
+  }
 }
 
 @media (min-width: 768px) {
   .navbar {
-    position: fixed;
     top: 0;
-    left: 0;
-    right: 0;
     bottom: auto;
-    padding: 0.75rem 1.5rem;
-    font-size: 1.75rem;
+
+    border-top: none;
+
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+
+    padding: 0;
   }
-  .texto {
+
+  .container {
+    max-width: 1400px;
+
+    height: 82px;
+
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  .logo {
     display: block;
-    font-size: 1.6rem;
-  }
-  .icone {
-    display: none;
-  }
-  .ativo {
-    background-color: transparent;
-    color: #ffcb3c;
-  }
-  .itens img {
-    display: block;
-    width: 2.2rem;
+
+    width: 42px;
+    height: 42px;
+
     object-fit: cover;
-    align-items: center;
   }
+
   .itens {
-    display: flex;
-    justify-content: start;
-    gap: 2rem;
-    padding-left: 2rem;
-    width: auto;
-  }
-  .itensPerfil {
-    width: auto;
-  }
-  .perfil {
-    display: flex;
-    align-items: center;
+    justify-content: flex-start;
+
     gap: 1rem;
+
+    width: auto;
   }
-  .textoOla {
+
+  .item {
+    padding: 0.8rem 1rem;
+
+    font-size: 0.96rem;
+    font-weight: 500;
+  }
+
+  .icone {
     font-size: 1rem;
   }
+
+  .texto {
+    display: block;
+  }
+
+  .perfil {
+    padding: 0.45rem 0.8rem;
+
+    border-radius: 999px;
+
+    background: rgba(255, 255, 255, 0.05);
+
+    transition: background 0.25s ease;
+  }
+
+  .perfil:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+
   .iconePerfil {
-    display: flex;
-    align-items: center;
-    font-size: 2rem;
+    width: 36px;
+    height: 36px;
+
+    border-radius: 50%;
+
+    background: rgba(255, 255, 255, 0.08);
+
+    font-size: 0.95rem;
+
+    color: white;
+  }
+
+  .ativo {
+
+    color: #ffcb3c;
   }
 }
 
 @media (max-width: 420px) {
   .navbar {
-    font-size: 1.85rem;
     padding: 0.55rem 0.7rem;
   }
+
   .item {
     padding: 0.7rem;
   }
-  .itens {
-    gap: 0.35rem;
+
+  .icone {
+    font-size: 1.6rem;
   }
 }

@@ -90,9 +90,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.textoPlaceholder {
+  height: 200px;
+  background: #2c2c2e;
+  border-radius: 12px;
   color: #a0a0a0;
 }
 
@@ -111,6 +111,7 @@
   text-transform: capitalize;
   border-radius: 8px;
   font-size: 0.85rem;
+  width: fit-content;
 }
 
 .tagCinza {
@@ -121,6 +122,7 @@
   text-transform: capitalize;
   border-radius: 8px;
   font-size: 0.85rem;
+  width: fit-content;
 }
 
 .instrucoes {
@@ -130,7 +132,7 @@
 .overview {
   color: #a0a0a0;
   font-size: 0.9rem;
-  line-height: 1.4;
+  line-height: 1.5;
   margin-bottom: 16px;
 }
 
@@ -173,4 +175,46 @@
   background-color: #3a3a3c;
   color: #a0a0a0;
   cursor: not-allowed;
+}
+
+.cargaContainer { margin: 20px 0; }
+.inputCarga {
+  display: block; width: 100%; padding: 12px; margin-top: 8px;
+  border-radius: 8px; border: 1px solid #3a3a3c; background: #2c2c2e; color: #fff;
+}
+
+@media (min-width: 1024px) {
+  .container { align-items: center; padding: 2rem; }
+  
+  .modalMobile {
+    width: 95%; max-width: 1100px;
+    height: auto; max-height: 85vh;
+    border-radius: 24px; padding: 2.5rem;
+  }
+
+  .tracoArrastar { display: none; }
+  .tituloModal { display: none; }
+
+  .desktopGrid {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .leftColumn { position: sticky; top: 0; }
+  
+  .gif {
+    aspect-ratio: 16/9;
+    object-fit: contain;
+    background: #000;
+  }
+
+  .tituloDesktop {
+    font-size: 2rem; color: #fff; margin: 0 0 1.5rem 0;
+  }
+
+  .overview, .instrucoes, .cargaContainer, .botaoAdicionarBase {
+    max-width: 600px;
+  }
 }

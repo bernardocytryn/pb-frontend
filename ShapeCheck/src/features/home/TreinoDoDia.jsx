@@ -16,8 +16,6 @@ export default function TreinoDoDia({ treinoDados }) {
       </section>
     );
   }
-
-  // Lógica do resumo dos exercícios
   const nomesExercicios = treinoDados.exercicios
     .slice(0, 3)
     .map(ex => ex.name || ex.nome);

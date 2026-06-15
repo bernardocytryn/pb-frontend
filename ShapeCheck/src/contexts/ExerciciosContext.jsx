@@ -84,18 +84,16 @@ export function ExerciciosProvider({ children }) {
     carregarCatalogo();
   }, []);
 
-  // --- Função fetchDetalhes corrigida e sem duplicações ---
   const fetchDetalhes = async (idParaBusca) => {
     try {
       const cacheChave = `shapecheck_detalhe_${idParaBusca}`;
       const cacheLocal = localStorage.getItem(cacheChave);
 
-      // 1. Verifica o cache
       if (cacheLocal) {
         return JSON.parse(cacheLocal);
       }
 
-      // 2. Busca na API
+
       const res = await fetch(`https://edb-with-videos-and-images-by-ascendapi.p.rapidapi.com/api/v1/exercises/${idParaBusca}`, {
         method: 'GET',
         headers: {
@@ -110,15 +108,11 @@ export function ExerciciosProvider({ children }) {
       let dados = json.data;
 
       if (dados) {
-        // 1. Traduz o Nome
         dados.name = await traduzirTexto(dados.name);
 
-        // 2. Traduz o Textão (AQUI ESTAVA O SEGREDO DO OVERVIEW!)
         if (dados.overview) {
           dados.overview = await traduzirTexto(dados.overview);
         }
-
-        // Mantemos description e summary por segurança caso algum exercício use
         if (dados.description) {
           if (Array.isArray(dados.description)) {
             dados.description = await Promise.all(dados.description.map(d => traduzirTexto(d)));
@@ -130,14 +124,12 @@ export function ExerciciosProvider({ children }) {
           dados.summary = await traduzirTexto(dados.summary);
         }
 
-        // 3. Traduz as Instruções (Passo a passo)
         if (dados.instructions && dados.instructions.length > 0) {
           dados.instructions = await Promise.all(
             dados.instructions.map(linha => traduzirTexto(linha))
           );
         }
 
-        // 4. Traduz as Tags lidando com os Arrays (Plural) que o seu CardExercicioModal usa
         if (dados.targetMuscles && dados.targetMuscles.length > 0) {
           dados.targetMuscles[0] = dicMusculos[dados.targetMuscles[0]?.toLowerCase()] || dados.targetMuscles[0];
         }
@@ -148,7 +140,6 @@ export function ExerciciosProvider({ children }) {
           dados.bodyParts[0] = dicMusculos[dados.bodyParts[0]?.toLowerCase()] || dados.bodyParts[0];
         }
 
-        // 5. Salva no cache com tudo arrumado!
         localStorage.setItem(cacheChave, JSON.stringify(dados));
       }
 

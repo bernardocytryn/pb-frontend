@@ -16,22 +16,21 @@ export function CardExercicioModal({ exercicio, handleClose, modoCriacao, modoSe
     if (exercicio) {
       document.body.style.overflow = "hidden";
       document.documentElement.style.overflow = "hidden";
+      document.body.classList.add("modal-aberto");
 
       const cargasSalvas = JSON.parse(localStorage.getItem("shapecheck_cargas") || "{}");
       const idParaBuscar = exercicio.exerciseId || exercicio.id || exercicio.name;
-      if (cargasSalvas[idParaBuscar]) {
-        setCarga(cargasSalvas[idParaBuscar]);
-      } else {
-        setCarga("");
-      }
+      setCarga(cargasSalvas[idParaBuscar] || "");
     } else {
       document.body.style.overflow = "auto";
       document.documentElement.style.overflow = "auto";
+      document.body.classList.remove("modal-aberto");
     }
 
     return () => {
       document.body.style.overflow = "auto";
       document.documentElement.style.overflow = "auto";
+      document.body.classList.remove("modal-aberto");
     };
   }, [exercicio]);
 
@@ -79,7 +78,7 @@ export function CardExercicioModal({ exercicio, handleClose, modoCriacao, modoSe
   );
 
   const handleAdicionar = () => {
-    adicionarExercicio(ex);
+    adicionarExercicio(exercicio);
     handleClose();
   };
 
@@ -105,61 +104,54 @@ export function CardExercicioModal({ exercicio, handleClose, modoCriacao, modoSe
           {carregando ? (
             <p className={styles.textoCarregando}>Carregando execução...</p>
           ) : (
-            <>
-              {video && video !== "string" ? (
-                <video src={video} className={styles.gif} autoPlay loop muted playsInline />
-              ) : imagem ? (
-                <img src={imagem} alt={ex.name} className={styles.gif} />
-              ) : (
-                <div className={`${styles.gif} ${styles.gifPlaceholder}`}>
-                  <span className={styles.textoPlaceholder}>Imagem indisponível</span>
-                </div>
-              )}
+            <div className={styles.desktopGrid}>
+              {/* Coluna Esquerda: GIF e Tags */}
+              <div className={styles.leftColumn}>
+                {video && video !== "string" ? (
+                  <video src={video} className={styles.gif} autoPlay loop muted playsInline />
+                ) : imagem ? (
+                  <img src={imagem} alt={ex.name} className={styles.gif} />
+                ) : (
+                  <div className={`${styles.gif} ${styles.gifPlaceholder}`}><span>Sem imagem</span></div>
+                )}
 
-              {modoSerie && (
-                <div className={styles.cargaContainer}>
-                  <label htmlFor="inputCarga">Carga (kg):</label>
-                  <input
-                    id="inputCarga"
-                    type="number"
-                    value={carga}
-                    onChange={handleCargaChange}
-                    placeholder="Ex: 20"
-                    className={styles.inputCarga}
-                  />
+                <div className={styles.tagsContainer}>
+                  {ex.targetMuscles?.[0] && <span className={styles.tagAmarela}>{ex.targetMuscles[0]}</span>}
+                  {ex.equipments?.[0] && <span className={styles.tagCinza}>{ex.equipments[0]}</span>}
+                  {ex.bodyParts?.[0] && <span className={styles.tagCinza}>{ex.bodyParts[0]}</span>}
                 </div>
-              )}
-
-              <div className={styles.tagsContainer}>
-                {ex.targetMuscles?.[0] && <span className={styles.tagAmarela}>{ex.targetMuscles[0]}</span>}
-                {ex.equipments?.[0] && <span className={styles.tagCinza}>{ex.equipments[0]}</span>}
-                {ex.bodyParts?.[0] && <span className={styles.tagCinza}>{ex.bodyParts[0]}</span>}
               </div>
 
-              <div className={styles.instrucoes}>
-                {ex.overview && <p className={styles.overview}>{ex.overview}</p>}
-                {ex.instructions && ex.instructions.length > 0 && (
-                  <>
-                    <h3 className={styles.subtituloModal}>Como executar</h3>
-                    <ol className={styles.lista}>
-                      {ex.instructions.map((passo, index) => (
-                        <li key={index} className={styles.passo}>{passo}</li>
-                      ))}
-                    </ol>
-                  </>
+              {/* Coluna Direita: Título, Textos, Instruções e Botão */}
+              <div className={styles.rightColumn}>
+                <h2 className={styles.tituloDesktop}>{ex.name}</h2>
+
+                <div className={styles.instrucoes}>
+                  {ex.overview && <p className={styles.overview}>{ex.overview}</p>}
+                  {ex.instructions?.length > 0 && (
+                    <>
+                      <h3 className={styles.subtituloModal}>Como executar</h3>
+                      <ol className={styles.lista}>
+                        {ex.instructions.map((p, i) => <li key={i} className={styles.passo}>{p}</li>)}
+                      </ol>
+                    </>
+                  )}
+                </div>
+
+                {modoSerie && (
+                  <div className={styles.cargaContainer}>
+                    <label htmlFor="inputCarga">Carga (kg):</label>
+                    <input id="inputCarga" type="number" value={carga} onChange={handleCargaChange} className={styles.inputCarga} placeholder="0" />
+                  </div>
+                )}
+
+                {modoCriacao && (
+                  <button onClick={() => { adicionarExercicio(ex); handleClose(); }} disabled={jaAdicionado} className={`${styles.botaoAdicionarBase} ${jaAdicionado ? styles.botaoAdicionarInativo : styles.botaoAdicionarAtivo}`}>
+                    {jaAdicionado ? "Já adicionado" : "Adicionar à Série"}
+                  </button>
                 )}
               </div>
-
-              {modoCriacao && (
-                <button
-                  onClick={handleAdicionar}
-                  disabled={jaAdicionado}
-                  className={`${styles.botaoAdicionarBase} ${jaAdicionado ? styles.botaoAdicionarInativo : styles.botaoAdicionarAtivo}`}
-                >
-                  {jaAdicionado ? "Exercício já adicionado" : "Adicionar à Série"}
-                </button>
-              )}
-            </>
+            </div>
           )}
         </div>
       </div>

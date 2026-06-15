@@ -10,6 +10,14 @@
   padding-bottom: 80px;
 }
 
+body.modal-aberto #navbar {
+  display: none !important;
+}
+
+body.modal-aberto .main-with-navbar {
+  padding-bottom: 0 !important;
+}
+
 @media (min-width: 768px) {
   .main-with-navbar {
     padding-bottom: 0;
