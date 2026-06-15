@@ -2,13 +2,19 @@ import React from "react";
 import { IoMdHome } from "react-icons/io";
 import { IoBarbell, IoStatsChartSharp } from "react-icons/io5";
 import { FaUserLarge } from "react-icons/fa6";
+<<<<<<< HEAD
 import { NavLink } from "react-router-dom";
 
+=======
+import { NavLink, useLocation } from "react-router-dom";
+>>>>>>> main
 import logo from "../../assets/logoshapecheck.png";
 
 import styles from "./Navbar.module.css";
 
 const Navbar = ({ nomeUsuario }) => {
+  const location = useLocation();
+
   const estiloLink = ({ isActive }) =>
     isActive ? `${styles.item} ${styles.ativo}` : styles.item;
 

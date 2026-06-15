@@ -18,9 +18,29 @@ body.modal-aberto .main-with-navbar {
   padding-bottom: 0 !important;
 }
 
+.zona-swipe-esquerda,
+.zona-swipe-direita {
+  position: fixed;
+  top: 0;
+  bottom: 80px;
+  width: 25px;
+  z-index: 9999;
+}
+
+.zona-swipe-esquerda {
+  left: 0;
+}
+
+.zona-swipe-direita {
+  right: 0;
+}
 @media (min-width: 768px) {
   .main-with-navbar {
     padding-bottom: 0;
     padding-top: 80px;
+  }
+  .zona-swipe-esquerda,
+  .zona-swipe-direita {
+    display: none;
   }
 }
