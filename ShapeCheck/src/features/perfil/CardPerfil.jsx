@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import showError from "../../utils/showError";
 import { useAuth } from "../../hooks/useAuth";
-import { IcoEngrenagem } from "./Icones";
 import styles from "./CardPerfil.module.css";
 
 export default function CardPerfil() {
-  const { usuario, finalizarCadastroWizard } = useAuth();
+  const { usuario, atualizarUsuario } = useAuth();
   const perfil = usuario?.perfil || {};
 
   const nome = perfil?.nome || usuario?.email || "Usuário";
@@ -14,15 +14,41 @@ export default function CardPerfil() {
   const photo = perfil?.photo;
 
   const [menuOpen, setMenuOpen] = useState(false);
+  const [menuPos, setMenuPos] = useState({ top: 0, left: 0 });
+  const [showCamera, setShowCamera] = useState(false);
+
   const fileInputRef = useRef(null);
-  const fileInputCaptureRef = useRef(null);
+  const avatarRef = useRef(null);
+  const menuRef = useRef(null);
+  const videoRef = useRef(null);
+  const streamRef = useRef(null);
 
   const calcularIniciais = (nomeStr) => {
     if (!nomeStr) return "U";
     const partes = nomeStr.trim().split(" ");
-    const a = partes[0]?.[0] || "";
-    const b = partes[1]?.[0] || "";
-    return (a + b).toUpperCase();
+    return ((partes[0]?.[0] || "") + (partes[1]?.[0] || "")).toUpperCase();
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target) &&
+        avatarRef.current && !avatarRef.current.contains(event.target)) {
+        setMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  const toggleMenu = () => {
+    if (!menuOpen && avatarRef.current) {
+      const rect = avatarRef.current.getBoundingClientRect();
+      setMenuPos({
+        top: rect.bottom + window.scrollY + 8,
+        left: rect.left + rect.width / 2,
+      });
+    }
+    setMenuOpen(!menuOpen);
   };
 
   const processImageFile = (file, maxSize = 800) => {
@@ -33,106 +59,67 @@ export default function CardPerfil() {
       reader.onload = (ev) => {
         img.onload = () => {
           const minSide = Math.min(img.width, img.height);
-          const sx = (img.width - minSide) / 2;
-          const sy = (img.height - minSide) / 2;
           const canvas = document.createElement("canvas");
           const size = Math.min(maxSize, minSide);
           canvas.width = size;
           canvas.height = size;
           const ctx = canvas.getContext("2d");
-          ctx.drawImage(img, sx, sy, minSide, minSide, 0, 0, size, size);
+          ctx.drawImage(img, (img.width - minSide) / 2, (img.height - minSide) / 2, minSide, minSide, 0, 0, size, size);
           resolve(canvas.toDataURL("image/jpeg", 0.9));
         };
-        img.onerror = () => reject(new Error("img-load-error"));
         img.src = ev.target.result;
       };
-      reader.onerror = () => reject(new Error("file-read-error"));
       reader.readAsDataURL(file);
     });
   };
 
   const handleFile = async (file) => {
     if (!file) return;
-    if (file.size > 10 * 1024 * 1024) {
-      showError("Arquivo muito grande. Tente uma imagem menor que 10MB.");
-      return;
-    }
+    if (file.size > 10 * 1024 * 1024) return showError("Arquivo muito grande.");
     try {
       const dataUrl = await processImageFile(file, 800);
-      const novoPerfil = { ...(perfil || {}), photo: dataUrl };
-      finalizarCadastroWizard(novoPerfil);
+      atualizarUsuario({ perfil: { ...perfil, photo: dataUrl } });
       setMenuOpen(false);
       setShowCamera(false);
     } catch (e) {
-      console.error(e);
-      console.log("Erro ao processar imagem.");
+      showError("Erro ao processar imagem.");
     }
   };
 
-  const onChangeFile = (e) => {
-    const f = e.target.files && e.target.files[0];
-    handleFile(f);
-    e.target.value = null;
+  const removePhoto = () => {
+    const novoPerfil = { ...perfil };
+    delete novoPerfil.photo;
+    atualizarUsuario({ perfil: novoPerfil });
+    setMenuOpen(false);
   };
-
-  const [showCamera, setShowCamera] = useState(false);
-  const videoRef = useRef(null);
-  const streamRef = useRef(null);
 
   useEffect(() => {
     if (!showCamera) return;
     const start = async () => {
       try {
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-          throw new Error(
-            "Acesso à câmera bloqueado: É necessário estar em HTTPS.",
-          );
-        }
-
-        const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "user" },
-        });
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
         streamRef.current = stream;
         if (videoRef.current) videoRef.current.srcObject = stream;
       } catch (e) {
-        showError(e.message || "Não foi possível acessar a câmera.");
+        showError("Câmera bloqueada.");
         setShowCamera(false);
       }
     };
     start();
-    return () => {
-      if (streamRef.current) {
-        streamRef.current.getTracks().forEach((t) => t.stop());
-        streamRef.current = null;
-      }
-    };
+    return () => streamRef.current?.getTracks().forEach(t => t.stop());
   }, [showCamera]);
 
   const captureFromCamera = async () => {
     if (!videoRef.current) return;
-    const video = videoRef.current;
-    const w = video.videoWidth;
-    const h = video.videoHeight;
-    const minSide = Math.min(w, h);
-    const sx = (w - minSide) / 2;
-    const sy = (h - minSide) / 2;
     const canvas = document.createElement("canvas");
-    const size = Math.min(800, minSide);
+    const video = videoRef.current;
+    const size = Math.min(800, Math.min(video.videoWidth, video.videoHeight));
     canvas.width = size;
     canvas.height = size;
     const ctx = canvas.getContext("2d");
-    ctx.drawImage(video, sx, sy, minSide, minSide, 0, 0, size, size);
-    const dataUrl = canvas.toDataURL("image/jpeg", 0.9);
-    const novoPerfil = { ...(perfil || {}), photo: dataUrl };
-    finalizarCadastroWizard(novoPerfil);
+    ctx.drawImage(video, (video.videoWidth - size) / 2, (video.videoHeight - size) / 2, size, size, 0, 0, size, size);
+    atualizarUsuario({ perfil: { ...perfil, photo: canvas.toDataURL("image/jpeg", 0.9) } });
     setShowCamera(false);
-    setMenuOpen(false);
-  };
-
-  const removePhoto = () => {
-    const novoPerfil = { ...(perfil || {}) };
-    delete novoPerfil.photo;
-    finalizarCadastroWizard(novoPerfil);
     setMenuOpen(false);
   };
 
@@ -140,96 +127,30 @@ export default function CardPerfil() {
     <div className={styles.card}>
       <div className={styles.inner}>
         <div className={styles.avatarWrapper}>
-          <div
-            className={styles.avatar}
-            onClick={() => setMenuOpen((s) => !s)}
-            style={{ cursor: "pointer" }}
-          >
-            {photo ? (
-              <img src={photo} alt="Foto" className={styles.avatarImg} />
-            ) : (
-              <span className={styles.avatarTxt}>{calcularIniciais(nome)}</span>
-            )}
+          <div ref={avatarRef} className={styles.avatar} onClick={toggleMenu} style={{ cursor: "pointer" }}>
+            {photo ? <img src={photo} alt="Foto" className={styles.avatarImg} /> : <span className={styles.avatarTxt}>{calcularIniciais(nome)}</span>}
           </div>
           <div className={styles.onlineBadge} />
 
-          {menuOpen && (
-            <div className={styles.avatarMenu} role="menu">
-              <button
-                className={styles.avatarMenuBtn}
-                onClick={() => {
-                  setShowCamera(true);
-                }}
-                aria-label="Tirar foto"
-              >
-                Tirar foto
-              </button>
-              <button
-                className={styles.avatarMenuBtn}
-                onClick={() =>
-                  fileInputRef.current && fileInputRef.current.click()
-                }
-                aria-label="Escolher imagem"
-              >
-                Escolher imagem
-              </button>
-              <button
-                className={styles.avatarMenuBtn}
-                onClick={removePhoto}
-                aria-label="Remover foto"
-              >
-                Remover foto
-              </button>
-            </div>
+          {menuOpen && createPortal(
+            <div ref={menuRef} className={styles.avatarMenu} role="menu" style={{ top: menuPos.top, left: menuPos.left }}>
+              <button className={styles.avatarMenuBtn} onClick={() => { setShowCamera(true); setMenuOpen(false); }}>Tirar foto</button>
+              <button className={styles.avatarMenuBtn} onClick={() => fileInputRef.current?.click()}>Escolher imagem</button>
+              <button className={styles.avatarMenuBtn} onClick={removePhoto}>Remover foto</button>
+            </div>,
+            document.body
           )}
 
-          <input
-            ref={fileInputRef}
-            type="file"
-            accept="image/*"
-            style={{ display: "none" }}
-            onChange={onChangeFile}
-          />
-
-          <input
-            ref={fileInputCaptureRef}
-            type="file"
-            accept="image/*"
-            capture="user"
-            style={{ display: "none" }}
-            onChange={onChangeFile}
-          />
+          <input ref={fileInputRef} type="file" accept="image/*" style={{ display: "none" }} onChange={(e) => handleFile(e.target.files[0])} />
         </div>
 
         {showCamera && (
-          <div
-            className={styles.cameraOverlay}
-            onClick={() => setShowCamera(false)}
-          >
-            <div
-              className={styles.cameraCard}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <video
-                ref={videoRef}
-                autoPlay
-                playsInline
-                muted
-                style={{ width: "100%", height: "auto", borderRadius: 8 }}
-              />
+          <div className={styles.cameraOverlay} onClick={() => setShowCamera(false)}>
+            <div className={styles.cameraCard} onClick={(e) => e.stopPropagation()}>
+              <video ref={videoRef} autoPlay playsInline muted style={{ width: "100%", borderRadius: 8 }} />
               <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
-                <button
-                  className={styles.avatarMenuBtn}
-                  onClick={captureFromCamera}
-                >
-                  Capturar
-                </button>
-                <button
-                  className={styles.avatarMenuBtn}
-                  onClick={() => setShowCamera(false)}
-                >
-                  Cancelar
-                </button>
+                <button className={styles.avatarMenuBtn} onClick={captureFromCamera}>Capturar</button>
+                <button className={styles.avatarMenuBtn} onClick={() => setShowCamera(false)}>Cancelar</button>
               </div>
             </div>
           </div>
@@ -240,13 +161,7 @@ export default function CardPerfil() {
             <span className={styles.nome}>{nome}</span>
             <span className={styles.idade}>{idade} anos</span>
           </div>
-          {email ? (
-            <p className={styles.handle}>{email}</p>
-          ) : (
-            <p className={styles.handle}>E-mail não informado</p>
-          )}
-
-          <div className={styles.acoes}></div>
+          <p className={styles.handle}>{email || "E-mail não informado"}</p>
         </div>
       </div>
     </div>

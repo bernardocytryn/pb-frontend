@@ -28,13 +28,13 @@ export default function CardStatus() {
       series = usuario?.treinos || [];
    }
 
-   const semanas = Array.isArray(series) ? series.length : 0;
+   const seriesTreinos = Array.isArray(series) ? series.length : 0;
 
    const stats = [
       { val: objetivo, lbl: "Objetivo atual", icon: "mira" },
       { val: peso, lbl: "Peso atual", icon: "peso" },
       { val: frequencia, lbl: "Frequência semanal", icon: "calendario" },
-      { val: semanas > 0 ? `${semanas} sem` : "—", lbl: "Sequência ativa", icon: "fogo", streak: semanas > 0 },
+      { val: seriesTreinos > 0 ? `${seriesTreinos} Treinos` : "—", lbl: "Séries de treino", icon: "fogo", streak: seriesTreinos > 0 },
    ];
 
    return (
