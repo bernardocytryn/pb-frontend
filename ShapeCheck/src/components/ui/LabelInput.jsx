@@ -20,14 +20,12 @@ const LabelInput = ({
         value={valorInput}
         onChange={onChange}
       />
-      <span
-        style={{
-          visibility: taVazio ? "visible" : "hidden",
-          minHeight: "15px",
-        }}
-      >
-        {typeof taVazio === "string" ? taVazio : "Campo obrigatório"}
-      </span>
+
+      {taVazio && (
+        <span>
+          {typeof taVazio === "string" ? taVazio : "Campo obrigatório"}
+        </span>
+      )}
     </div>
   );
 };

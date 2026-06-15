@@ -70,11 +70,13 @@ const Passo1Form = ({ respostasForm, camposVazios, atualizarForm }) => {
               opcao={"Masculino"}
               isSelecionado={respostasForm.sexo === "Masculino"}
               onClick={() => atualizarForm("sexo", "Masculino")}
+              style={{ padding: "12px", fontSize: "1.2rem" }}
             />
             <BotaoOpcao
               opcao={"Feminino"}
               isSelecionado={respostasForm.sexo === "Feminino"}
               onClick={() => atualizarForm("sexo", "Feminino")}
+              style={{ padding: "12px", fontSize: "1.2rem" }}
             />
           </div>
         </div>
