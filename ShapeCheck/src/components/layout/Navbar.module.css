@@ -3,24 +3,17 @@
   bottom: 0;
   left: 0;
   right: 0;
-
   width: 100%;
-
   z-index: 1000;
-
   background: rgba(26, 26, 26, 0.92);
-
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-
   border-top: 1px solid rgba(255, 255, 255, 0.06);
-
   padding: 0.65rem 0.9rem;
 }
 
 .container {
   width: 100%;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -30,30 +23,25 @@
   display: flex;
   align-items: center;
   justify-content: space-around;
-
-  width: 100%;
+  width: 75%;
 }
 
 .itensPerfil {
   display: flex;
   align-items: center;
+  justify-content: center;
+  width: 25%;
 }
 
 .item {
   display: flex;
   align-items: center;
   justify-content: center;
-
   gap: 0.6rem;
-
   padding: 0.85rem;
-
   border-radius: 14px;
-
   text-decoration: none;
-
   color: #d4d4d4;
-
   transition:
     background 0.25s ease,
     color 0.25s ease,
@@ -62,21 +50,19 @@
 
 .item:hover {
   background: rgba(255, 255, 255, 0.06);
-
   color: white;
-
   transform: translateY(-1px);
 }
 
-.ativo {
-  color: #ffcb3c;
+.ativo,
+.ativo .iconePerfil {
+  color: #ffcb3c !important;
 }
 
 .icone {
   display: flex;
   align-items: center;
   justify-content: center;
-
   font-size: 1.8rem;
 }
 
@@ -94,14 +80,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   width: 40px;
   height: 40px;
-
   border-radius: 50%;
-
   background: rgba(255, 255, 255, 0.08);
-
   font-size: 1.1rem;
 }
 
@@ -123,18 +105,14 @@
 
   .perfil {
     background: transparent;
-
     padding: 0;
   }
 
   .iconePerfil {
     width: auto;
     height: auto;
-
     background: transparent;
-
     font-size: 1.6rem;
-
     color: #d4d4d4;
   }
 }
@@ -143,45 +121,39 @@
   .navbar {
     top: 0;
     bottom: auto;
-
     border-top: none;
-
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-
     padding: 0;
   }
 
   .container {
     max-width: 1400px;
-
     height: 82px;
-
     margin: 0 auto;
     padding: 0 2rem;
   }
 
   .logo {
     display: block;
-
     width: 42px;
     height: 42px;
-
     object-fit: cover;
   }
 
   .itens {
     justify-content: flex-start;
-
     gap: 1rem;
-
     width: auto;
   }
 
   .item {
     padding: 0.8rem 1rem;
-
     font-size: 0.96rem;
     font-weight: 500;
+  }
+
+  .itensPerfil {
+    width: auto;
   }
 
   .icone {
@@ -194,11 +166,8 @@
 
   .perfil {
     padding: 0.45rem 0.8rem;
-
     border-radius: 999px;
-
     background: rgba(255, 255, 255, 0.05);
-
     transition: background 0.25s ease;
   }
 
@@ -209,19 +178,10 @@
   .iconePerfil {
     width: 36px;
     height: 36px;
-
     border-radius: 50%;
-
     background: rgba(255, 255, 255, 0.08);
-
     font-size: 0.95rem;
-
     color: white;
-  }
-
-  .ativo {
-
-    color: #ffcb3c;
   }
 }
 
