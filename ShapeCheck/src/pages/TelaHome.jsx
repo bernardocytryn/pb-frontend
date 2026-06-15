@@ -7,33 +7,44 @@ import { useAuth } from "../hooks/useAuth";
 import { useStatusTreino } from "../contexts/StatusTreinoContext";
 
 export default function Home() {
-
   const { usuario } = useAuth();
-  const { statusSeries } = useStatusTreino();
+  const { treinosConcluidos, finalizarTreino } = useStatusTreino();
   const seriesSalvas = usuario?.treinos || [];
 
   const treinoDados = useMemo(() => {
     if (seriesSalvas.length === 0) return null;
 
-    const treinoPendente = seriesSalvas.find(serie => !statusSeries[serie.id]) || seriesSalvas[0];
-    const exerciciosAtivos = treinoPendente.exercicios || [];
+    const treinoPendente = seriesSalvas.find(serie => !treinosConcluidos[serie.id]);
 
+    if (!treinoPendente) return null;
+
+    const exerciciosAtivos = treinoPendente.exercicios || [];
     const gruposUnicos = [...new Set(exerciciosAtivos.map(ex => ex.bodyPart))].filter(Boolean);
 
     return {
       id: treinoPendente.id,
       nome: treinoPendente.nome || "TREINO",
       gruposMusculares: gruposUnicos,
-      exercicios: exerciciosAtivos
+      exercicios: exerciciosAtivos,
+      idsExercicios: exerciciosAtivos.map(ex => ex.id)
     };
-  }, [seriesSalvas, statusSeries]);
+  }, [seriesSalvas, treinosConcluidos]);
+
+  const handleFinalizarTreino = () => {
+    if (treinoDados) {
+      finalizarTreino(treinoDados.id, treinoDados.idsExercicios);
+    }
+  };
 
   return (
     <div className={styles.container}>
       <main className={styles.main}>
         <OlaMensagem />
 
-        <TreinoDoDia treinoDados={treinoDados} />
+        <TreinoDoDia
+          treinoDados={treinoDados}
+          onFinalizar={handleFinalizarTreino}
+        />
 
         <CalendarioSemanal />
       </main>

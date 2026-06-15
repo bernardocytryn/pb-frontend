@@ -1,11 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useStatusTreino } from '../../contexts/StatusTreinoContext';
 import styles from './TreinoDoDia.module.css';
 
-export default function TreinoDoDia({ treinoDados }) {
+export default function TreinoDoDia({ treinoDados, onFinalizar }) {
   const navigate = useNavigate();
-  const { alternarStatus } = useStatusTreino();
 
   if (!treinoDados || !treinoDados.exercicios || treinoDados.exercicios.length === 0) {
     return (
@@ -16,6 +14,7 @@ export default function TreinoDoDia({ treinoDados }) {
       </section>
     );
   }
+
   const nomesExercicios = treinoDados.exercicios
     .slice(0, 3)
     .map(ex => ex.name || ex.nome);
@@ -28,9 +27,8 @@ export default function TreinoDoDia({ treinoDados }) {
   const handleIniciarTreino = () => {
     navigate(`/series/${treinoDados.id}`);
   };
-
   const handleConcluirTreino = () => {
-    alternarStatus(treinoDados.id);
+    onFinalizar();
   };
 
   return (

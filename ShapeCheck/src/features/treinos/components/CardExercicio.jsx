@@ -3,14 +3,19 @@ import styles from "./CardExercicio.module.css";
 import { FiX } from "react-icons/fi";
 import { useCriarSerie } from "../../../contexts/SeriesContext.jsx";
 import { useExercicios } from "../../../contexts/ExerciciosContext.jsx";
+import { useStatusTreino } from "../../../contexts/StatusTreinoContext.jsx";
 
-export function CardExercicioModal({ exercicio, handleClose, modoCriacao, modoSerie }) {
+export function CardExercicioModal({ exercicio, handleClose, modoCriacao, modoSerie, treinoId }) {
   const [detalhes, setDetalhes] = useState(null);
   const [carregando, setCarregando] = useState(false);
   const [carga, setCarga] = useState("");
 
   const { adicionarExercicio, exerciciosSelecionados } = useCriarSerie();
   const { fetchDetalhes } = useExercicios();
+  const { statusSeries, treinosConcluidos } = useStatusTreino();
+
+  const idDeBusca = exercicio?.exerciseId || exercicio?.id;
+  const isConcluido = statusSeries[idDeBusca] || treinosConcluidos[treinoId];
 
   useEffect(() => {
     if (exercicio) {
@@ -42,7 +47,6 @@ export function CardExercicioModal({ exercicio, handleClose, modoCriacao, modoSe
 
     async function obterDadosRealTime() {
       setCarregando(true);
-      const idDeBusca = exercicio.exerciseId || exercicio.id;
       if (idDeBusca) {
         const dados = await fetchDetalhes(idDeBusca);
         if (dados) {
@@ -53,7 +57,7 @@ export function CardExercicioModal({ exercicio, handleClose, modoCriacao, modoSe
     }
 
     obterDadosRealTime();
-  }, [exercicio, fetchDetalhes]);
+  }, [exercicio, fetchDetalhes, idDeBusca]);
 
   const handleCargaChange = (e) => {
     const novoValor = e.target.value;
@@ -76,11 +80,6 @@ export function CardExercicioModal({ exercicio, handleClose, modoCriacao, modoSe
   const jaAdicionado = exerciciosSelecionados.find(
     (item) => (item.exerciseId || item.id || item.name) === (exercicio.exerciseId || exercicio.id || exercicio.name)
   );
-
-  const handleAdicionar = () => {
-    adicionarExercicio(exercicio);
-    handleClose();
-  };
 
   return (
     <div
@@ -105,7 +104,6 @@ export function CardExercicioModal({ exercicio, handleClose, modoCriacao, modoSe
             <p className={styles.textoCarregando}>Carregando execução...</p>
           ) : (
             <div className={styles.desktopGrid}>
-              {/* Coluna Esquerda: GIF e Tags */}
               <div className={styles.leftColumn}>
                 {video && video !== "string" ? (
                   <video src={video} className={styles.gif} autoPlay loop muted playsInline />
@@ -122,7 +120,6 @@ export function CardExercicioModal({ exercicio, handleClose, modoCriacao, modoSe
                 </div>
               </div>
 
-              {/* Coluna Direita: Título, Textos, Instruções e Botão */}
               <div className={styles.rightColumn}>
                 <h2 className={styles.tituloDesktop}>{ex.name}</h2>
 
@@ -141,7 +138,15 @@ export function CardExercicioModal({ exercicio, handleClose, modoCriacao, modoSe
                 {modoSerie && (
                   <div className={styles.cargaContainer}>
                     <label htmlFor="inputCarga">Carga (kg):</label>
-                    <input id="inputCarga" type="number" value={carga} onChange={handleCargaChange} className={styles.inputCarga} placeholder="0" />
+                    <input
+                      id="inputCarga"
+                      type="number"
+                      value={carga}
+                      onChange={handleCargaChange}
+                      className={styles.inputCarga}
+                      placeholder="0"
+                      disabled={isConcluido}
+                    />
                   </div>
                 )}
 

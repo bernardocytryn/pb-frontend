@@ -6,7 +6,7 @@ import styles from "./TelaTreinos.module.css";
 
 export default function TelaTreinos() {
   const navigate = useNavigate();
-  const { statusSeries, alternarStatus } = useStatusTreino();
+  const { statusSeries, treinosConcluidos, alternarStatus } = useStatusTreino();
   const { usuario } = useAuth();
 
   const series = usuario?.treinos || [];
@@ -33,7 +33,7 @@ export default function TelaTreinos() {
         <div className={styles.lista}>
           {series.length > 0 ? (
             series.map((serie) => {
-              const concluida = statusSeries[serie.id];
+              const concluida = treinosConcluidos[serie.id];
 
               return (
                 <div
