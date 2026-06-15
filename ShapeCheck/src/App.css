@@ -5,6 +5,7 @@
 }
 
 .main-with-navbar {
+  height: 100vh;
   width: 100%;
   overflow-x: hidden;
   padding-bottom: 80px;
