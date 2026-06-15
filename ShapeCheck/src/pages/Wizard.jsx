@@ -159,15 +159,16 @@ const Wizard = () => {
       Frequência: ${dadosDoUsuario.frequencia}
       Nível: ${dadosDoUsuario.nivel}
       
-      REGRA OBRIGATÓRIA: Escolha os exercícios APENAS desta exata lista disponível, usando os nomes exatos: ${JSON.stringify(listaDisponivel)}.
+      REGRA CRÍTICA E INEGOCIÁVEL: 
+      Selecione os exercícios APENAS e EXCLUSIVAMENTE da lista abaixo. 
+      Se um exercício não estiver exatamente nesta lista, NÃO o inclua.
+      Lista: ${JSON.stringify(listaDisponivel)}
       
-      Retorne EXATAMENTE este formato JSON:
+      Retorne APENAS um JSON válido no formato:
       [
         {
           "nome": "Treino A",
-          "exercicios": [
-            { "nome": "nome do exercicio" }
-          ]
+          "exercicios": [{ "nome": "nome do exercicio exatamente como na lista" }]
         }
       ]`;
 
@@ -207,32 +208,27 @@ const Wizard = () => {
       const jsonGerado = JSON.parse(jsonMatch[0]);
 
       seriesGeradas = jsonGerado.map((serie) => {
-        const exerciciosDaSerie = serie.exercicios.map((ex) => {
-          const correspondente = exercicios.find(
-            (item) => item.name.toLowerCase() === ex.nome.toLowerCase(),
-          );
+        const exerciciosDaSerie = serie.exercicios
+          .map((ex) => {
+            const correspondente = exercicios.find(
+              (item) => item.name.toLowerCase().trim() === ex.nome.toLowerCase().trim(),
+            );
 
-          if (correspondente) {
-            return {
-              exerciseId: correspondente.id,
-              name: correspondente.name,
-              bodyPart: correspondente.bodyPart,
-              equipment: correspondente.equipment,
-              imageUrl: correspondente.imageUrl,
-            };
-          }
-          return {
-            exerciseId: Math.random().toString(36).substring(7),
-            name: ex.nome,
-            bodyPart: "",
-            equipment: "",
-            imageUrl: null,
-          };
-        });
+            if (correspondente) {
+              return {
+                exerciseId: correspondente.id,
+                name: correspondente.name,
+                bodyPart: correspondente.bodyPart,
+                equipment: correspondente.equipment,
+                imageUrl: correspondente.imageUrl,
+              };
+            }
+            return null;
+          })
+          .filter((ex) => ex !== null);
 
         return {
-          id:
-            Date.now().toString() + Math.random().toString(36).substring(2, 9),
+          id: Date.now().toString() + Math.random().toString(36).substring(2, 9),
           nome: serie.nome,
           exercicios: exerciciosDaSerie,
         };

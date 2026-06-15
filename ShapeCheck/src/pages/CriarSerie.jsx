@@ -4,15 +4,15 @@ import { useCriarSerie } from '../contexts/SeriesContext.jsx';
 import styles from './CriarSerie.module.css';
 
 export default function CriarSerie() {
-  const { 
-    nomeSerie, 
-    setNomeSerie, 
-    exerciciosSelecionados, 
+  const {
+    nomeSerie,
+    setNomeSerie,
+    exerciciosSelecionados,
     removerExercicio,
     limparRascunho,
     idSerieEdicao
   } = useCriarSerie();
-  
+
   const navigate = useNavigate();
 
   const irParaBusca = () => {
@@ -20,40 +20,32 @@ export default function CriarSerie() {
   };
 
   const salvarSerie = () => {
+    if (!nomeSerie || exerciciosSelecionados.length === 0) return;
+
     const serieFinal = {
       id: idSerieEdicao || Date.now().toString(),
       nome: nomeSerie,
-      exercicios: exerciciosSelecionados
+      exercicios: exerciciosSelecionados // Já chegam traduzidos do Modal
     };
 
     const seriesAntigas = JSON.parse(localStorage.getItem('minhasSeries') || '[]');
-    
     let seriesAtualizadas;
-    
+
     if (idSerieEdicao) {
       seriesAtualizadas = seriesAntigas.map(s => s.id === idSerieEdicao ? serieFinal : s);
     } else {
       seriesAtualizadas = [...seriesAntigas, serieFinal];
     }
-    
-    localStorage.setItem('minhasSeries', JSON.stringify(seriesAtualizadas));
 
+    localStorage.setItem('minhasSeries', JSON.stringify(seriesAtualizadas));
     limparRascunho();
-    
-    if (idSerieEdicao) {
-      navigate(`/series/${idSerieEdicao}`);
-    } else {
-      navigate('/treinos');
-    }
+
+    navigate(idSerieEdicao ? `/series/${idSerieEdicao}` : '/treinos');
   };
 
   const handleVoltar = () => {
     limparRascunho();
-    if (idSerieEdicao) {
-      navigate(`/series/${idSerieEdicao}`);
-    } else {
-      navigate('/treinos');
-    }
+    navigate(idSerieEdicao ? `/series/${idSerieEdicao}` : '/treinos');
   };
 
   return (
@@ -62,16 +54,16 @@ export default function CriarSerie() {
         <button onClick={handleVoltar} className={styles.botaoVoltar}>
           <FiArrowLeft size={18} /> Voltar
         </button>
-        
-        <input 
-          type="text" 
+
+        <input
+          type="text"
           className={styles.inputNomeSerie}
-          placeholder="Nome da Série" 
+          placeholder="Nome da Série"
           value={nomeSerie}
           onChange={(e) => setNomeSerie(e.target.value)}
         />
         <span className={styles.contadorExercicios}>
-          Total de exercícios: {exerciciosSelecionados.length}
+          Total: {exerciciosSelecionados.length} exercício(s)
         </span>
       </header>
 
@@ -83,8 +75,10 @@ export default function CriarSerie() {
         <ul className={styles.listaExercicios}>
           {exerciciosSelecionados.map((exercicio) => (
             <li key={exercicio.exerciseId || exercicio.id} className={styles.itemExercicio}>
-              <span className={styles.nomeExercicio}>{exercicio.name}</span>
-              <button 
+              <span className={styles.nomeExercicio}>
+                {exercicio.name || "Exercício sem nome"}
+              </span>
+              <button
                 className={styles.botaoRemover}
                 onClick={() => removerExercicio(exercicio.exerciseId || exercicio.id)}
               >
@@ -99,7 +93,7 @@ export default function CriarSerie() {
         <button className={styles.botaoCancelar} onClick={handleVoltar}>
           Cancelar
         </button>
-        <button 
+        <button
           className={styles.botaoSalvar}
           onClick={salvarSerie}
           disabled={!nomeSerie || exerciciosSelecionados.length === 0}

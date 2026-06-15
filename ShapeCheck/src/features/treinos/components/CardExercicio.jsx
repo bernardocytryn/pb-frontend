@@ -8,7 +8,7 @@ export function CardExercicioModal({ exercicio, handleClose, modoCriacao, modoSe
   const [detalhes, setDetalhes] = useState(null);
   const [carregando, setCarregando] = useState(false);
   const [carga, setCarga] = useState("");
-  
+
   const { adicionarExercicio, exerciciosSelecionados } = useCriarSerie();
   const { fetchDetalhes } = useExercicios();
 
@@ -16,7 +16,7 @@ export function CardExercicioModal({ exercicio, handleClose, modoCriacao, modoSe
     if (exercicio) {
       document.body.style.overflow = "hidden";
       document.documentElement.style.overflow = "hidden";
-      
+
       const cargasSalvas = JSON.parse(localStorage.getItem("shapecheck_cargas") || "{}");
       const idParaBuscar = exercicio.exerciseId || exercicio.id || exercicio.name;
       if (cargasSalvas[idParaBuscar]) {
@@ -59,7 +59,7 @@ export function CardExercicioModal({ exercicio, handleClose, modoCriacao, modoSe
   const handleCargaChange = (e) => {
     const novoValor = e.target.value;
     setCarga(novoValor);
-    
+
     if (exercicio) {
       const idParaSalvar = exercicio.exerciseId || exercicio.id || exercicio.name;
       const cargasSalvas = JSON.parse(localStorage.getItem("shapecheck_cargas") || "{}");
@@ -79,7 +79,7 @@ export function CardExercicioModal({ exercicio, handleClose, modoCriacao, modoSe
   );
 
   const handleAdicionar = () => {
-    adicionarExercicio(exercicio);
+    adicionarExercicio(ex);
     handleClose();
   };
 
@@ -149,7 +149,7 @@ export function CardExercicioModal({ exercicio, handleClose, modoCriacao, modoSe
                   </>
                 )}
               </div>
-              
+
               {modoCriacao && (
                 <button
                   onClick={handleAdicionar}

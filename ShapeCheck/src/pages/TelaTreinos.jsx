@@ -8,13 +8,13 @@ export default function TelaTreinos() {
   const navigate = useNavigate();
   const { statusSeries, alternarStatus } = useStatusTreino();
   const { usuario } = useAuth();
-  
+
   const series = usuario?.treinos || [];
 
   return (
     <div className={styles.container}>
       <div className={styles.main}>
-        
+
         <div className={styles.header}>
           <button onClick={() => navigate('/treino')} className={styles.botaoVoltar}>
             <FiArrowLeft size={18} /> Voltar
@@ -23,7 +23,7 @@ export default function TelaTreinos() {
 
         <div className={styles.rotulo}>Minhas Séries</div>
 
-        <button 
+        <button
           onClick={() => navigate("/criar-serie")}
           className={styles.botaoCriar}
         >
@@ -36,8 +36,8 @@ export default function TelaTreinos() {
               const concluida = statusSeries[serie.id];
 
               return (
-                <div 
-                  key={serie.id} 
+                <div
+                  key={serie.id}
                   onClick={() => navigate(`/series/${serie.id}`)}
                   className={`${styles.cardSerie} ${concluida ? styles.cardConcluido : ""}`}
                   style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
@@ -47,7 +47,7 @@ export default function TelaTreinos() {
                     <p className={styles.infoSerie}>{serie.exercicios?.length || 0} exercícios</p>
                   </div>
 
-                  <button 
+                  <button
                     className={`${styles.botaoCheck} ${concluida ? styles.botaoCheckAtivo : ""}`}
                     onClick={(e) => {
                       e.stopPropagation();
