@@ -129,3 +129,9 @@
 .finishButton:active {
   transform: scale(0.95);
 }
+
+.finalizadoTitle {
+  color: #ffcb3c; /* Mesma cor dos botões/destaques */
+  margin-bottom: 8px;
+  font-size: 1.2rem;
+}

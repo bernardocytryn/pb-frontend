@@ -1,92 +1,81 @@
 import React, { useState, useEffect } from "react";
 import styles from "./CalendarioSemanal.module.css";
+import { useAuth } from "../../hooks/useAuth";
 
 const DIAS_SEMANA = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
-const MESES = [
-  "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-  "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-];
+const MESES = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
 
-function obterDiasDaSemana(navOffset) {
+// Calcula a semana atual uma única vez
+function obterSemanaAtual() {
   const hoje = new Date();
-
-  const dataAlvo = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + (navOffset * 7));
-
-  const domingo = new Date(dataAlvo.getFullYear(), dataAlvo.getMonth(), dataAlvo.getDate() - dataAlvo.getDay());
-
+  const domingo = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() - hoje.getDay());
   const dias = [];
   for (let i = 0; i < 7; i++) {
     const diaAtual = new Date(domingo.getFullYear(), domingo.getMonth(), domingo.getDate() + i);
-
-    const isHoje =
-      diaAtual.getDate() === hoje.getDate() &&
-      diaAtual.getMonth() === hoje.getMonth() &&
-      diaAtual.getFullYear() === hoje.getFullYear();
-
     dias.push({
       dia: diaAtual.getDate(),
       mes: diaAtual.getMonth(),
       ano: diaAtual.getFullYear(),
       dataISO: diaAtual.toISOString().split('T')[0],
-      tipo: isHoje ? "hoje" : "",
     });
   }
-
   return dias;
 }
 
-export default function CalendarioSemanal() {
-  const [_nav, setNav] = useState(0);
-  const [celulasSemana, setCelulasSemana] = useState([]);
+export default function CalendarioSemanal({ diaSelecionado, onSelectDay }) {
+  const { usuario } = useAuth();
+  const [celulasSemana] = useState(obterSemanaAtual());
+  const [hojeISO, setHojeISO] = useState("");
 
   useEffect(() => {
-    const diasCalculados = obterDiasDaSemana(_nav);
-    setCelulasSemana(diasCalculados);
-  }, [_nav]);
+    setHojeISO(new Date().toISOString().split('T')[0]);
+  }, []);
 
-  if (celulasSemana.length === 0) return null;
+  const plano = usuario?.planoSemanal || [];
 
-  const mesAtual = MESES[celulasSemana[0].mes];
-  const anoAtual = celulasSemana[0].ano;
+  const navegarDia = (direcao) => {
+    const novoDia = diaSelecionado + direcao;
+    if (novoDia >= 0 && novoDia <= 6) {
+      onSelectDay(novoDia);
+    }
+  };
 
   return (
     <div className={styles.cardCalendario}>
       <div className={styles.cabecalho}>
         <div className={styles.mes}>
-          {mesAtual} <span className={styles.ano}>{anoAtual}</span>
+          {MESES[celulasSemana[0]?.mes]}
+          <span className={styles.ano}>{celulasSemana[0]?.ano}</span>
         </div>
         <div className={styles.nav}>
-          <button
-            className={styles.btnNav}
-            onClick={() => setNav((n) => n - 1)}
-            aria-label="Semana anterior"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="15 18 9 12 15 6"></polyline>
-            </svg>
+          <button className={styles.btnNav} onClick={() => navegarDia(-1)}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="15 18 9 12 15 6"></polyline></svg>
           </button>
-
-          <button
-            className={styles.btnNav}
-            onClick={() => setNav((n) => n + 1)}
-            aria-label="Próxima semana"
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-              <polyline points="9 18 15 12 9 6"></polyline>
-            </svg>
+          <button className={styles.btnNav} onClick={() => navegarDia(1)}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
           </button>
         </div>
       </div>
 
       <div className={styles.gradeSemana}>
-        {celulasSemana.map((c, i) => (
-          <div key={c.dataISO} className={styles.colunaDia}>
-            <span className={styles.diaNome}>{DIAS_SEMANA[i]}</span>
-            <div className={`${styles.celulaNumero} ${styles[c.tipo] || ""}`}>
-              {c.dia}
+        {celulasSemana.map((c, i) => {
+          const isSelecionado = i === diaSelecionado;
+          const isHoje = c.dataISO === hojeISO;
+          const isTreino = (plano[i] || "Descanso") !== "Descanso";
+
+          let classe = "";
+          if (isSelecionado) classe = styles.selecionado;
+          else if (isHoje) classe = styles.indicadorHoje;
+          else if (isTreino) classe = styles.diaTreino;
+          else classe = styles.diaDescanso;
+
+          return (
+            <div key={c.dataISO} className={styles.colunaDia} onClick={() => onSelectDay(i)}>
+              <span className={styles.diaNome}>{DIAS_SEMANA[i]}</span>
+              <div className={`${styles.celulaNumero} ${classe}`}>{c.dia}</div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

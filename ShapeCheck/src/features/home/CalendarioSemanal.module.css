@@ -1,4 +1,3 @@
-
 .cardCalendario {
   background-color: #1a1a1a;
   border: 1px solid #2a2a2a;
@@ -59,6 +58,7 @@
   flex-direction: column;
   align-items: center;
   gap: 8px;
+  cursor: pointer;
 }
 
 .diaNome {
@@ -83,17 +83,23 @@
   transition: all 0.2s;
 }
 
-.hoje {
-  background-color: #f7ce46;
+.selecionado {
+  background-color: #ffffff;
   color: #121212;
+  transform: scale(1.1);
 }
 
-.treinado {
-  border: 1px solid #4caf50;
+.indicadorHoje {
   color: #ffffff;
+  background-color: #f7ce46;
 }
 
-.descanso {
-  background-color: #2a2a2a;
-  color: #aaaaaa;
+.diaTreino {
+  border: 1px solid #ffcb3c;
+  color: #ffcb3c;
+}
+
+.diaDescanso {
+  opacity: 0.5;
+  border: 1px solid transparent;
 }

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useState } from 'react';
 import styles from './TelaHome.module.css';
 import OlaMensagem from '../features/home/OlaMensagem';
 import TreinoDoDia from '../features/home/TreinoDoDia';
@@ -9,30 +9,25 @@ import { useStatusTreino } from "../contexts/StatusTreinoContext";
 export default function Home() {
   const { usuario } = useAuth();
   const { treinosConcluidos, finalizarTreino } = useStatusTreino();
-  const seriesSalvas = usuario?.treinos || [];
+  const [diaSelecionado, setDiaSelecionado] = useState(new Date().getDay());
 
-  const treinoDados = useMemo(() => {
-    if (seriesSalvas.length === 0) return null;
+  const plano = usuario?.planoSemanal || [];
+  const treinos = usuario?.treinos || [];
 
-    const treinoPendente = seriesSalvas.find(serie => !treinosConcluidos[serie.id]);
+  const statusDoDia = plano[diaSelecionado] || "Descanso";
+  const treinoSelecionado = treinos.find(s =>
+    s.nome.toLowerCase().includes(statusDoDia.toLowerCase()) ||
+    statusDoDia.toLowerCase().includes(s.nome.toLowerCase())
+  );
 
-    if (!treinoPendente) return null;
+  const isHoje = diaSelecionado === new Date().getDay();
+  // Verifica se o treino selecionado está no objeto de concluídos
+  const isFinalizado = treinoSelecionado ? !!treinosConcluidos[treinoSelecionado.id] : false;
 
-    const exerciciosAtivos = treinoPendente.exercicios || [];
-    const gruposUnicos = [...new Set(exerciciosAtivos.map(ex => ex.bodyPart))].filter(Boolean);
-
-    return {
-      id: treinoPendente.id,
-      nome: treinoPendente.nome || "TREINO",
-      gruposMusculares: gruposUnicos,
-      exercicios: exerciciosAtivos,
-      idsExercicios: exerciciosAtivos.map(ex => ex.id)
-    };
-  }, [seriesSalvas, treinosConcluidos]);
-
-  const handleFinalizarTreino = () => {
-    if (treinoDados) {
-      finalizarTreino(treinoDados.id, treinoDados.idsExercicios);
+  const handleFinalizar = () => {
+    if (treinoSelecionado) {
+      const ids = treinoSelecionado.exercicios.map(ex => ex.exerciseId || ex.id);
+      finalizarTreino(treinoSelecionado.id, ids);
     }
   };
 
@@ -42,11 +37,17 @@ export default function Home() {
         <OlaMensagem />
 
         <TreinoDoDia
-          treinoDados={treinoDados}
-          onFinalizar={handleFinalizarTreino}
+          treinoDados={treinoSelecionado}
+          statusDoDia={statusDoDia}
+          isHoje={isHoje}
+          isFinalizado={isFinalizado}
+          onFinalizar={handleFinalizar}
         />
 
-        <CalendarioSemanal />
+        <CalendarioSemanal
+          diaSelecionado={diaSelecionado}
+          onSelectDay={setDiaSelecionado}
+        />
       </main>
     </div>
   );

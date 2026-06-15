@@ -39,6 +39,7 @@ export const AuthProvider = ({ children }) => {
       senha: senha,
       perfil: null,
       treinos: [],
+      planoSemanal: [],
     };
 
     usuarios.push(novoUsuario);
@@ -71,13 +72,16 @@ export const AuthProvider = ({ children }) => {
     return { sucesso: true };
   };
 
-  const finalizarCadastroWizard = (dadosDoFormulario, seriesGeradas) => {
+  const finalizarCadastroWizard = (dadosDoFormulario, seriesGeradas, planoSemanal) => {
     const usuarios = JSON.parse(localStorage.getItem("shapecheck_usuarios"));
     const index = usuarios.findIndex((u) => u.id === idSessao);
 
     if (index !== -1) {
       usuarios[index].perfil = dadosDoFormulario;
       usuarios[index].treinos = seriesGeradas || [];
+
+      // Se planoSemanal for passado, usa ele. Se não, mantém o que já existia no usuário.
+      usuarios[index].planoSemanal = planoSemanal || usuarios[index].planoSemanal || [];
 
       localStorage.setItem("shapecheck_usuarios", JSON.stringify(usuarios));
 

@@ -151,7 +151,9 @@ const Wizard = () => {
       id: ex.id,
       name: ex.name,
     }));
+
     let seriesGeradas = [];
+    let planoSemanal = [];
 
     try {
       const promptParaIA = `Crie uma ficha de treino para ${dadosDoUsuario.nome}.
@@ -159,18 +161,11 @@ const Wizard = () => {
       Frequência: ${dadosDoUsuario.frequencia}
       Nível: ${dadosDoUsuario.nivel}
       
-      REGRA CRÍTICA E INEGOCIÁVEL: 
-      Selecione os exercícios APENAS e EXCLUSIVAMENTE da lista abaixo. 
-      Se um exercício não estiver exatamente nesta lista, NÃO o inclua.
-      Lista: ${JSON.stringify(listaDisponivel)}
-      
-      Retorne APENAS um JSON válido no formato:
-      [
-        {
-          "nome": "Treino A",
-          "exercicios": [{ "nome": "nome do exercicio exatamente como na lista" }]
-        }
-      ]`;
+      REGRA CRÍTICA: 
+      1. Selecione exercícios APENAS da lista: ${JSON.stringify(listaDisponivel)}
+      2. Retorne APENAS um objeto JSON. 
+      3. NÃO use blocos de código markdown, não use \`\`\`json, não escreva nada além do JSON.
+      4. O formato deve ser estritamente: { "series": [{"nome": "...", "exercicios": [{"nome": "..."}]}], "planoSemanal": ["...", "..."] }`;
 
       const respostaIA = await fetch(
         "https://api.mistral.ai/v1/chat/completions",
@@ -185,7 +180,7 @@ const Wizard = () => {
             messages: [
               {
                 role: "system",
-                content: "Atue como um personal trainer experiente.",
+                content: "Você é um especialista em fitness. Retorne APENAS um JSON puro, sem formatação markdown.",
               },
               {
                 role: "user",
@@ -200,20 +195,22 @@ const Wizard = () => {
       if (!respostaIA.ok) throw new Error("Erro na API da Mistral");
 
       const dadosDaAPI = await respostaIA.json();
-      const textoResposta = dadosDaAPI.choices[0].message.content;
-      const jsonMatch = textoResposta.match(/\[[\s\S]*\]/);
+      let textoResposta = dadosDaAPI.choices[0].message.content;
 
-      if (!jsonMatch) throw new Error("JSON não encontrado na resposta");
+      // Limpeza robusta
+      const jsonString = textoResposta.replace(/```json/g, "").replace(/```/g, "").trim();
+      const jsonGerado = JSON.parse(jsonString);
 
-      const jsonGerado = JSON.parse(jsonMatch[0]);
+      planoSemanal = jsonGerado.planoSemanal || [];
+      const seriesDaIA = jsonGerado.series || [];
 
-      seriesGeradas = jsonGerado.map((serie) => {
-        const exerciciosDaSerie = serie.exercicios
+      // Mapeamento seguro com fallback para array vazio
+      seriesGeradas = (seriesDaIA || []).map((serie) => {
+        const exerciciosDaSerie = (serie.exercicios || [])
           .map((ex) => {
             const correspondente = exercicios.find(
               (item) => item.name.toLowerCase().trim() === ex.nome.toLowerCase().trim(),
             );
-
             if (correspondente) {
               return {
                 exerciseId: correspondente.id,
@@ -234,13 +231,11 @@ const Wizard = () => {
         };
       });
 
-      finalizarCadastroWizard(dadosDoUsuario, seriesGeradas);
+      finalizarCadastroWizard(dadosDoUsuario, seriesGeradas, planoSemanal);
       navigate("/dashboard");
     } catch (erro) {
       console.error("Falha ao gerar ficha com a IA:", erro);
-      finalizarCadastroWizard(dadosDoUsuario, []);
-      navigate("/dashboard");
-    } finally {
+      alert("Houve um erro ao gerar seu treino. Tente novamente.");
       setIsCarregando(false);
     }
   };
