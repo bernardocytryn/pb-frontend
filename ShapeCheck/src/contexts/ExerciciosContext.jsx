@@ -130,14 +130,30 @@ export function ExerciciosProvider({ children }) {
           );
         }
 
-        if (dados.targetMuscles && dados.targetMuscles.length > 0) {
-          dados.targetMuscles[0] = dicMusculos[dados.targetMuscles[0]?.toLowerCase()] || dados.targetMuscles[0];
+        const processarTags = async (lista, dicionario) => {
+          if (!lista || !Array.isArray(lista)) return [];
+
+          return await Promise.all(
+            lista.map(async (item) => {
+              // Tenta encontrar no dicionário (case insensitive)
+              const chave = item.toLowerCase();
+              // Se achar no dicionário, usa. Se não, traduz pela API e converte para maiúsculas
+              const valor = dicionario[chave] || (await traduzirTexto(item));
+              return valor.toUpperCase();
+            })
+          );
+        };
+
+        if (dados.targetMuscles?.length > 0) {
+          dados.targetMuscles = await processarTags(dados.targetMuscles, dicMusculos);
         }
-        if (dados.equipments && dados.equipments.length > 0) {
-          dados.equipments[0] = dicEquipamentos[dados.equipments[0]?.toLowerCase()] || dados.equipments[0];
+
+        if (dados.equipments?.length > 0) {
+          dados.equipments = await processarTags(dados.equipments, dicEquipamentos);
         }
-        if (dados.bodyParts && dados.bodyParts.length > 0) {
-          dados.bodyParts[0] = dicMusculos[dados.bodyParts[0]?.toLowerCase()] || dados.bodyParts[0];
+
+        if (dados.bodyParts?.length > 0) {
+          dados.bodyParts = await processarTags(dados.bodyParts, dicMusculos);
         }
 
         localStorage.setItem(cacheChave, JSON.stringify(dados));
