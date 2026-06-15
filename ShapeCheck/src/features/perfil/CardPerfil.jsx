@@ -83,13 +83,19 @@ export default function CardPerfil() {
     if (!showCamera) return;
     const start = async () => {
       try {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          throw new Error(
+            "Acesso à câmera bloqueado: É necessário estar em HTTPS.",
+          );
+        }
+
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: "environment" },
+          video: { facingMode: "user" },
         });
         streamRef.current = stream;
         if (videoRef.current) videoRef.current.srcObject = stream;
       } catch (e) {
-        showError("Não foi possível acessar a câmera.");
+        showError(e.message || "Não foi possível acessar a câmera.");
         setShowCamera(false);
       }
     };
@@ -189,7 +195,7 @@ export default function CardPerfil() {
             ref={fileInputCaptureRef}
             type="file"
             accept="image/*"
-            capture="environment"
+            capture="user"
             style={{ display: "none" }}
             onChange={onChangeFile}
           />
