@@ -1,12 +1,48 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
 import { FiArrowLeft, FiEdit, FiTrash2, FiCheck } from "react-icons/fi";
+import { motion, useMotionValue, useTransform } from "framer-motion";
 import { CardExercicioModal } from "../features/treinos/components/CardExercicio";
 import { useCriarSerie } from "../contexts/SeriesContext.jsx";
 import { useStatusTreino } from "../contexts/StatusTreinoContext.jsx";
 import { useAuth } from "../hooks/useAuth.jsx";
 import { useExercicios } from "../contexts/ExerciciosContext.jsx";
 import styles from "./TelaListaTreinos.module.css";
+
+// Sub-componente para gerenciar o gesto de swipe de cada exercício
+function CardExercicioSwipe({ ex, serieId, done, onToggle, onRemove, onClick }) {
+  const x = useMotionValue(0);
+  const backgroundColor = useTransform(x, [-100, 0, 100], ["#4caf50", "transparent", "#f44336"]);
+
+  return (
+    <motion.div
+      drag="x"
+      dragConstraints={{ left: 0, right: 0 }}
+      dragElastic={0.2}
+      style={{ x, backgroundColor, touchAction: "none" }}
+      onDragEnd={(event, info) => {
+        if (info.offset.x < -100) onToggle(); // Esquerda: Concluir
+        else if (info.offset.x > 100) onRemove(); // Direita: Remover
+      }}
+      onClick={onClick}
+      className={`${styles.cardGrid} ${done ? styles.cardConcluido : ''}`}
+    >
+      <img src={ex.imageUrl} alt={ex.name} className={styles.imagemGrid} />
+      <div className={styles.infoGrid}>
+        <h2 className={styles.nomeGrid}>{ex.name || "Exercício sem nome"}</h2>
+        <button
+          className={`${styles.botaoCheck} ${done ? styles.botaoCheckAtivo : ''}`}
+          onClick={(e) => {
+            e.stopPropagation();
+            onToggle();
+          }}
+        >
+          <FiCheck size={14} />
+        </button>
+      </div>
+    </motion.div>
+  );
+}
 
 export default function TelaListaTreinos() {
   const navigate = useNavigate();
@@ -27,7 +63,6 @@ export default function TelaListaTreinos() {
     setSerie(series.find((s) => s.id === id));
   }, [id, usuario]);
 
-  // LOGICA AUTOMATICA (Namespace): Verifica usando a chave composta `${serie.id}_${eid}`
   useEffect(() => {
     if (!serie || !serie.exercicios) return;
     const todosConcluidos = serie.exercicios.every(ex => {
@@ -37,9 +72,7 @@ export default function TelaListaTreinos() {
     setEstadoConcluido(serie.id, todosConcluidos);
   }, [statusSeries, serie, setEstadoConcluido]);
 
-  useEffect(() => {
-    temTraduzido.current = false;
-  }, [id]);
+  useEffect(() => { temTraduzido.current = false; }, [id]);
 
   useEffect(() => {
     const traduzirSerie = async () => {
@@ -68,11 +101,17 @@ export default function TelaListaTreinos() {
   const isSerieConcluida = !!treinosConcluidos[serie.id];
   const idsExercicios = serie.exercicios?.map(ex => ex.exerciseId || ex.id) || [];
 
-  const handleEditar = () => {
-    if (isSerieConcluida) {
-      alert("Desfaça a conclusão do treino antes de editar.");
-      return;
+  const handleExcluirExercicio = (eid) => {
+    if (window.confirm("Remover este exercício?")) {
+      const exerciciosFiltrados = serie.exercicios.filter(item => (item.exerciseId || item.id) !== eid);
+      const serieAtualizada = { ...serie, exercicios: exerciciosFiltrados };
+      const seriesAtualizadas = usuario.treinos.map(s => s.id === id ? serieAtualizada : s);
+      finalizarCadastroWizard(usuario.perfil, seriesAtualizadas);
     }
+  };
+
+  const handleEditar = () => {
+    if (isSerieConcluida) { alert("Desfaça a conclusão do treino antes de editar."); return; }
     iniciarEdicao(serie);
     navigate('/criar-serie');
   };
@@ -92,74 +131,40 @@ export default function TelaListaTreinos() {
 
       <div className={styles.header}>
         <div className={styles.tituloContainer}>
-          <button onClick={() => navigate('/treinos')} className={styles.botaoVoltar}>
-            <FiArrowLeft size={18} /> Voltar
-          </button>
-
+          <button onClick={() => navigate('/treinos')} className={styles.botaoVoltar}><FiArrowLeft size={18} /> Voltar</button>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <h1 className={styles.titulo}>{serie.nome}</h1>
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-              {isSerieConcluida && (
-                <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#4caf50', fontWeight: 'bold' }}>
-                  <FiCheck size={14} /> Treino Concluído!
-                </span>
-              )}
-              {isSerieConcluida && (
-                <button onClick={() => toggleTreinoConcluido(serie.id, idsExercicios)} className={styles.botaoDesfazer}>
-                  Desfazer
-                </button>
-              )}
-            </div>
+            {isSerieConcluida && (
+              <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#4caf50', fontWeight: 'bold' }}>
+                <FiCheck size={14} /> Treino Concluído!
+              </span>
+            )}
           </div>
         </div>
-
         <div className={styles.botoesAcao}>
           <button onClick={handleExcluir} className={styles.botaoExcluir}><FiTrash2 size={18} /></button>
-          <button
-            onClick={handleEditar}
-            className={`${styles.botaoCriar} ${isSerieConcluida ? styles.botaoDesabilitado : ''}`}
-          >
-            <FiEdit size={18} />
-          </button>
+          <button onClick={handleEditar} className={`${styles.botaoCriar} ${isSerieConcluida ? styles.botaoDesabilitado : ''}`}><FiEdit size={18} /></button>
         </div>
       </div>
 
       <div className={styles.gridLista}>
         {serie.exercicios && serie.exercicios.map((ex) => {
           const eid = ex.exerciseId || ex.id;
-          // Namespace: Chave única por treino + exercício
-          const done = !!statusSeries[`${serie.id}_${eid}`];
-
           return (
-            <div
+            <CardExercicioSwipe
               key={eid}
-              className={`${styles.cardGrid} ${done ? styles.cardConcluido : ''}`}
+              ex={ex}
+              serieId={serie.id}
+              done={!!statusSeries[`${serie.id}_${eid}`]}
+              onToggle={() => alternarStatus(serie.id, eid)}
+              onRemove={() => handleExcluirExercicio(eid)}
               onClick={() => setExercicioAberto(ex)}
-            >
-              <img src={ex.imageUrl} alt={ex.name} className={styles.imagemGrid} />
-              <div className={styles.infoGrid}>
-                <h2 className={styles.nomeGrid}>{ex.name || "Exercício sem nome"}</h2>
-                <button
-                  className={`${styles.botaoCheck} ${done ? styles.botaoCheckAtivo : ''}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    // Namespace: Passando o ID do treino para criar a chave única no contexto
-                    alternarStatus(serie.id, eid);
-                  }}
-                >
-                  <FiCheck size={14} />
-                </button>
-              </div>
-            </div>
+            />
           );
         })}
       </div>
 
-      <CardExercicioModal
-        exercicio={exercicioAberto}
-        handleClose={() => setExercicioAberto(null)}
-        treinoId={serie.id}
-      />
+      <CardExercicioModal exercicio={exercicioAberto} handleClose={() => setExercicioAberto(null)} treinoId={serie.id} />
     </div>
   );
 }
