@@ -38,12 +38,12 @@ export function ExerciciosProvider({ children }) {
         do {
           const url = `https://edb-with-videos-and-images-by-ascendapi.p.rapidapi.com/api/v1/exercises?limit=25${proximaPagina ? `&after=${proximaPagina}` : ''}`;
           const res = await fetch(url, options);
-          
+
           if (!res.ok) break;
 
           const json = await res.json();
           const dados = json.data || [];
-          
+
           if (dados.length === 0) break;
 
           const dadosMapeados = dados.map(ex => ({
@@ -83,6 +83,15 @@ export function ExerciciosProvider({ children }) {
 
   const fetchDetalhes = async (idParaBusca) => {
     try {
+
+      const cacheChave = `shapecheck_detalhe_${idParaBusca}`;
+
+      const cacheLocal = localStorage.getItem(cacheChave);
+
+      if (cacheLocal) {
+        return JSON.parse(cacheLocal);
+      }
+
       const res = await fetch(`https://edb-with-videos-and-images-by-ascendapi.p.rapidapi.com/api/v1/exercises/${idParaBusca}`, {
         method: 'GET',
         headers: {
@@ -90,10 +99,19 @@ export function ExerciciosProvider({ children }) {
           'x-rapidapi-host': 'edb-with-videos-and-images-by-ascendapi.p.rapidapi.com'
         }
       });
+
       if (!res.ok) return null;
+
       const json = await res.json();
-      return json.data;
+      const dados = json.data;
+
+      if (dados) {
+        localStorage.setItem(cacheChave, JSON.stringify(dados));
+      }
+
+      return dados;
     } catch (e) {
+      console.error("Erro ao buscar detalhes:", e);
       return null;
     }
   };
