@@ -16,7 +16,7 @@ export default function TelaListaTreinos() {
   const [traduzindo, setTraduzindo] = useState(false);
 
   const { iniciarEdicao } = useCriarSerie();
-  const { statusSeries, treinosConcluidos, alternarStatus, setEstadoConcluido } = useStatusTreino();
+  const { statusSeries, treinosConcluidos, alternarStatus, setEstadoConcluido, toggleTreinoConcluido } = useStatusTreino();
   const { usuario, finalizarCadastroWizard } = useAuth();
   const { fetchDetalhes } = useExercicios();
 
@@ -27,16 +27,13 @@ export default function TelaListaTreinos() {
     setSerie(series.find((s) => s.id === id));
   }, [id, usuario]);
 
+  // LOGICA AUTOMATICA (Namespace): Verifica usando a chave composta `${serie.id}_${eid}`
   useEffect(() => {
     if (!serie || !serie.exercicios) return;
-
     const todosConcluidos = serie.exercicios.every(ex => {
       const eid = ex.exerciseId || ex.id;
-      return !!statusSeries[eid];
+      return !!statusSeries[`${serie.id}_${eid}`];
     });
-
-    // Se todos estiverem concluídos e o treino ainda não estiver marcado, marca.
-    // Se nem todos estiverem e o treino estiver marcado, desmarca.
     setEstadoConcluido(serie.id, todosConcluidos);
   }, [statusSeries, serie, setEstadoConcluido]);
 
@@ -69,8 +66,13 @@ export default function TelaListaTreinos() {
   if (!serie) return <div className={styles.container}><div className={styles.estadoVazio}>Série não encontrada.</div></div>;
 
   const isSerieConcluida = !!treinosConcluidos[serie.id];
+  const idsExercicios = serie.exercicios?.map(ex => ex.exerciseId || ex.id) || [];
 
   const handleEditar = () => {
+    if (isSerieConcluida) {
+      alert("Desfaça a conclusão do treino antes de editar.");
+      return;
+    }
     iniciarEdicao(serie);
     navigate('/criar-serie');
   };
@@ -96,24 +98,37 @@ export default function TelaListaTreinos() {
 
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             <h1 className={styles.titulo}>{serie.nome}</h1>
-            {isSerieConcluida && (
-              <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#4caf50', fontWeight: 'bold' }}>
-                <FiCheck size={14} /> Treino Concluído!
-              </span>
-            )}
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              {isSerieConcluida && (
+                <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#4caf50', fontWeight: 'bold' }}>
+                  <FiCheck size={14} /> Treino Concluído!
+                </span>
+              )}
+              {isSerieConcluida && (
+                <button onClick={() => toggleTreinoConcluido(serie.id, idsExercicios)} className={styles.botaoDesfazer}>
+                  Desfazer
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
         <div className={styles.botoesAcao}>
           <button onClick={handleExcluir} className={styles.botaoExcluir}><FiTrash2 size={18} /></button>
-          <button onClick={handleEditar} className={styles.botaoCriar}><FiEdit size={18} /></button>
+          <button
+            onClick={handleEditar}
+            className={`${styles.botaoCriar} ${isSerieConcluida ? styles.botaoDesabilitado : ''}`}
+          >
+            <FiEdit size={18} />
+          </button>
         </div>
       </div>
 
       <div className={styles.gridLista}>
         {serie.exercicios && serie.exercicios.map((ex) => {
           const eid = ex.exerciseId || ex.id;
-          const done = !!statusSeries[eid];
+          // Namespace: Chave única por treino + exercício
+          const done = !!statusSeries[`${serie.id}_${eid}`];
 
           return (
             <div
@@ -128,7 +143,8 @@ export default function TelaListaTreinos() {
                   className={`${styles.botaoCheck} ${done ? styles.botaoCheckAtivo : ''}`}
                   onClick={(e) => {
                     e.stopPropagation();
-                    alternarStatus(eid);
+                    // Namespace: Passando o ID do treino para criar a chave única no contexto
+                    alternarStatus(serie.id, eid);
                   }}
                 >
                   <FiCheck size={14} />

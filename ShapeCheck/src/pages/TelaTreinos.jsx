@@ -6,7 +6,7 @@ import styles from "./TelaTreinos.module.css";
 
 export default function TelaTreinos() {
   const navigate = useNavigate();
-  const { statusSeries, treinosConcluidos, alternarStatus } = useStatusTreino();
+  const { treinosConcluidos, toggleTreinoConcluido } = useStatusTreino();
   const { usuario } = useAuth();
 
   const series = usuario?.treinos || [];
@@ -33,7 +33,8 @@ export default function TelaTreinos() {
         <div className={styles.lista}>
           {series.length > 0 ? (
             series.map((serie) => {
-              const concluida = treinosConcluidos[serie.id];
+              const concluida = !!treinosConcluidos[serie.id];
+              const idsExercicios = serie.exercicios?.map(ex => ex.exerciseId || ex.id) || [];
 
               return (
                 <div
@@ -51,7 +52,7 @@ export default function TelaTreinos() {
                     className={`${styles.botaoCheck} ${concluida ? styles.botaoCheckAtivo : ""}`}
                     onClick={(e) => {
                       e.stopPropagation();
-                      alternarStatus(serie.id);
+                      toggleTreinoConcluido(serie.id, idsExercicios);
                     }}
                   >
                     <FiCheck size={18} />

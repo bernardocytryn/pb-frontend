@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { FiArrowLeft } from 'react-icons/fi';
 import { useCriarSerie } from '../contexts/SeriesContext.jsx';
+import { useAuth } from '../hooks/useAuth.jsx';
 import styles from './CriarSerie.module.css';
 
 export default function CriarSerie() {
@@ -13,6 +14,7 @@ export default function CriarSerie() {
     idSerieEdicao
   } = useCriarSerie();
 
+  const { usuario, finalizarCadastroWizard } = useAuth();
   const navigate = useNavigate();
 
   const irParaBusca = () => {
@@ -25,10 +27,10 @@ export default function CriarSerie() {
     const serieFinal = {
       id: idSerieEdicao || Date.now().toString(),
       nome: nomeSerie,
-      exercicios: exerciciosSelecionados // Já chegam traduzidos do Modal
+      exercicios: exerciciosSelecionados
     };
 
-    const seriesAntigas = JSON.parse(localStorage.getItem('minhasSeries') || '[]');
+    const seriesAntigas = usuario?.treinos || [];
     let seriesAtualizadas;
 
     if (idSerieEdicao) {
@@ -37,9 +39,10 @@ export default function CriarSerie() {
       seriesAtualizadas = [...seriesAntigas, serieFinal];
     }
 
-    localStorage.setItem('minhasSeries', JSON.stringify(seriesAtualizadas));
-    limparRascunho();
+    // AQUI ESTÁ A CORREÇÃO: Usamos a função global que notifica o React sobre a mudança
+    finalizarCadastroWizard(usuario.perfil, seriesAtualizadas);
 
+    limparRascunho();
     navigate(idSerieEdicao ? `/series/${idSerieEdicao}` : '/treinos');
   };
 
