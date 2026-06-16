@@ -87,9 +87,7 @@ export default function CardPerfil() {
   };
 
   const removePhoto = () => {
-    const novoPerfil = { ...perfil };
-    delete novoPerfil.photo;
-    atualizarUsuario({ perfil: novoPerfil });
+    atualizarUsuario({ perfil: { ...perfil, photo: null } });
     setMenuOpen(false);
   };
 
