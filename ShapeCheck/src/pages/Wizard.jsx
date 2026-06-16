@@ -142,6 +142,16 @@ const Wizard = () => {
 
   const finalizarWizard = async () => {
     setIsCarregando(true);
+
+    const getLimiteFrequencia = (freqString) => {
+      if (!freqString) return 3;
+      if (freqString.includes("1-2")) return 2;
+      if (freqString.includes("3-4")) return 4;
+      if (freqString.includes("5+")) return 6;
+      return 3;
+    };
+    const limite = getLimiteFrequencia(respostasWizard.frequencia);
+
     const dadosDoUsuario = {
       ...respostasForm,
       ...respostasWizard,
@@ -158,14 +168,19 @@ const Wizard = () => {
     try {
       const promptParaIA = `Crie uma ficha de treino para ${dadosDoUsuario.nome}.
       Objetivo: ${dadosDoUsuario.objetivo}
-      Frequência: ${dadosDoUsuario.frequencia}
+      Frequência: ${dadosDoUsuario.frequencia} (MÁXIMO DE ${limite} DIAS DE TREINO NA SEMANA)
       Nível: ${dadosDoUsuario.nivel}
+      Lugar: ${dadosDoUsuario.lugar}
       
-      REGRA CRÍTICA: 
+      REGRAS CRÍTICAS: 
       1. Selecione exercícios APENAS da lista: ${JSON.stringify(listaDisponivel)}
-      2. Retorne APENAS um objeto JSON. 
-      3. NÃO use blocos de código markdown, não use \`\`\`json, não escreva nada além do JSON.
-      4. O formato deve ser estritamente: { "series": [{"nome": "...", "exercicios": [{"nome": "..."}]}], "planoSemanal": ["...", "..."] }`;
+      2. SE o lugar for diferente de 'Academia', NÃO sugira exercícios que dependam de equipamentos (halteres, máquinas). Use APENAS peso corporal (bodyweight).
+      3. CRIE NO MÁXIMO ${limite} SÉRIES DISTINTAS (ex: se o limite for 2, crie apenas 1 ou 2 séries como 'Full Body' ou 'Superiores' e 'Inferiores').
+      4. O campo 'nome' das séries deve conter APENAS o grupo muscular ou foco do treino (Exemplos: 'Peito e Tríceps', 'Inferiores', 'Full Body'). É EXPRESSAMENTE PROIBIDO usar palavras de sequência como 'Dia 1', 'Dia 2', 'Treino A', 'Treino 1'.
+      5. O campo 'planoSemanal' DEVE ser um array com EXATAMENTE 7 strings, representando os dias da semana (de Domingo a Sábado).
+      6. Preencha o 'planoSemanal' com o "nome" EXATO da série que deve ser feita no dia, ou a palavra "Descanso". Agende EXATAMENTE ${limite} DIAS COM TREINO na semana inteira (os outros dias obrigatoriamente devem ser "Descanso").
+      7. Retorne APENAS um objeto JSON puro. NÃO use formatação markdown, não use \`\`\`json.
+      8. Formato estrito: { "series": [{"nome": "...", "exercicios": [{"nome": "..."}]}], "planoSemanal": ["Descanso", "Nome da Série", "Descanso", "Descanso", "...", "...", "..."] }`;
 
       const respostaIA = await fetch(
         "https://api.mistral.ai/v1/chat/completions",
