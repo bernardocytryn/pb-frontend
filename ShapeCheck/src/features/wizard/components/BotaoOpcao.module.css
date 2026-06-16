@@ -1,23 +1,46 @@
+/* Mobile-First / Dark Mode Premium */
 .botao-opcao {
-  color: #d9d9d9;
-  border: 1px solid #f2f2f2;
+  background-color: #242424;
+  /* Fundo dos cards escuros */
+  color: #e0e0e0;
+  border: 1px solid #333333;
+  /* Borda discreta */
   text-align: center;
-  padding: 24px;
-  border-radius: 15px;
-  font-size: 2rem;
-  background-color: #323537;
+  padding: 16px 24px;
+  border-radius: 16px;
+  /* Arredondamento premium */
+  font-size: 1.1rem;
+  /* Fonte mais limpa (reduzido de 2rem) */
+  font-weight: 500;
   transition: all 0.2s ease-in-out;
   width: 100%;
   cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.botao-opcao:hover {
+  background-color: #2a2a2a;
+  border-color: #444444;
+  transform: translateY(-2px);
+  /* Efeito tátil suave */
 }
 
 .selecionado {
   background-color: #ffcb3c;
-  color: #1f2122; 
+  color: #121212;
   border-color: #ffcb3c;
+  font-weight: 700;
+  box-shadow: 0 4px 15px rgba(255, 203, 60, 0.25);
 }
-@media (min-width:768px){
-  .botao-opcao{
-    width: 70%;
+
+.selecionado:hover {
+  background-color: #eab429;
+  border-color: #eab429;
+  transform: translateY(-2px);
+}
+
+@media (min-width: 768px) {
+  .botao-opcao {
+    width: 100%;
   }
 }

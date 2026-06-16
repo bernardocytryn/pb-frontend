@@ -3,17 +3,34 @@
   justify-content: center;
   align-items: center;
   gap: 10px;
-  padding: 10px;
+  padding: 16px 24px;
   background-color: #ffcb3c;
-  border-radius: 15px;
+  color: #121212;
+  border-radius: 14px;
   border: none;
   width: 100%;
-  font-size: 24px;
+  font-size: 1.1rem;
+  font-weight: 700;
   cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(255, 203, 60, 0.25);
 }
 
-@media (min-width: 768px){
-  .botao-amarelo{
-    width: 30%;
+.botao-amarelo:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+  box-shadow: 0 6px 15px rgba(255, 203, 60, 0.35);
+}
+
+.botao-amarelo:active {
+  transform: translateY(0);
+  filter: brightness(0.95);
+  box-shadow: 0 2px 5px rgba(255, 203, 60, 0.25);
+}
+
+@media (min-width: 768px) {
+  .botao-amarelo {
+    width: auto;
+    min-width: 250px;
   }
 }

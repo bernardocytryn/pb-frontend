@@ -1,27 +1,34 @@
+/* Mobile-First / Dark Mode Premium */
 .container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 15px; 
+  justify-content: flex-start;
+  gap: 24px;
   height: 100%;
+  width: 100%;
+  animation: fadeIn 0.3s ease-out;
 }
 
 .header {
   display: flex;
   flex-direction: column;
   text-align: center;
-  gap: 5px; 
+  gap: 8px;
 }
 
 .title {
-  color: #f2f2f2;
-  font-size: 1.8rem;
+  color: #ffffff;
+  font-size: 1.75rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin: 0;
 }
 
 .subtitle {
-  color: #8e8e93;
-  font-size: 1rem; 
-  margin-bottom: 0; 
+  color: #a0a0a0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin: 0;
 }
 
 .inputs {
@@ -39,30 +46,48 @@
 .sexoContainer {
   display: flex;
   flex-direction: column;
-  gap: 8px; 
+  gap: 12px;
 }
 
 .sexoLabel {
-  color: #f2f2f2;
-  font-size: 1.1rem; 
+  color: #e0e0e0;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .sexoRadios {
   display: flex;
-  gap: 15px;
+  gap: 12px;
+  width: 100%;
 }
 
-.sexoRadios > * {
+.sexoRadios>* {
   flex: 1;
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (min-width: 768px) {
+  .title {
+    font-size: 2rem;
+  }
+
   .inputsPequenos {
     flex-direction: row;
     justify-content: space-between;
   }
 
-  .inputsPequenos > * {
+  .inputsPequenos>* {
     flex: 1;
   }
 }

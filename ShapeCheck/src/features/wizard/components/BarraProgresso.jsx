@@ -11,9 +11,10 @@ const BarraProgresso = ({ passoAtual, totalPassos }) => {
           top: 0,
           height: "100%",
           width: `${porcentagemProgresso}%`,
-          backgroundColor: "#3b82f6",
-          background: "linear-gradient(90deg, #2563eb, #3b82f6)",
+          backgroundColor: "#ffcb3c",
+          background: "linear-gradient(90deg, #e5b322, #ffcb3c)",
           transition: "width 0.4s ease-in-out",
+          borderRadius: "50px",
         }}
       ></div>
       <span>

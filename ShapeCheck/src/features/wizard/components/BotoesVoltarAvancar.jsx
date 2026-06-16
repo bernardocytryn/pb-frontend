@@ -16,7 +16,7 @@ const BotoesVoltarAvancar = ({
     >
       {passoAtual > 1 && (
         <button onClick={voltar} className={styles.voltar}>
-          <FaArrowLeft /> Voltar
+          <FaArrowLeft size={14} /> Voltar
         </button>
       )}
       <button
@@ -24,13 +24,13 @@ const BotoesVoltarAvancar = ({
         disabled={!podeAvancar}
         className={styles.avancar}
         style={{
-          backgroundColor: podeAvancar ? "" : "#323537",
-          color: podeAvancar ? "" : "#939496",
+          backgroundColor: podeAvancar ? "#ffcb3c" : "#2a2a2a",
+          color: podeAvancar ? "#121212" : "#6b6b6b",
           cursor: podeAvancar ? "pointer" : "not-allowed",
         }}
       >
         {passoAtual < 6 ? "Avançar" : "Finalizar"}
-        <FaArrowRight />
+        <FaArrowRight size={14} />
       </button>
     </div>
   );

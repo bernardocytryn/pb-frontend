@@ -5,10 +5,8 @@ import styles from "./Passos2345.module.css";
 
 const Passo5Objetivo = ({ respostasWizard, selecionarOpcao }) => {
   return (
-    <div className={styles.container}>
-      <div style={{ marginTop: 100 }}>
-        <Pergunta pergunta={"Defina seu objetivo:"} />
-      </div>
+    <div className={styles.containerSemImagem}>
+      <Pergunta pergunta={"Defina seu objetivo:"} />
       <div className={styles.options}>
         <BotaoOpcao
           opcao={"Ganho de músculo"}

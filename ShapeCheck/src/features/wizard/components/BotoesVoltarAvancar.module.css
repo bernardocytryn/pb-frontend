@@ -1,35 +1,56 @@
 .botoes-voltar-avancar {
   display: flex;
-  justify-content: space-between;
-  background-color: #323537;
-  border-radius: 15px;
-  padding: 10px;
+  align-items: center;
+  width: 100%;
+  gap: 16px;
+  margin-top: 16px;
 }
+
 .voltar,
 .avancar {
   display: flex;
   align-items: center;
-  gap: 20px;
-  font-size: 2rem;
-  padding: 15px;
-  cursor: pointer;
-}
-.voltar {
-  color: #f2f2f2;
-  background-color: #323537;
-  border: none;
-}
-.avancar {
-  display: flex;
   justify-content: center;
-  color: #1f2122;
-  background-color: #ffcb3c;
-  border-radius: 15px;
-  width: 50%;
-  border: none;
+  gap: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 14px 20px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
-@media (min-width: 768px){
-  .botoes-voltar-avancar{
-    width: 69%;
+
+.voltar {
+  color: #a0a0a0;
+  background-color: transparent;
+  border: 1px solid #333333;
+  flex: 1;
+  max-width: 130px;
+}
+
+.voltar:hover {
+  background-color: #242424;
+  color: #ffffff;
+  border-color: #444444;
+}
+
+.avancar {
+  color: #121212;
+  border: none;
+  flex: 2;
+}
+
+.avancar:hover:not(:disabled) {
+  transform: scale(1.02);
+  filter: brightness(1.1);
+}
+
+@media (min-width: 768px) {
+  .botoes-voltar-avancar {
+    width: 100%;
+  }
+
+  .voltar {
+    max-width: 150px;
   }
 }

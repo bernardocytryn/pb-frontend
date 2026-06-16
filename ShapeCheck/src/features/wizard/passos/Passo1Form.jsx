@@ -64,19 +64,19 @@ const Passo1Form = ({ respostasForm, camposVazios, atualizarForm }) => {
           />
         </div>
         <div className={styles.sexoContainer}>
-          <label className={styles.sexoLabel}>Sexo biológico:</label>
+          <label className={styles.sexoLabel}>Sexo:</label>
           <div className={styles.sexoRadios}>
             <BotaoOpcao
               opcao={"Masculino"}
               isSelecionado={respostasForm.sexo === "Masculino"}
               onClick={() => atualizarForm("sexo", "Masculino")}
-              style={{ padding: "12px", fontSize: "1.2rem" }}
+              style={{ padding: "14px 8px", fontSize: "1rem" }}
             />
             <BotaoOpcao
               opcao={"Feminino"}
               isSelecionado={respostasForm.sexo === "Feminino"}
               onClick={() => atualizarForm("sexo", "Feminino")}
-              style={{ padding: "12px", fontSize: "1.2rem" }}
+              style={{ padding: "14px 8px", fontSize: "1rem" }}
             />
           </div>
         </div>

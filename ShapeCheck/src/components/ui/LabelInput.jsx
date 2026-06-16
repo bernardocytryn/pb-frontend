@@ -13,12 +13,13 @@ const LabelInput = ({
       <label>{label}</label>
       <input
         style={{
-          border: taVazio ? "2px solid #ff4d4d" : "2px solid transparent",
+          borderColor: taVazio ? "#ff4d4d" : "",
         }}
         type={type || "text"}
         placeholder={placeholder}
         value={valorInput}
         onChange={onChange}
+        className={taVazio ? styles.inputErro : ""}
       />
 
       {taVazio && (
