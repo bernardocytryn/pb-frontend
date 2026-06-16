@@ -1,40 +1,51 @@
 .container {
-  padding: 20px;
   background-color: #121212;
-  color: #f2f2f2;
-  box-sizing: border-box;
+  color: #ffffff;
+  min-height: 100vh;
   width: 100%;
+  padding: 24px 0 100px;
+  box-sizing: border-box;
+}
+
+.main {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
 }
 
 .estadoVazio {
   text-align: center;
   margin-top: 50px;
   color: #a0a0a0;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  font-weight: 500;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 
 .tituloContainer {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
 }
 
 .botaoVoltar {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   background: none;
   border: none;
   color: #a0a0a0;
   cursor: pointer;
   font-size: 1rem;
+  font-weight: 600;
   padding: 0;
   transition: color 0.2s ease;
 }
@@ -45,8 +56,10 @@
 
 .titulo {
   margin: 0;
-  font-size: 1.8rem;
-  color: #ffcb3c;
+  font-size: 2rem;
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: -0.5px;
 }
 
 .botoesAcao {
@@ -56,45 +69,50 @@
 
 .botaoExcluir,
 .botaoCriar {
-  background-color: #2c2c2e;
-  border: none;
-  color: #f2f2f2;
-  width: 40px;
-  height: 40px;
-  border-radius: 8px;
+  background-color: #242424;
+  border: 1px solid #333333;
+  color: #ffffff;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: filter 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .botaoExcluir {
   color: #ff4d4d;
 }
 
-.botaoExcluir:hover,
+.botaoExcluir:hover {
+  background-color: rgba(255, 77, 77, 0.1);
+  border-color: #ff4d4d;
+  transform: translateY(-2px);
+}
+
 .botaoCriar:hover {
-  filter: brightness(1.2);
+  border-color: #ffcb3c;
+  color: #ffcb3c;
+  transform: translateY(-2px);
 }
 
 .gridLista {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 }
 
 .cardGrid {
-  background-color: #1e1e1e;
-  border-radius: 12px;
+  background-color: #242424;
+  border-radius: 16px;
   overflow: hidden;
   display: flex;
   flex-direction: row;
   cursor: pointer;
-  border: 1px solid #2c2c2e;
-  transition:
-    border-color 0.2s ease,
-    transform 0.2s ease;
+  border: 1px solid #333333;
+  transition: border-color 0.2s ease, transform 0.2s ease;
   width: 100%;
   box-sizing: border-box;
 }
@@ -105,8 +123,8 @@
 }
 
 .cardConcluido {
-  border-color: #ffcb3c;
-  opacity: 0.7;
+  border-color: #22c55e;
+  background-color: rgba(34, 197, 94, 0.05);
 }
 
 .imagemGrid {
@@ -114,22 +132,23 @@
   width: 100%;
   height: 180px;
   object-fit: cover;
-  background-color: #2c2c2e;
+  background-color: #121212;
 }
 
 .infoGrid {
-  padding: 16px;
+  padding: 16px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   box-sizing: border-box;
-  gap: 12px;
+  gap: 16px;
 }
 
 .nomeGrid {
   margin: 0;
-  font-size: 1.05rem;
+  font-size: 1.1rem;
+  font-weight: 600;
   text-transform: capitalize;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -142,68 +161,28 @@
 }
 
 .botaoCheck {
-  background-color: #2c2c2e;
-  border: none;
-  color: #a0a0a0;
-  width: 32px;
-  height: 32px;
+  background-color: transparent;
+  border: 2px solid #333333;
+  color: transparent;
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition:
-    background-color 0.2s ease,
-    color 0.2s ease;
+  transition: all 0.2s ease;
   flex-shrink: 0;
 }
 
 .botaoCheck:hover {
-  border-color: #ffcb3c;
+  border-color: #22c55e;
 }
 
 .botaoCheckAtivo {
-  background-color: #ffcb3c;
-  color: #000;
-}
-
-.containerFinalizar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  padding: 16px 20px;
-  background-color: #1e1e1e;
-  border-top: 1px solid #2c2c2e;
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  z-index: 900;
-  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.botaoFinalizar {
-  width: 100%;
-  max-width: 400px;
-  padding: 16px;
-  background-color: #ffcb3c;
-  color: #000;
-  font-weight: bold;
-  border: none;
-  border-radius: 12px;
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition:
-    transform 0.1s ease,
-    filter 0.2s ease;
-}
-
-.botaoFinalizar:active {
-  transform: scale(0.98);
-}
-
-.botaoFinalizar:hover {
-  filter: brightness(1.1);
+  background-color: #22c55e;
+  border-color: #22c55e;
+  color: #ffffff;
 }
 
 .botaoDesabilitado {
@@ -212,21 +191,14 @@
   pointer-events: none;
 }
 
-.botaoDesfazer {
-  background: none;
-  border: 1px solid #ffcb3c;
-  color: #ffcb3c;
-  font-size: 10px;
-  padding: 2px 6px;
-  border-radius: 4px;
-  cursor: pointer;
-  margin-left: 8px;
-}
-
 @media (min-width: 768px) {
+  .main {
+    padding: 40px 40px 0;
+  }
+
   .gridLista {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
     gap: 24px;
   }
 

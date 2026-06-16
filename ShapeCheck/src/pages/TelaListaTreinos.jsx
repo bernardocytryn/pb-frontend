@@ -9,10 +9,9 @@ import { useAuth } from "../hooks/useAuth.jsx";
 import { useExercicios } from "../contexts/ExerciciosContext.jsx";
 import styles from "./TelaListaTreinos.module.css";
 
-// Sub-componente para gerenciar o gesto de swipe de cada exercício
 function CardExercicioSwipe({ ex, serieId, done, onToggle, onRemove, onClick }) {
   const x = useMotionValue(0);
-  const backgroundColor = useTransform(x, [-100, 0, 100], ["#4caf50", "transparent", "#f44336"]);
+  const backgroundColor = useTransform(x, [-100, 0, 100], ["#22c55e", "transparent", "#ff4d4d"]);
 
   return (
     <motion.div
@@ -21,8 +20,8 @@ function CardExercicioSwipe({ ex, serieId, done, onToggle, onRemove, onClick }) 
       dragElastic={0.2}
       style={{ x, backgroundColor, touchAction: "none" }}
       onDragEnd={(event, info) => {
-        if (info.offset.x < -100) onToggle(); // Esquerda: Concluir
-        else if (info.offset.x > 100) onRemove(); // Direita: Remover
+        if (info.offset.x < -100) onToggle();
+        else if (info.offset.x > 100) onRemove();
       }}
       onClick={onClick}
       className={`${styles.cardGrid} ${done ? styles.cardConcluido : ''}`}
@@ -37,7 +36,7 @@ function CardExercicioSwipe({ ex, serieId, done, onToggle, onRemove, onClick }) 
             onToggle();
           }}
         >
-          <FiCheck size={14} />
+          <FiCheck size={16} />
         </button>
       </div>
     </motion.div>
@@ -96,10 +95,9 @@ export default function TelaListaTreinos() {
     traduzirSerie();
   }, [serie]);
 
-  if (!serie) return <div className={styles.container}><div className={styles.estadoVazio}>Série não encontrada.</div></div>;
+  if (!serie) return <div className={styles.container}><div className={styles.main}><div className={styles.estadoVazio}>Série não encontrada.</div></div></div>;
 
   const isSerieConcluida = !!treinosConcluidos[serie.id];
-  const idsExercicios = serie.exercicios?.map(ex => ex.exerciseId || ex.id) || [];
 
   const handleExcluirExercicio = (eid) => {
     if (window.confirm("Remover este exercício?")) {
@@ -127,44 +125,46 @@ export default function TelaListaTreinos() {
 
   return (
     <div className={styles.container}>
-      {traduzindo && <div className={styles.estadoVazio} style={{ fontSize: '0.8rem', color: '#ffcb3c' }}>Atualizando para Português...</div>}
+      <div className={styles.main}>
+        {traduzindo && <div className={styles.estadoVazio} style={{ fontSize: '0.9rem', color: '#ffcb3c', marginBottom: '16px', marginTop: '0' }}>Atualizando para Português...</div>}
 
-      <div className={styles.header}>
-        <div className={styles.tituloContainer}>
-          <button onClick={() => navigate('/treinos')} className={styles.botaoVoltar}><FiArrowLeft size={18} /> Voltar</button>
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <h1 className={styles.titulo}>{serie.nome}</h1>
-            {isSerieConcluida && (
-              <span style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#4caf50', fontWeight: 'bold' }}>
-                <FiCheck size={14} /> Treino Concluído!
-              </span>
-            )}
+        <div className={styles.header}>
+          <div className={styles.tituloContainer}>
+            <button onClick={() => navigate('/treinos')} className={styles.botaoVoltar}><FiArrowLeft size={18} /> Voltar</button>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <h1 className={styles.titulo}>{serie.nome}</h1>
+              {isSerieConcluida && (
+                <span style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.85rem', color: '#22c55e', fontWeight: '600', marginTop: '4px' }}>
+                  <FiCheck size={14} /> Treino Concluído!
+                </span>
+              )}
+            </div>
+          </div>
+          <div className={styles.botoesAcao}>
+            <button onClick={handleExcluir} className={styles.botaoExcluir}><FiTrash2 size={18} /></button>
+            <button onClick={handleEditar} className={`${styles.botaoCriar} ${isSerieConcluida ? styles.botaoDesabilitado : ''}`}><FiEdit size={18} /></button>
           </div>
         </div>
-        <div className={styles.botoesAcao}>
-          <button onClick={handleExcluir} className={styles.botaoExcluir}><FiTrash2 size={18} /></button>
-          <button onClick={handleEditar} className={`${styles.botaoCriar} ${isSerieConcluida ? styles.botaoDesabilitado : ''}`}><FiEdit size={18} /></button>
+
+        <div className={styles.gridLista}>
+          {serie.exercicios && serie.exercicios.map((ex) => {
+            const eid = ex.exerciseId || ex.id;
+            return (
+              <CardExercicioSwipe
+                key={eid}
+                ex={ex}
+                serieId={serie.id}
+                done={!!statusSeries[`${serie.id}_${eid}`]}
+                onToggle={() => alternarStatus(serie.id, eid)}
+                onRemove={() => handleExcluirExercicio(eid)}
+                onClick={() => setExercicioAberto(ex)}
+              />
+            );
+          })}
         </div>
-      </div>
 
-      <div className={styles.gridLista}>
-        {serie.exercicios && serie.exercicios.map((ex) => {
-          const eid = ex.exerciseId || ex.id;
-          return (
-            <CardExercicioSwipe
-              key={eid}
-              ex={ex}
-              serieId={serie.id}
-              done={!!statusSeries[`${serie.id}_${eid}`]}
-              onToggle={() => alternarStatus(serie.id, eid)}
-              onRemove={() => handleExcluirExercicio(eid)}
-              onClick={() => setExercicioAberto(ex)}
-            />
-          );
-        })}
+        <CardExercicioModal exercicio={exercicioAberto} handleClose={() => setExercicioAberto(null)} treinoId={serie.id} />
       </div>
-
-      <CardExercicioModal exercicio={exercicioAberto} handleClose={() => setExercicioAberto(null)} treinoId={serie.id} />
     </div>
   );
 }

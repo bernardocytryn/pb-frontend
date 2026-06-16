@@ -1,12 +1,15 @@
 .container {
   font-family: "Inter", sans-serif;
-  background-color: var(--bg, #1e1e1e);
+  background-color: #121212;
+  color: #ffffff;
+  min-height: 100vh;
+  padding: 24px 0 80px;
 }
 
 .main {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 24px 20px 0;
+  padding: 0 20px;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -18,8 +21,9 @@
 
 .botaoVoltar {
   background-color: transparent;
-  color: var(--texto-suave, #a0a0a0);
+  color: #a0a0a0;
   font-size: 1rem;
+  font-weight: 600;
   padding: 0;
   display: flex;
   align-items: center;
@@ -27,33 +31,38 @@
   text-transform: none;
   border: none;
   cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.botaoVoltar:hover {
+  color: #ffcb3c;
 }
 
 .rotulo {
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--texto-suave, #a0a0a0);
+  color: #a0a0a0;
   margin-bottom: 24px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .rotulo::after {
   content: "";
   flex: 1;
   height: 1px;
-  background: var(--borda, #3a3a3c);
+  background: #333333;
 }
 
 .areaBusca {
-  margin-bottom: 20px;
+  margin-bottom: 24px;
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
 }
 
 .dropdownContainer {
@@ -63,11 +72,11 @@
 
 .selectClasse {
   width: 100%;
-  background-color: var(--card-bg, #2c2c2e);
-  color: var(--texto, #f2f2f2);
-  border: 1px solid var(--borda, #3a3a3c);
-  border-radius: 10px;
-  padding: 14px 16px;
+  background-color: #242424;
+  color: #ffffff;
+  border: 1px solid #333333;
+  border-radius: 12px;
+  padding: 16px;
   font-size: 1rem;
   text-align: left;
   display: flex;
@@ -75,16 +84,18 @@
   align-items: center;
   cursor: pointer;
   box-sizing: border-box;
+  transition: all 0.2s ease;
 }
 
-.selectClasse:focus {
-  border-color: var(--destaque, #ffcb3c);
+.selectClasse:focus,
+.selectClasse:hover {
+  border-color: #ffcb3c;
   outline: none;
 }
 
 .iconeDropdown {
   transition: transform 0.2s ease;
-  color: var(--texto, #f2f2f2);
+  color: #ffffff;
 }
 
 .iconeDropdownAberto {
@@ -93,86 +104,95 @@
 
 .dropdownMenu {
   position: absolute;
-  top: calc(100% + 6px);
+  top: calc(100% + 8px);
   left: 0;
   width: 100%;
-  background-color: var(--card-bg, #2c2c2e);
-  border: 1px solid var(--borda, #3a3a3c);
-  border-radius: 10px;
+  background-color: #242424;
+  border: 1px solid #333333;
+  border-radius: 12px;
   padding: 8px 0;
   margin: 0;
   list-style: none;
   z-index: 10;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
   box-sizing: border-box;
 }
 
 .dropdownItem {
-  padding: 12px 16px;
-  color: var(--texto, #f2f2f2);
+  padding: 14px 16px;
+  color: #ffffff;
   cursor: pointer;
   font-size: 0.95rem;
+  transition: background-color 0.2s ease;
 }
 
 .dropdownItem:hover {
-  background-color: var(--borda, #3a3a3c);
+  background-color: #2a2a2a;
 }
 
 .dropdownItemSelecionado {
   background-color: rgba(255, 203, 60, 0.15);
-  color: var(--destaque, #ffcb3c);
-  font-weight: bold;
+  color: #ffcb3c;
+  font-weight: 600;
 }
 
 .inputBusca {
   width: 100%;
-  background-color: var(--card-bg, #2c2c2e);
-  color: var(--texto, #f2f2f2);
-  border: 1px solid var(--borda, #3a3a3c);
-  border-radius: 10px;
-  padding: 14px 16px;
+  background-color: #242424;
+  color: #ffffff;
+  border: 1px solid #333333;
+  border-radius: 12px;
+  padding: 16px;
   font-size: 1rem;
   box-sizing: border-box;
+  transition: all 0.2s ease;
 }
 
 .inputBusca:focus {
-  border-color: var(--destaque, #ffcb3c);
+  border-color: #ffcb3c;
   outline: none;
+  box-shadow: 0 0 0 3px rgba(255, 203, 60, 0.15);
 }
 
 .inputBusca::placeholder {
-  color: var(--texto-suave, #a0a0a0);
+  color: #a0a0a0;
 }
 
 .gridLista {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 12px;
+  gap: 16px;
   width: 100%;
   align-content: start;
 }
 
 .cardGrid {
-  background-color: var(--card-bg, #2c2c2e);
-  border: 1px solid var(--borda, #3a3a3c);
-  border-radius: 12px;
+  background-color: #242424;
+  border: 1px solid #333333;
+  border-radius: 16px;
   overflow: hidden;
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  height: 160px;
+  height: 180px;
   box-sizing: border-box;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.cardGrid:hover {
+  transform: translateY(-2px);
+  border-color: #ffcb3c;
 }
 
 .imagemGrid {
   width: 100%;
-  height: 95px;
+  height: 110px;
   object-fit: cover;
-  background-color: #1e1e1e;
+  background-color: #121212;
 }
 
 .infoGrid {
-  padding: 8px 10px;
+  padding: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -181,14 +201,14 @@
 }
 
 .nomeGrid {
-  color: var(--texto, #f2f2f2);
-  font-size: 0.78rem;
+  color: #ffffff;
+  font-size: 0.85rem;
   font-weight: 600;
   text-transform: capitalize;
   text-align: center;
   margin: 0;
-  line-height: 1.2em;
-  max-height: 2.4em;
+  line-height: 1.3em;
+  max-height: 2.6em;
   overflow: hidden;
 }
 
@@ -196,24 +216,27 @@
   grid-column: 1 / -1;
   text-align: center;
   padding: 40px 20px;
-  color: var(--texto-suave, #a0a0a0);
-  font-size: 0.95rem;
+  color: #a0a0a0;
+  font-size: 1rem;
 }
 
 @media (min-width: 768px) {
+  .main {
+    padding: 40px 40px 0;
+  }
+
   .areaBusca {
     flex-direction: row;
-    gap: 16px;
+    gap: 20px;
   }
 
   .dropdownContainer {
-    width: 240px;
-    min-width: 240px;
+    width: 280px;
+    min-width: 280px;
   }
-}
 
-@media (max-width: 480px) {
-  .main {
-    padding: 20px 14px 0;
+  .gridLista {
+    gap: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   }
 }

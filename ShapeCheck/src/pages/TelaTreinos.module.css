@@ -1,13 +1,15 @@
 .container {
   font-family: "Inter", sans-serif;
-  background-color: var(--bg, #1e1e1e);
-  color: var(--texto, #f2f2f2);
+  background-color: #121212;
+  color: #ffffff;
+  min-height: 100vh;
+  padding: 24px 0 80px;
 }
 
 .main {
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 40px 20px 0;
+  padding: 0 20px;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -19,8 +21,9 @@
 
 .botaoVoltar {
   background-color: transparent;
-  color: var(--texto-suave, #a0a0a0);
+  color: #a0a0a0;
   font-size: 1rem;
+  font-weight: 600;
   padding: 0;
   display: flex;
   align-items: center;
@@ -32,35 +35,35 @@
 }
 
 .botaoVoltar:hover {
-  color: var(--destaque, #ffcb3c);
+  color: #ffcb3c;
 }
 
 .rotulo {
-  font-size: 0.68rem;
+  font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--texto-suave, #a0a0a0);
+  color: #a0a0a0;
   margin-bottom: 24px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
 }
 
 .rotulo::after {
   content: "";
   flex: 1;
   height: 1px;
-  background: var(--borda, #3a3a3c);
+  background: #333333;
 }
 
 .botaoCriar {
-  background-color: var(--destaque, #ffcb3c);
-  color: #1e1e1e;
+  background-color: #ffcb3c;
+  color: #121212;
   padding: 16px;
   border-radius: 12px;
   font-size: 1.1rem;
-  font-weight: bold;
+  font-weight: 700;
   text-transform: none;
   margin-bottom: 32px;
   border: none;
@@ -68,11 +71,14 @@
   width: 100%;
   box-sizing: border-box;
   display: block;
-  transition: filter 0.2s ease;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 10px rgba(255, 203, 60, 0.25);
 }
 
 .botaoCriar:hover {
-  filter: brightness(1.1);
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+  box-shadow: 0 6px 15px rgba(255, 203, 60, 0.35);
 }
 
 .lista {
@@ -82,49 +88,47 @@
 }
 
 .cardSerie {
-  background-color: var(--card-bg, #2c2c2e);
-  border: 1px solid var(--borda, #3a3a3c);
-  border-radius: 12px;
-  padding: 20px;
+  background-color: #242424;
+  border: 1px solid #333333;
+  border-radius: 16px;
+  padding: 20px 24px;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease;
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .cardSerie:hover {
   transform: translateY(-2px);
-  border-color: var(--destaque, #ffcb3c);
+  border-color: #ffcb3c;
 }
 
 .cardConcluido {
-  border-color: #4caf50;
-  background-color: rgba(76, 175, 80, 0.05);
+  border-color: #22c55e;
+  background-color: rgba(34, 197, 94, 0.05);
 }
 
 .cardConcluido:hover {
-  border-color: #4caf50;
+  border-color: #22c55e;
 }
 
 .nomeSerie {
-  color: var(--texto, #f2f2f2);
+  color: #ffffff;
   font-size: 1.2rem;
   font-weight: 600;
   margin: 0 0 8px 0;
 }
 
 .infoSerie {
-  color: var(--texto-suave, #a0a0a0);
+  color: #a0a0a0;
   margin: 0;
   font-size: 0.95rem;
 }
 
 .botaoCheck {
   background-color: transparent;
-  border: 2px solid var(--borda, #3a3a3c);
+  border: 2px solid #333333;
   border-radius: 50%;
   width: 32px;
   height: 32px;
@@ -139,13 +143,13 @@
 }
 
 .botaoCheck:hover {
-  border-color: #4caf50;
+  border-color: #22c55e;
 }
 
 .botaoCheckAtivo {
-  background-color: #4caf50;
-  border-color: #4caf50;
-  color: #fff;
+  background-color: #22c55e;
+  border-color: #22c55e;
+  color: #ffffff;
 }
 
 .estadoVazio {
@@ -155,33 +159,36 @@
   justify-content: center;
   text-align: center;
   padding: 40px 20px;
-  background-color: var(--card-bg, #2c2c2e);
-  border: 1px dashed var(--borda, #3a3a3c);
-  border-radius: 12px;
+  background-color: #242424;
+  border: 1px dashed #333333;
+  border-radius: 16px;
   margin-top: 16px;
   grid-column: 1 / -1;
 }
 
 .vazioTextoPrincipal {
   margin: 0 0 8px 0;
-  color: var(--texto-suave, #d1d1d1);
+  color: #ffffff;
   font-size: 1rem;
+  font-weight: 500;
 }
 
 .vazioTextoSecundario {
-  color: var(--texto-suave, #a0a0a0);
-  font-size: 0.85rem;
+  color: #a0a0a0;
+  font-size: 0.9rem;
 }
 
 @media (min-width: 768px) {
+  .main {
+    padding: 40px 40px 0;
+  }
+
   .lista {
     grid-template-columns: repeat(2, 1fr);
     gap: 24px;
   }
-}
 
-@media (max-width: 480px) {
-  .main {
-    padding: 20px 14px 0;
+  .botaoCriar {
+    max-width: 300px;
   }
 }
