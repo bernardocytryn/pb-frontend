@@ -12,7 +12,7 @@ const TelaDashboard = () => {
 
             <div className={styles.grid}>
 
-               <div className={styles.card}>
+               <div className={`${styles.card} ${styles.gridChild}`}>
                   <div className={styles.cardTitulo}>Calorias Queimadas</div>
                   <GraficoKcal />
                </div>
@@ -22,7 +22,7 @@ const TelaDashboard = () => {
                   <GraficoPeso />
                </div>
 
-               <div className={`${styles.card} ${styles.gridChild}`}>
+               <div className={styles.card}>
                   <div className={styles.cardTitulo}>Tempo em Atividade</div>
                   <GraficoFrequencia />
                </div>

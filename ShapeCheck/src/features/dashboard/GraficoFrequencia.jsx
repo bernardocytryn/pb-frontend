@@ -1,13 +1,29 @@
 //import styles from './GraficoFrequencia.module.css'
 import { BarChart } from '@mui/x-charts/BarChart';
+import { axisClasses } from '@mui/x-charts/ChartsAxis';
+
 
 function GraficoFrequencia() {
 
    return (
       <div>
          <BarChart
-            xAxis={[{ data: ['group A', 'group B', 'group C'] }]}
-            series={[{ data: [4, 3, 5] }, { data: [1, 6, 3] }, { data: [2, 5, 6] }]}
+            sx={{
+               [`.${axisClasses.root}`]: {
+                  [`.${axisClasses.tickLabel}`]: {
+                     fill: '#ffffff',
+                  },
+               }
+            }}
+            xAxis={[{ data: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'], height: 28 }]}
+            yAxis={[
+               {
+                  tickLabelStyle: {
+                     fill: '#ec407900',
+                  },
+               },
+            ]}
+            series={[{ data: [2, 1, 2, 3, 1, 1, 1] }]}
             height={300}
          />
       </div>
